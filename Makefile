@@ -62,14 +62,15 @@ goimports: fmt
 fmt:
 	find . -name '*.go' | grep -v vendor | xargs gofmt -s -w
 
-.PHONY: lint
-lint:
-	golangci-lint run ./...
-
 .PHONY: set-license
 set-license:
 	@addlicense -c $(AUTHOR) -y $(COPYRIGHT_YEAR) $(COPYRIGHT_FILES)
 
-.PHONY: lint_definition
-lint_definition:
-	docker run -it --rm -v $$PWD:$$PWD -w $$PWD stoplight/spectral:latest lint definitions/*.{json,yaml,yml}
+.PHONY: lint lint-go lint-def
+lint: lint-go lint-def
+
+lint-go:
+	golangci-lint run ./...
+
+lint-def:
+	docker run -it --rm -v $$PWD:$$PWD -w $$PWD stoplight/spectral:latest lint definitions/swagger.yaml
