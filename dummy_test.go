@@ -51,5 +51,5 @@ func TestDummy(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	t.Log(servers)
+	t.Log(string(servers.Body))
 }

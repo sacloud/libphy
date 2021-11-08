@@ -1,1 +1,6 @@
 extends: spectral:oas
+rules:
+  info-contact: false
+  operation-operationId: false
+  operation-tag-defined: false
+  path-keys-no-trailing-slash: false

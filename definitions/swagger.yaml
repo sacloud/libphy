@@ -86,7 +86,7 @@ info:
 
     <!-- ReDoc-Inject: <security-definitions> -->
 servers:
-  - url: 'https://secure.sakura.ad.jp/cloud/api/dedicated-phy/1.0/'
+  - url: 'https://secure.sakura.ad.jp/cloud/api/dedicated-phy/1.0'
 security:
   - account_api_key: []
 paths:
@@ -1285,29 +1285,29 @@ components:
           type: string
           maxLength: 50
       required: false
-    zone_filter:
-      in: query
-      name: zone_id
-      required: false
-      schema:
-        type: integer
-        example: 303
-      description: ネットワークゾーンで絞り込む
-    notice_level_filter:
-      in: query
-      name: level
-      description: |-
-        通知レベル絞り込み
-        __,__区切りで複数指定がある場合はいずれかにマッチ(OR)
-      schema:
-        type: array
-        items:
-          type: string
-          enum:
-            - information
-            - warning
-            - important
-      required: false
+#    zone_filter:
+#      in: query
+#      name: zone_id
+#      required: false
+#      schema:
+#        type: integer
+#        example: 303
+#      description: ネットワークゾーンで絞り込む
+#    notice_level_filter:
+#      in: query
+#      name: level
+#      description: |-
+#        通知レベル絞り込み
+#        __,__区切りで複数指定がある場合はいずれかにマッチ(OR)
+#      schema:
+#        type: array
+#        items:
+#          type: string
+#          enum:
+#            - information
+#            - warning
+#            - important
+#      required: false
     service_id:
       in: path
       name: service_id
@@ -1316,13 +1316,13 @@ components:
         type: string
         pattern: '^\d{12}$'
       description: サービスコード
-    account_id:
-      in: path
-      name: account_id
-      required: true
-      schema:
-        type: integer
-      description: アカウントID
+#    account_id:
+#      in: path
+#      name: account_id
+#      required: true
+#      schema:
+#        type: integer
+#      description: アカウントID
     server_id:
       in: path
       name: server_id
@@ -1331,22 +1331,22 @@ components:
         type: string
         pattern: '^\d{12}$'
       description: サーバーのサービスコード
-    firewall_id:
-      in: path
-      name: firewall_id
-      required: true
-      schema:
-        type: string
-        pattern: '^\d{12}$'
-      description: ファイアウォールのサービスコード
-    load_balancer_id:
-      in: path
-      name: load_balancer_id
-      required: true
-      schema:
-        type: string
-        pattern: '^\d{12}$'
-      description: ロードバランサーのサービスコード
+#    firewall_id:
+#      in: path
+#      name: firewall_id
+#      required: true
+#      schema:
+#        type: string
+#        pattern: '^\d{12}$'
+#      description: ファイアウォールのサービスコード
+#    load_balancer_id:
+#      in: path
+#      name: load_balancer_id
+#      required: true
+#      schema:
+#        type: string
+#        pattern: '^\d{12}$'
+#      description: ロードバランサーのサービスコード
     dedicated_subnet_id:
       in: path
       name: dedicated_subnet_id
@@ -1363,15 +1363,15 @@ components:
         type: string
         pattern: '^\d{12}$'
       description: ローカルネットワークのサービスコード
-    channel_number:
-      in: path
-      name: channel_number
-      required: true
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 2
-      description: ポートチャネル番号
+#    channel_number:
+#      in: path
+#      name: channel_number
+#      required: true
+#      schema:
+#        type: integer
+#        minimum: 1
+#        maximum: 2
+#      description: ポートチャネル番号
     port_channel_id:
       in: path
       name: port_channel_id
@@ -1386,87 +1386,87 @@ components:
       schema:
         type: integer
       description: ポートID
-    ip_address:
-      in: path
-      name: ip_address
-      required: true
-      schema:
-        type: string
-        format: ipv4
-      description: IPアドレス
-    tag_id:
-      in: path
-      name: tag_id
-      required: true
-      schema:
-        type: integer
-      description: タグID
-    notice_id:
-      in: path
-      name: notice_id
-      required: true
-      schema:
-        type: integer
-      description: 通知ID
-    vnc_session_id:
-      in: path
-      name: vnc_session_id
-      required: true
-      description: セッションID
-      schema:
-        type: integer
-    zone_id:
-      in: path
-      name: zone_id
-      required: true
-      description: ネットワークゾーンID
-      schema:
-        type: integer
-    plan_id:
-      in: path
-      name: plan_id
-      required: true
-      schema:
-        type: integer
-      description: プランID
-    estimate_id:
-      in: path
-      name: estimate_id
-      required: true
-      schema:
-        type: string
-        format: uuid
-      description: 見積もりID
-    task_id:
-      in: path
-      name: task_id
-      required: true
-      schema:
-        type: integer
-      description: タスクID
-  requestBodies:
-    tag:
-      required: true
-      content:
-        application/json:
-          schema:
-            type: object
-            required:
-              - label
-            properties:
-              label:
-                type: string
-                example: タグ入力例
-                maxLength: 50
-              color:
-                type: string
-                description: 表示色
-                nullable: true
-                default: null
-                example: ffffff
-                minLength: 6
-                maxLength: 6
-                pattern: '^[0-9a-fA-F]+$'
+#    ip_address:
+#      in: path
+#      name: ip_address
+#      required: true
+#      schema:
+#        type: string
+#        format: ipv4
+#      description: IPアドレス
+#    tag_id:
+#      in: path
+#      name: tag_id
+#      required: true
+#      schema:
+#        type: integer
+#      description: タグID
+#    notice_id:
+#      in: path
+#      name: notice_id
+#      required: true
+#      schema:
+#        type: integer
+#      description: 通知ID
+#    vnc_session_id:
+#      in: path
+#      name: vnc_session_id
+#      required: true
+#      description: セッションID
+#      schema:
+#        type: integer
+#    zone_id:
+#      in: path
+#      name: zone_id
+#      required: true
+#      description: ネットワークゾーンID
+#      schema:
+#        type: integer
+#    plan_id:
+#      in: path
+#      name: plan_id
+#      required: true
+#      schema:
+#        type: integer
+#      description: プランID
+#    estimate_id:
+#      in: path
+#      name: estimate_id
+#      required: true
+#      schema:
+#        type: string
+#        format: uuid
+#      description: 見積もりID
+#    task_id:
+#      in: path
+#      name: task_id
+#      required: true
+#      schema:
+#        type: integer
+#      description: タスクID
+#  requestBodies:
+#    tag:
+#      required: true
+#      content:
+#        application/json:
+#          schema:
+#            type: object
+#            required:
+#              - label
+#            properties:
+#              label:
+#                type: string
+#                example: タグ入力例
+#                maxLength: 50
+#              color:
+#                type: string
+#                description: 表示色
+#                nullable: true
+#                default: null
+#                example: ffffff
+#                minLength: 6
+#                maxLength: 6
+#                pattern: '^[0-9a-fA-F]+$'
   schemas:
     password_input:
       type: string
@@ -1622,28 +1622,28 @@ components:
           type: integer
           description: HTTPステータスコード
           example: 429
-    problem_details_500:
-      type: object
-      properties:
-        type:
-          type: string
-          format: uri
-          example: 'about:blank'
-        title:
-          type: string
-          enum:
-            - server_error
-          description: |-
-            エラー内容を示す簡潔な識別子
-
-            * `server_error` - 予期せぬエラー
-        detail:
-          type: string
-          description: 人間のためのエラーメッセージ
-        status:
-          type: integer
-          description: HTTPステータスコード
-          example: 500
+#    problem_details_500:
+#      type: object
+#      properties:
+#        type:
+#          type: string
+#          format: uri
+#          example: 'about:blank'
+#        title:
+#          type: string
+#          enum:
+#            - server_error
+#          description: |-
+#            エラー内容を示す簡潔な識別子
+#
+#            * `server_error` - 予期せぬエラー
+#        detail:
+#          type: string
+#          description: 人間のためのエラーメッセージ
+#        status:
+#          type: integer
+#          description: HTTPステータスコード
+#          example: 500
     problem_details_503:
       type: object
       properties:
