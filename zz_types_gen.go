@@ -382,7 +382,7 @@ type InterfacePort struct {
 
 	// ローカル側の帯域幅(Mbps)
 	// ボンディングされている場合は合計値
-	LocalBandwidthMbps *string `json:"local_bandwidth_mbps"`
+	LocalBandwidthMbps *int `json:"local_bandwidth_mbps"`
 
 	// 動作モード(初期化後の未設定時は`null`)
 	Mode *InterfacePortMode `json:"mode"`
@@ -799,7 +799,7 @@ type Server struct {
 	Service *ServiceQuiet `json:"service,omitempty"`
 	Spec    *struct {
 		// CPUクロック数(GHz)
-		CpuClockSpeed *string `json:"cpu_clock_speed,omitempty"`
+		CpuClockSpeed *float32 `json:"cpu_clock_speed,omitempty"`
 
 		// 総CPUコア数
 		CpuCoreCount *int `json:"cpu_core_count,omitempty"`
@@ -830,7 +830,7 @@ type Server struct {
 			BusType *ServerSpecStoragesBusType `json:"bus_type,omitempty"`
 
 			// ストレージ構成物理デバイス数
-			DeviceCount *string `json:"device_count,omitempty"`
+			DeviceCount *int `json:"device_count,omitempty"`
 
 			// ストレージ記録方式
 			//
