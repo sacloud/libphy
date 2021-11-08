@@ -1474,8 +1474,7 @@ components:
       example: passw0rd
       minLength: 8
       maxLength: 32
-      pattern: |
-        [0-9a-zA-Z!"#$%&'()*+,\-./:;<=>?@[\]^_`{|}~]+
+      pattern: ^[0-9a-zA-Z!"#$%&'()*+,\-./:;<=>?@[\]^_`{|}~]+$
       description: |-
         英数字と記号の組み合わせ
         1文字以上のアルファベットと1文字以上の数字が必須
@@ -1719,9 +1718,10 @@ components:
               type: integer
               example: 8
             cpu_clock_speed:
-              type: string
+              type: number
+              format: float
               description: CPUクロック数(GHz)
-              example: '2.1'
+              example: 2.1
             memory_size:
               type: integer
               description: 総メモリ数(GB)
@@ -1771,7 +1771,7 @@ components:
                       * `ssd` - SSD
                       * `flash_memory` - Flash Memory(不揮発性メモリ)
                   device_count:
-                    type: string
+                    type: integer
                     description: ストレージ構成物理デバイス数
                     example: 2
             total_storage_device_count:
@@ -1934,7 +1934,7 @@ components:
           example: 100
           nullable: true
         local_bandwidth_mbps:
-          type: string
+          type: integer
           description: |-
             ローカル側の帯域幅(Mbps)
             ボンディングされている場合は合計値
@@ -2037,7 +2037,7 @@ components:
               type: string
               format: ipv4
               description: ブロードキャストアドレス
-              example: 192.0.239
+              example: 192.0.2.239
             special_use_addresses:
               type: array
               description: 特別な用途で割り当て済みのIPアドレスのリスト
