@@ -29,6 +29,7 @@ testacc:
 
 .PHONY: tools
 tools:
+	npm install -g @apidevtools/swagger-cli
 	go install golang.org/x/tools/cmd/goimports@latest
 	go install golang.org/x/tools/cmd/stringer@latest
 	go install github.com/sacloud/addlicense@latest
@@ -39,15 +40,19 @@ tools:
 .PHONY: clean
 clean:
 	find . -type f -name "*_gen.go" -delete
+	rm definitions/swagger.yaml
 
 .PHONY: gen
 gen: _gen fmt goimports set-license
 
 .PHONY: _gen
-_gen:
+_gen: definitions/swagger.yaml
 	oapi-codegen -generate=types -package phy -o types_gen.go definitions/swagger.json
 	oapi-codegen -generate=client -package phy -o client_gen.go definitions/swagger.json
 	go generate ./...
+
+definitions/swagger.yaml: definitions/swagger.json
+	swagger-cli bundle definitions/swagger.json -o definitions/swagger.yaml --type yaml
 
 .PHONY: goimports
 goimports: fmt
