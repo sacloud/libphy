@@ -73,4 +73,4 @@ lint-go:
 	golangci-lint run ./...
 
 lint-def:
-	docker run -it --rm -v $$PWD:$$PWD -w $$PWD stoplight/spectral:latest lint definitions/swagger.yaml
+	docker run --rm -v $$PWD:$$PWD -w $$PWD stoplight/spectral:latest lint definitions/swagger.yaml
