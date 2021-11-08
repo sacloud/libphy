@@ -375,79 +375,7 @@ paths:
                 type: object
                 properties:
                   raid_status:
-                    type: object
-                    properties:
-                      overall_status:
-                        type: string
-                        nullable: true
-                        enum:
-                          - ok
-                          - rebuilding
-                          - degraded
-                          - failed
-                        description: |-
-                          総合的なRAID論理ボリューム状態
-
-                          * `ok` - 全てのRAID論理ボリュームと物理デバイスが正常
-                          * `rebuilding` - 再構築中のRAID論理ボリュームが1つ以上ある(物理デバイスは全て正常、冗長性は低下している)
-                          * `degraded` - 異常検出した物理デバイスが1つ以上ある(論理ボリュームは利用可能、冗長性は低下している)
-                          * `failed` - 故障したRAID論理ボリュームが1つ以上ある(2つ以上の物理デバイスに異常があるRAID5など)
-                          * `null` - RAID論理ボリュームがない
-
-                          `failed > degraded > rebuilding > ok` の順でより深刻なものが選択される
-                      monitored:
-                        type: string
-                        format: date-time
-                        description: RAID状態を取得した時刻
-                      logical_volumes:
-                        type: array
-                        description: 作成済みRAID論理ボリュームのリスト
-                        items:
-                          type: object
-                          properties:
-                            volume_id:
-                              type: string
-                              description: このサーバーのRAID論理ボリュームの一意な識別子
-                            status:
-                              type: string
-                              enum:
-                                - ok
-                                - rebuilding
-                                - degraded
-                                - failed
-                              description: このRAID論理ボリュームの状態
-                            raid_level:
-                              type: string
-                              description: RAIDレベル
-                            physical_device_ids:
-                              type: array
-                              items:
-                                type: string
-                                description: この論理ボリューム内の認識済みデバイスの識別子
-                                example: '1'
-                      physical_devices:
-                        description: 認識済み物理ストレージデバイスのリスト
-                        type: array
-                        items:
-                          type: object
-                          properties:
-                            device_id:
-                              type: string
-                              description: サーバーの物理ストレージデバイスの一意な識別子
-                              example: '1'
-                            slot:
-                              type: integer
-                              description: 接続スロット番号
-                            status:
-                              type: string
-                              enum:
-                                - ok
-                                - failed
-                              description: |-
-                                この物理ストレージデバイスの状態
-
-                                * `ok` - 正常
-                                * `failed` - 異常を検知
+                    $ref: '#/components/schemas/raid_status'
         '401':
           $ref: '#/components/responses/generic_401'
         '404':
@@ -592,18 +520,7 @@ paths:
                 type: object
                 properties:
                   power_status:
-                    type: object
-                    properties:
-                      status:
-                        type: string
-                        enum:
-                          - 'on'
-                          - 'off'
-                        description: |-
-                          サーバーの電源状態
-
-                          * `on` - 起動
-                          * `off` - 停止
+                    $ref: '#/components/schemas/server_power_status'
         '401':
           $ref: '#/components/responses/generic_401'
         '404':
@@ -1624,6 +1541,22 @@ components:
               $ref: '#/components/schemas/invalid_parameter_detail'
           additionalProperties:
             $ref: '#/components/schemas/invalid_parameter_detail'
+    problem_details_401:
+      type: object
+      properties:
+        status:
+          type: string
+          description: HTTPステータスコード
+          example: 401 Unauthorized
+        error_code:
+          type: string
+          enum:
+            - unauthorized
+          description: エラー内容を示す簡潔な識別子
+        error_msg:
+          type: string
+          description: 人間のためのエラーメッセージ
+          example: error-unauthorized
     problem_details_404:
       type: object
       properties:
@@ -2413,6 +2346,94 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/tag'
+    server_power_status:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - 'on'
+            - 'off'
+          description: |-
+            サーバーの電源状態
+
+            * `on` - 起動
+            * `off` - 停止
+    raid_status:
+      type: object
+      properties:
+        overall_status:
+          type: string
+          nullable: true
+          enum:
+            - ok
+            - rebuilding
+            - degraded
+            - failed
+          description: |-
+            総合的なRAID論理ボリューム状態
+
+            * `ok` - 全てのRAID論理ボリュームと物理デバイスが正常
+            * `rebuilding` - 再構築中のRAID論理ボリュームが1つ以上ある(物理デバイスは全て正常、冗長性は低下している)
+            * `degraded` - 異常検出した物理デバイスが1つ以上ある(論理ボリュームは利用可能、冗長性は低下している)
+            * `failed` - 故障したRAID論理ボリュームが1つ以上ある(2つ以上の物理デバイスに異常があるRAID5など)
+            * `null` - RAID論理ボリュームがない
+
+            `failed > degraded > rebuilding > ok` の順でより深刻なものが選択される
+        monitored:
+          type: string
+          format: date-time
+          description: RAID状態を取得した時刻
+        logical_volumes:
+          type: array
+          description: 作成済みRAID論理ボリュームのリスト
+          items:
+            type: object
+            properties:
+              volume_id:
+                type: string
+                description: このサーバーのRAID論理ボリュームの一意な識別子
+              status:
+                type: string
+                enum:
+                  - ok
+                  - rebuilding
+                  - degraded
+                  - failed
+                description: このRAID論理ボリュームの状態
+              raid_level:
+                type: string
+                description: RAIDレベル
+              physical_device_ids:
+                type: array
+                items:
+                  type: string
+                  description: この論理ボリューム内の認識済みデバイスの識別子
+                  example: '1'
+        physical_devices:
+          description: 認識済み物理ストレージデバイスのリスト
+          type: array
+          items:
+            type: object
+            properties:
+              device_id:
+                type: string
+                description: サーバーの物理ストレージデバイスの一意な識別子
+                example: '1'
+              slot:
+                type: integer
+                description: 接続スロット番号
+              status:
+                type: string
+                enum:
+                  - ok
+                  - failed
+                description: |-
+                  この物理ストレージデバイスの状態
+
+                  * `ok` - 正常
+                  * `failed` - 異常を検知
+
   responses:
     generic_400:
       description: 入力値検証エラー
@@ -2425,21 +2446,7 @@ components:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              status:
-                type: string
-                description: HTTPステータスコード
-                example: 401 Unauthorized
-              error_code:
-                type: string
-                enum:
-                  - unauthorized
-                description: エラー内容を示す簡潔な識別子
-              error_msg:
-                type: string
-                description: 人間のためのエラーメッセージ
-                example: error-unauthorized
+            $ref: '#/components/schemas/problem_details_401'
     generic_429:
       description: リクエスト可能数に達している
       content:
