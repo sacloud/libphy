@@ -46,13 +46,13 @@ clean:
 gen: _gen fmt goimports set-license
 
 .PHONY: _gen
-_gen: definitions/swagger.yaml
-	oapi-codegen -generate=types -package phy -o types_gen.go definitions/swagger.json
-	oapi-codegen -generate=client -package phy -o client_gen.go definitions/swagger.json
+_gen: definitions/original-swagger.yaml
+	oapi-codegen -generate=types -package phy -o zz_types_gen.go definitions/swagger.yaml
+	oapi-codegen -generate=client -package phy -o zz_client_gen.go definitions/swagger.yaml
 	go generate ./...
 
-definitions/swagger.yaml: definitions/swagger.json
-	swagger-cli bundle definitions/swagger.json -o definitions/swagger.yaml --type yaml
+definitions/original-swagger.yaml: definitions/original-swagger.json
+	swagger-cli bundle definitions/original-swagger.json -o definitions/original-swagger.yaml --type yaml
 
 .PHONY: goimports
 goimports: fmt
