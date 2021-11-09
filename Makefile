@@ -40,19 +40,23 @@ tools:
 .PHONY: clean
 clean:
 	find . -type f -name "*_gen.go" -delete
-	rm definitions/swagger.yaml
+	rm definitions/original-swagger.yaml
+	rm definitions/swagger.json
 
 .PHONY: gen
 gen: _gen fmt goimports set-license
 
 .PHONY: _gen
-_gen: definitions/original-swagger.yaml
-	oapi-codegen -generate=types -package phy -o zz_types_gen.go definitions/swagger.yaml
-	oapi-codegen -generate=client -package phy -o zz_client_gen.go definitions/swagger.yaml
+_gen: definitions/original-swagger.yaml definitions/swagger.json
+	oapi-codegen -generate=types -package openapi -o openapi/zz_types_gen.go definitions/swagger.yaml
+	oapi-codegen -generate=client -package openapi -o openapi/zz_client_gen.go definitions/swagger.yaml
 	go generate ./...
 
 definitions/original-swagger.yaml: definitions/original-swagger.json
 	swagger-cli bundle definitions/original-swagger.json -o definitions/original-swagger.yaml --type yaml
+
+definitions/swagger.json: definitions/swagger.yaml
+	swagger-cli bundle definitions/swagger.yaml -o definitions/swagger.json --type json
 
 .PHONY: goimports
 goimports: fmt
