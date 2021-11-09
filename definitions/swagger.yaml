@@ -301,14 +301,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  meta:
-                    $ref: '#/components/schemas/paginate_meta'
-                  servers:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/server'
+                $ref: '#/components/schemas/get_servers_result'
         '400':
           $ref: '#/components/responses/generic_400'
         '401':
@@ -1682,6 +1675,15 @@ components:
           description: タグの色
           example: ffffff
           nullable: true
+    get_servers_result:
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/paginate_meta'
+        servers:
+          type: array
+          items:
+            $ref: '#/components/schemas/server'
     server:
       type: object
       properties:

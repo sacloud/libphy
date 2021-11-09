@@ -12,15 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package openapi
+package prototype
 
 import (
 	"context"
 	"os"
 	"testing"
+
+	"github.com/sacloud/libphy/openapi"
 )
 
-func TestDummy(t *testing.T) {
+func TestServerOp_List(t *testing.T) {
 	if os.Getenv("TESTACC") == "" {
 		t.Skip("required: environment variable 'TESTACC'")
 	}
@@ -31,21 +33,12 @@ func TestDummy(t *testing.T) {
 		t.Skip("required: environment variable 'SAKURACLOUD_ACCESS_TOKEN' and 'SAKURACLOUD_ACCESS_TOKEN_SECRET'")
 	}
 
-	client, err := NewClientWithResponses("https://secure.sakura.ad.jp/cloud/api/dedicated-phy/1.0", func(c *Client) error {
-		c.RequestEditors = []RequestEditorFn{
-			PhyAuthInterceptor(token, secret),
-			PhyRequestInterceptor(),
-		}
-		return nil
-	})
+	client := &Client{AccessToken: token, AccessTokenSecret: secret}
+	serverOp := NewServerAPI(client)
+
+	results, err := serverOp.List(context.Background(), &openapi.GetServersParams{})
 	if err != nil {
 		t.Fatal(err)
 	}
-
-	servers, err := client.GetServersWithResponse(context.Background(), &GetServersParams{})
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	t.Log(string(servers.Body))
+	t.Log(results)
 }

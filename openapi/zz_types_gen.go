@@ -346,6 +346,12 @@ type DedicatedSubnetConfigStatus string
 // * `gateway_real` - ゲートウェイ機器実機
 type DedicatedSubnetIpv6SpecialUseAddressesType string
 
+// GetServersResult defines model for get_servers_result.
+type GetServersResult struct {
+	Meta    *PaginateMeta `json:"meta,omitempty"`
+	Servers *[]Server     `json:"servers,omitempty"`
+}
+
 // ネットワークインターフェースの接続ポート情報
 type InterfacePort struct {
 	// ポート有効状態(通信が有効になっている場合 `true`)

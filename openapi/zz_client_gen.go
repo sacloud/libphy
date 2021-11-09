@@ -2135,14 +2135,11 @@ func (r GetPrivateNetworksPrivateNetworkIdResponse) StatusCode() int {
 type GetServersResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *struct {
-		Meta    *PaginateMeta `json:"meta,omitempty"`
-		Servers *[]Server     `json:"servers,omitempty"`
-	}
-	JSON400 *ProblemDetails400
-	JSON401 *ProblemDetails401
-	JSON404 *ProblemDetails404
-	JSON429 *ProblemDetails429
+	JSON200      *GetServersResult
+	JSON400      *ProblemDetails400
+	JSON401      *ProblemDetails401
+	JSON404      *ProblemDetails404
+	JSON429      *ProblemDetails429
 }
 
 // Status returns HTTPResponse.Status
@@ -3116,10 +3113,7 @@ func ParseGetServersResponse(rsp *http.Response) (*GetServersResponse, error) {
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest struct {
-			Meta    *PaginateMeta `json:"meta,omitempty"`
-			Servers *[]Server     `json:"servers,omitempty"`
-		}
+		var dest GetServersResult
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
