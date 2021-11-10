@@ -48,8 +48,8 @@ gen: _gen fmt goimports set-license
 
 .PHONY: _gen
 _gen: definitions/original-swagger.yaml definitions/swagger.json
-	oapi-codegen -generate=types -package openapi -o openapi/zz_types_gen.go definitions/swagger.yaml
-	oapi-codegen -generate=client -package openapi -o openapi/zz_client_gen.go definitions/swagger.yaml
+	oapi-codegen -config=codegen/client-config.yaml definitions/swagger.yaml
+	oapi-codegen -config=codegen/types-config.yaml definitions/swagger.yaml
 	go generate ./...
 
 definitions/original-swagger.yaml: definitions/original-swagger.json

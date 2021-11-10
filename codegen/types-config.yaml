@@ -1,0 +1,4 @@
+output: openapi/zz_types_gen.go
+generate:
+  - types
+package: openapi
