@@ -2049,6 +2049,14 @@ func (r GetDedicatedSubnetsResponse) StatusCode() int {
 	return 0
 }
 
+// Result JSON200の結果、もしくは発生したエラーのいずれかを返す
+func (r GetDedicatedSubnetsResponse) Result() (*struct {
+	DedicatedSubnets *[]DedicatedSubnet `json:"dedicated_subnets,omitempty"`
+	Meta             *PaginateMeta      `json:"meta,omitempty"`
+}, error) {
+	return r.JSON200, eCoalesce(r.JSON400, r.JSON401, r.JSON429)
+}
+
 type GetDedicatedSubnetsDedicatedSubnetIdResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -2075,6 +2083,13 @@ func (r GetDedicatedSubnetsDedicatedSubnetIdResponse) StatusCode() int {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
+}
+
+// Result JSON200の結果、もしくは発生したエラーのいずれかを返す
+func (r GetDedicatedSubnetsDedicatedSubnetIdResponse) Result() (*struct {
+	DedicatedSubnet *DedicatedSubnet `json:"dedicated_subnet,omitempty"`
+}, error) {
+	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSON429, r.JSON503)
 }
 
 type GetPrivateNetworksResponse struct {
@@ -2105,6 +2120,14 @@ func (r GetPrivateNetworksResponse) StatusCode() int {
 	return 0
 }
 
+// Result JSON200の結果、もしくは発生したエラーのいずれかを返す
+func (r GetPrivateNetworksResponse) Result() (*struct {
+	Meta            *PaginateMeta     `json:"meta,omitempty"`
+	PrivateNetworks *[]PrivateNetwork `json:"private_networks,omitempty"`
+}, error) {
+	return r.JSON200, eCoalesce(r.JSON400, r.JSON401, r.JSON429)
+}
+
 type GetPrivateNetworksPrivateNetworkIdResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -2130,6 +2153,13 @@ func (r GetPrivateNetworksPrivateNetworkIdResponse) StatusCode() int {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
+}
+
+// Result JSON200の結果、もしくは発生したエラーのいずれかを返す
+func (r GetPrivateNetworksPrivateNetworkIdResponse) Result() (*struct {
+	PrivateNetwork *PrivateNetwork `json:"private_network,omitempty"`
+}, error) {
+	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSON429)
 }
 
 type GetServersResponse struct {
@@ -2158,6 +2188,11 @@ func (r GetServersResponse) StatusCode() int {
 	return 0
 }
 
+// Result JSON200の結果、もしくは発生したエラーのいずれかを返す
+func (r GetServersResponse) Result() (*GetServersResult, error) {
+	return r.JSON200, eCoalesce(r.JSON400, r.JSON401, r.JSON404, r.JSON429)
+}
+
 type GetServersServerIdResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -2183,6 +2218,13 @@ func (r GetServersServerIdResponse) StatusCode() int {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
+}
+
+// Result JSON200の結果、もしくは発生したエラーのいずれかを返す
+func (r GetServersServerIdResponse) Result() (*struct {
+	Server *Server `json:"server,omitempty"`
+}, error) {
+	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSON429)
 }
 
 type GetServersServerIdOsImagesResponse struct {
@@ -2229,6 +2271,30 @@ func (r GetServersServerIdOsImagesResponse) StatusCode() int {
 	return 0
 }
 
+// Result JSON200の結果、もしくは発生したエラーのいずれかを返す
+func (r GetServersServerIdOsImagesResponse) Result() (*struct {
+	OsImages *[]struct {
+		// パーティション手動構成が可能か
+		// (パーティション構成の指定が可能な場合に `true`)
+		ManualPartition *bool `json:"manual_partition,omitempty"`
+
+		// OSの名称
+		Name *string `json:"name,omitempty"`
+
+		// インストール実行時に指定するOSイメージ名
+		OsImageId *string `json:"os_image_id,omitempty"`
+
+		// インストール時にパスワード指定が必要か
+		// (パスワード指定が必要な場合 `true`)
+		RequirePassword *bool `json:"require_password,omitempty"`
+
+		// OSインストール時に作成される管理ユーザー名
+		SuperuserName *string `json:"superuser_name,omitempty"`
+	} `json:"os_images,omitempty"`
+}, error) {
+	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSON429)
+}
+
 type PostServersServerIdOsInstallResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -2253,6 +2319,11 @@ func (r PostServersServerIdOsInstallResponse) StatusCode() int {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
+}
+
+// Result JSON200の結果、もしくは発生したエラーのいずれかを返す
+func (r PostServersServerIdOsInstallResponse) Result() error {
+	return eCoalesce(r.JSON400, r.JSON401, r.JSON404, r.JSON409, r.JSON429)
 }
 
 type GetServersServerIdPortChannelsPortChannelIdResponse struct {
@@ -2283,6 +2354,14 @@ func (r GetServersServerIdPortChannelsPortChannelIdResponse) StatusCode() int {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
+}
+
+// Result JSON200の結果、もしくは発生したエラーのいずれかを返す
+func (r GetServersServerIdPortChannelsPortChannelIdResponse) Result() (*struct {
+	// ネットワークインターフェース ポートチャネル情報
+	PortChannel *PortChannel `json:"port_channel,omitempty"`
+}, error) {
+	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSON409, r.JSON429, r.JSON503)
 }
 
 type PostServersServerIdPortChannelsPortChannelIdConfigureBondingResponse struct {
@@ -2318,6 +2397,13 @@ func (r PostServersServerIdPortChannelsPortChannelIdConfigureBondingResponse) St
 	return 0
 }
 
+// Result JSON200の結果、もしくは発生したエラーのいずれかを返す
+func (r PostServersServerIdPortChannelsPortChannelIdConfigureBondingResponse) Result() (*struct {
+	PortChannel *[]PortChannel `json:"port_channel,omitempty"`
+}, error) {
+	return r.JSON200, eCoalesce(r.JSON400, r.JSON401, r.JSON404, r.JSON409, r.JSON429)
+}
+
 type GetServersServerIdPortsPortIdResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -2347,6 +2433,14 @@ func (r GetServersServerIdPortsPortIdResponse) StatusCode() int {
 	return 0
 }
 
+// Result JSON200の結果、もしくは発生したエラーのいずれかを返す
+func (r GetServersServerIdPortsPortIdResponse) Result() (*struct {
+	// ネットワークインターフェースの接続ポート情報
+	Port *InterfacePort `json:"port,omitempty"`
+}, error) {
+	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSON429, r.JSON503)
+}
+
 type PatchServersServerIdPortsPortIdResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -2373,6 +2467,13 @@ func (r PatchServersServerIdPortsPortIdResponse) StatusCode() int {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
+}
+
+// Result JSON200の結果、もしくは発生したエラーのいずれかを返す
+func (r PatchServersServerIdPortsPortIdResponse) Result() (*struct {
+	Port *[]InterfacePort `json:"port,omitempty"`
+}, error) {
+	return r.JSON200, eCoalesce(r.JSON400, r.JSON401, r.JSON404, r.JSON429)
 }
 
 type PostServersServerIdPortsPortIdAssignNetworkResponse struct {
@@ -2409,6 +2510,14 @@ func (r PostServersServerIdPortsPortIdAssignNetworkResponse) StatusCode() int {
 	return 0
 }
 
+// Result JSON200の結果、もしくは発生したエラーのいずれかを返す
+func (r PostServersServerIdPortsPortIdAssignNetworkResponse) Result() (*struct {
+	// ネットワークインターフェースの接続ポート情報
+	Port *InterfacePort `json:"port,omitempty"`
+}, error) {
+	return r.JSON200, eCoalesce(r.JSON400, r.JSON401, r.JSON404, r.JSON409, r.JSON429)
+}
+
 type PostServersServerIdPortsPortIdEnableResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -2437,6 +2546,14 @@ func (r PostServersServerIdPortsPortIdEnableResponse) StatusCode() int {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
+}
+
+// Result JSON200の結果、もしくは発生したエラーのいずれかを返す
+func (r PostServersServerIdPortsPortIdEnableResponse) Result() (*struct {
+	// ネットワークインターフェースの接続ポート情報
+	Port *InterfacePort `json:"port,omitempty"`
+}, error) {
+	return r.JSON200, eCoalesce(r.JSON400, r.JSON401, r.JSON404, r.JSON409, r.JSON429)
 }
 
 type GetServersServerIdPortsPortIdTrafficGraphResponse struct {
@@ -2484,6 +2601,31 @@ func (r GetServersServerIdPortsPortIdTrafficGraphResponse) StatusCode() int {
 	return 0
 }
 
+// Result JSON200の結果、もしくは発生したエラーのいずれかを返す
+func (r GetServersServerIdPortsPortIdTrafficGraphResponse) Result() (*struct {
+	TrafficGraph *struct {
+		// 受信方向トラフィック
+		Receive *[]struct {
+			// 取得時刻
+			Timestamp *time.Time `json:"timestamp,omitempty"`
+
+			// 1つ前のデータからの平均トラフィック(bps)
+			Value *int `json:"value,omitempty"`
+		} `json:"receive,omitempty"`
+
+		// 送信方向トラフィック
+		Transmit *[]struct {
+			// 取得時刻
+			Timestamp *time.Time `json:"timestamp,omitempty"`
+
+			// 1つ前のデータからの平均トラフィック(bps)
+			Value *int `json:"value,omitempty"`
+		} `json:"transmit,omitempty"`
+	} `json:"traffic_graph,omitempty"`
+}, error) {
+	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSON429)
+}
+
 type PostServersServerIdPowerControlResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -2508,6 +2650,11 @@ func (r PostServersServerIdPowerControlResponse) StatusCode() int {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
+}
+
+// Result JSON200の結果、もしくは発生したエラーのいずれかを返す
+func (r PostServersServerIdPowerControlResponse) Result() error {
+	return eCoalesce(r.JSON400, r.JSON401, r.JSON404, r.JSON429, r.JSON503)
 }
 
 type GetServersServerIdPowerStatusResponse struct {
@@ -2538,6 +2685,13 @@ func (r GetServersServerIdPowerStatusResponse) StatusCode() int {
 	return 0
 }
 
+// Result JSON200の結果、もしくは発生したエラーのいずれかを返す
+func (r GetServersServerIdPowerStatusResponse) Result() (*struct {
+	PowerStatus *ServerPowerStatus `json:"power_status,omitempty"`
+}, error) {
+	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSON429, r.JSON503)
+}
+
 type GetServersServerIdRaidStatusResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -2564,6 +2718,13 @@ func (r GetServersServerIdRaidStatusResponse) StatusCode() int {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
+}
+
+// Result JSON200の結果、もしくは発生したエラーのいずれかを返す
+func (r GetServersServerIdRaidStatusResponse) Result() (*struct {
+	RaidStatus *RaidStatus `json:"raid_status,omitempty"`
+}, error) {
+	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSON429, r.JSON503)
 }
 
 type GetServicesResponse struct {
@@ -2593,6 +2754,14 @@ func (r GetServicesResponse) StatusCode() int {
 	return 0
 }
 
+// Result JSON200の結果、もしくは発生したエラーのいずれかを返す
+func (r GetServicesResponse) Result() (*struct {
+	Meta     *PaginateMeta `json:"meta,omitempty"`
+	Services *[]Service    `json:"services,omitempty"`
+}, error) {
+	return r.JSON200, eCoalesce(r.JSON401, r.JSON429)
+}
+
 type GetServicesServiceIdResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -2618,6 +2787,13 @@ func (r GetServicesServiceIdResponse) StatusCode() int {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
+}
+
+// Result JSON200の結果、もしくは発生したエラーのいずれかを返す
+func (r GetServicesServiceIdResponse) Result() (*struct {
+	Service *Service `json:"service,omitempty"`
+}, error) {
+	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSON429)
 }
 
 type PatchServicesServiceIdResponse struct {
@@ -2646,6 +2822,13 @@ func (r PatchServicesServiceIdResponse) StatusCode() int {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
+}
+
+// Result JSON200の結果、もしくは発生したエラーのいずれかを返す
+func (r PatchServicesServiceIdResponse) Result() (*struct {
+	Service *Service `json:"service,omitempty"`
+}, error) {
+	return r.JSON200, eCoalesce(r.JSON400, r.JSON401, r.JSON404, r.JSON429)
 }
 
 // GetDedicatedSubnetsWithResponse request returning *GetDedicatedSubnetsResponse
