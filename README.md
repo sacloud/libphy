@@ -1,1 +1,1 @@
-# libphy
+# phy-go
