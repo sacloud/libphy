@@ -1,4 +1,4 @@
-# libphy
+# phy-go
 
 ## 概要
 
@@ -10,7 +10,7 @@ PHYのAPI定義はOpenAPI 3.0仕様により文書化されている。
 
 API定義: [https://manual.sakura.ad.jp/ds/phy/api/api-spec.html](https://manual.sakura.ad.jp/ds/phy/api/api-spec.html)
 
-これを元にGo向けのコード生成を行うツールはいくつかあり、libphyでは [oapi-codegen](https://github.com/deepmap/oapi-codegen) を利用している。
+これを元にGo向けのコード生成を行うツールはいくつかあり、phy-goでは [oapi-codegen](https://github.com/deepmap/oapi-codegen) を利用している。
 
 生成されたコードはそのまま利用可能ではあるが、トランスポートレベルの詳細を含んでいたり、高いカスタマイズ性の確保のためにやや冗長な記述が必要となっており、そのままではアプリケーションに組み込みづらい。
 
@@ -47,7 +47,7 @@ API定義: [https://manual.sakura.ad.jp/ds/phy/api/api-spec.html](https://manual
 公開されているAPI定義の記述誤りやコード生成ツールの制約があり、API定義を手作業で修正する必要がある。  
 また、API定義が網羅的に書かれているわけではなく、例えば値のバリデーションルールについて厳密に記載されていない。  
 
-このためある程度のロジックをlibphy側で実装する必要がある。
+このためある程度のロジックをphy-go側で実装する必要がある。
 
 ## 設計/実装
 
@@ -78,7 +78,7 @@ serviceインターフェースを用意することでUsacloudからは処理�
   - [https://github.com/deepmap/oapi-codegen](https://github.com/deepmap/oapi-codegen)
   - [https://github.com/OpenAPITools/openapi-generator](https://github.com/OpenAPITools/openapi-generator)
 
-参考: https://github.com/sacloud/libphy/issues/5
+参考: https://github.com/sacloud/phy-go/issues/5
 
 ### パッケージ構造
 
@@ -101,7 +101,7 @@ serviceインターフェースを用意することでUsacloudからは処理�
 
 ## レポジトリ
 
- - GitHub: [https://github.com/sacloud/libphy](https://github.com/sacloud/libphy)
+ - GitHub: [https://github.com/sacloud/phy-go](https://github.com/sacloud/phy-go)
 
 ## メンバー
 

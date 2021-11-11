@@ -1,4 +1,4 @@
-module github.com/sacloud/libphy
+module github.com/sacloud/phy-go
 
 go 1.16
 
