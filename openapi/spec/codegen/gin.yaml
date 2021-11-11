@@ -1,0 +1,5 @@
+output: openapi/zz_server_gen.go
+templates: openapi/spec/codegen/templates/gin
+generate:
+  - gin
+package: openapi
