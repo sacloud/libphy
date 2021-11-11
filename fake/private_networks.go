@@ -1,0 +1,72 @@
+// Copyright 2021 The phy-go authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package fake
+
+import (
+	"fmt"
+
+	"github.com/getlantern/deepcopy"
+	"github.com/sacloud/phy-go/openapi"
+)
+
+// ListPrivateNetworks ローカルネットワーク 一覧
+// (GET /private_networks/)
+func (engine *Engine) ListPrivateNetworks(params openapi.ListPrivateNetworksParams) (*openapi.PrivateNetworks, error) {
+	defer engine.rLock()()
+
+	// TODO 検索条件の処理を実装
+
+	return &openapi.PrivateNetworks{
+		Meta: openapi.PaginateMeta{
+			Count: len(engine.PrivateNetworks),
+		},
+		PrivateNetworks: engine.privateNetworks(),
+	}, nil
+}
+
+// ReadPrivateNetwork ローカルネットワーク 詳細
+// (GET /private_networks/{private_network_id}/)
+func (engine *Engine) ReadPrivateNetwork(privateNetworkId openapi.PrivateNetworkId) (*openapi.PrivateNetwork, error) {
+	defer engine.rLock()()
+
+	pn := engine.getPrivateNetworkById(privateNetworkId)
+	if pn != nil {
+		// パッケージ外に返す時はディープコピーしたものを返す
+		var network openapi.PrivateNetwork
+		if err := deepcopy.Copy(&network, pn); err != nil {
+			return nil, err
+		}
+		return &network, nil
+	}
+	return nil, fmt.Errorf("private network %q not found", privateNetworkId)
+}
+
+// privateNetworks []*openapi.PrivateNetworkから[]openapi.PrivateNetworkに変換して返す
+func (engine *Engine) privateNetworks() []openapi.PrivateNetwork {
+	var results []openapi.PrivateNetwork
+	for _, p := range engine.PrivateNetworks {
+		results = append(results, *p)
+	}
+	return results
+}
+
+func (engine *Engine) getPrivateNetworkById(privateNetworkId openapi.PrivateNetworkId) *openapi.PrivateNetwork {
+	for _, p := range engine.PrivateNetworks {
+		if p.PrivateNetworkId == string(privateNetworkId) {
+			return p
+		}
+	}
+	return nil
+}

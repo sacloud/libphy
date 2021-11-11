@@ -12,9 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package fake
+package server
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/sacloud/phy-go/openapi"
 )
@@ -22,11 +24,21 @@ import (
 // ListPrivateNetworks ローカルネットワーク 一覧
 // (GET /private_networks/)
 func (s *Server) ListPrivateNetworks(c *gin.Context, params openapi.ListPrivateNetworksParams) {
-
+	networks, err := s.Engine.ListPrivateNetworks(params)
+	if err != nil {
+		s.handleError(c, err)
+		return
+	}
+	c.JSON(http.StatusOK, networks)
 }
 
 // ReadPrivateNetwork ローカルネットワーク 詳細
 // (GET /private_networks/{private_network_id}/)
 func (s *Server) ReadPrivateNetwork(c *gin.Context, privateNetworkId openapi.PrivateNetworkId) {
-
+	network, err := s.Engine.ReadPrivateNetwork(privateNetworkId)
+	if err != nil {
+		s.handleError(c, err)
+		return
+	}
+	c.JSON(http.StatusOK, network)
 }

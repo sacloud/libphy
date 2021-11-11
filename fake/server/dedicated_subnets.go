@@ -12,9 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package fake
+package server
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/sacloud/phy-go/openapi"
 )
@@ -22,11 +24,21 @@ import (
 // ListDedicatedSubnets 専用グローバルネットワーク 一覧
 // (GET /dedicated_subnets/)
 func (s *Server) ListDedicatedSubnets(c *gin.Context, params openapi.ListDedicatedSubnetsParams) {
-
+	subnets, err := s.Engine.ListDedicatedSubnets(params)
+	if err != nil {
+		s.handleError(c, err)
+		return
+	}
+	c.JSON(http.StatusOK, subnets)
 }
 
 // ReadDedicatedSubnet 専用グローバルネットワーク
 // (GET /dedicated_subnets/{dedicated_subnet_id}/)
 func (s *Server) ReadDedicatedSubnet(c *gin.Context, dedicatedSubnetId openapi.DedicatedSubnetId, params openapi.ReadDedicatedSubnetParams) {
-
+	subnet, err := s.Engine.ReadDedicatedSubnet(dedicatedSubnetId, params)
+	if err != nil {
+		s.handleError(c, err)
+		return
+	}
+	c.JSON(http.StatusOK, subnet)
 }
