@@ -40,23 +40,23 @@ tools:
 .PHONY: clean
 clean:
 	find . -type f -name "*_gen.go" -delete
-	rm definitions/original-swagger.yaml
-	rm definitions/swagger.json
+	rm openapi/spec/original-swagger.yaml
+	rm openapi/spec/swagger.json
 
 .PHONY: gen
 gen: _gen fmt goimports set-license
 
 .PHONY: _gen
-_gen: definitions/original-swagger.yaml definitions/swagger.json
-	oapi-codegen -generate=types -package openapi -o openapi/zz_types_gen.go definitions/swagger.yaml
-	oapi-codegen -generate=client -package openapi -o openapi/zz_client_gen.go definitions/swagger.yaml
+_gen: openapi/spec/original-swagger.yaml openapi/spec/swagger.json
+	oapi-codegen -generate=types -package openapi -o openapi/zz_types_gen.go openapi/spec/swagger.yaml
+	oapi-codegen -generate=client -package openapi -o openapi/zz_client_gen.go openapi/spec/swagger.yaml
 	go generate ./...
 
-definitions/original-swagger.yaml: definitions/original-swagger.json
-	swagger-cli bundle definitions/original-swagger.json -o definitions/original-swagger.yaml --type yaml
+openapi/spec/original-swagger.yaml: openapi/spec/original-swagger.json
+	swagger-cli bundle openapi/spec/original-swagger.json -o openapi/spec/original-swagger.yaml --type yaml
 
-definitions/swagger.json: definitions/swagger.yaml
-	swagger-cli bundle definitions/swagger.yaml -o definitions/swagger.json --type json
+openapi/spec/swagger.json: openapi/spec/swagger.yaml
+	swagger-cli bundle openapi/spec/swagger.yaml -o openapi/spec/swagger.json --type json
 
 .PHONY: goimports
 goimports: fmt
@@ -77,4 +77,4 @@ lint-go:
 	golangci-lint run ./...
 
 lint-def:
-	docker run --rm -v $$PWD:$$PWD -w $$PWD stoplight/spectral:latest lint -F warn definitions/swagger.yaml
+	docker run --rm -v $$PWD:$$PWD -w $$PWD stoplight/spectral:latest lint -F warn openapi/spec/swagger.yaml
