@@ -80,6 +80,25 @@ serviceインターフェースを用意することでUsacloudからは処理�
 
 参考: https://github.com/sacloud/libphy/issues/5
 
+### パッケージ構造
+
+- 実装するコードはプロジェクトルート直下に
+- 定義ファイル類はopenapiディレクトリ配下に
+- 自動生成されるコードはopenapiディレクトリ配下に
+- その他機能が増えるようであればプロジェクトルート配下にディレクトリを追加していく
+
+```
+.
+├── xxx.go       # プロジェクト直下に各種実装コードを配置
+├── go.mod
+├── go.sum
+└── openapi    # openapi配下に定義ファイルや自動生成されたコードを配置
+    ├── spec
+    │   └── swagger.yaml
+    ├── zz_client_gen.go
+    └── zz_types_gen.go
+```
+
 ## レポジトリ
 
  - GitHub: [https://github.com/sacloud/libphy](https://github.com/sacloud/libphy)
