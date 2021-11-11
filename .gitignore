@@ -1,3 +1,3 @@
 .env
-definitions/original-swagger.yaml
-definitions/swagger.json
+openapi/spec/original-swagger.yaml
+openapi/spec/swagger.json
