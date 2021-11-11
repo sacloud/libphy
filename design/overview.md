@@ -49,25 +49,29 @@ API定義: [https://manual.sakura.ad.jp/ds/phy/api/api-spec.html](https://manual
 
 このためある程度のロジックをlibphy側で実装する必要がある。
 
-## 他のプロダクトとの連携
+## 設計/実装
 
-さくらのクラウド向けのAPIライブラリ [sacloud/libsacloud](https://github.com/sacloud/libsacloud) とはトランスポートレイヤでの処理などを共通化したい。
+### sacloud/go-httpによるトランスポートレイヤでの機能の共通化
 
-例:
-  - リトライ/バックオフ
-  - 認証情報(APIキー)の取り扱い
-  - ロギング(OpenTelemetry対応)
+さくらのクラウド向けのAPIライブラリ [sacloud/libsacloud](https://github.com/sacloud/libsacloud) からトランスポートレイヤでの処理を切り出した [sacloud/go-http](https://github.com/sacloud/go-http) を利用する。  
+これにより以下のような機能がlibsacloudと共通化される。
 
-また、CLIである [Usacloud](https://github.com/sacloud/usacloud) で利用するために、`service`インターフェースも提供したい。
+- リトライ/バックオフ
+- 認証情報(APIキー)の取り扱い
+- ロギング(http.RoundTripper)
+
+### `service`インターフェースの実装
+
+CLIである [Usacloud](https://github.com/sacloud/usacloud) で利用するために、`service`インターフェースを提供したい。
 
 > `service`インターフェースとは、CRUD+L操作を行うための窓口となるインターフェースで、libsacloudでは [helper/serviceパッケージ](https://pkg.go.dev/github.com/sacloud/libsacloud/v2@v2.27.1/helper/service) で提供されている。  
 > 将来的にメタデータを持たせ、AWSでいう [Cloud Control API](https://aws.amazon.com/jp/cloudcontrolapi/) 的な役割を担わせる予定だがlibsacloud v2時点ではメタデータなしでGoのコードのみ提供されている。
 
-## 設計/実装
+serviceインターフェースを用意することでUsacloudからは処理の大部分を自動生成させることができる。
 
 ### コード生成
 
-コード生成には [https://github.com/deepmap/oapi-codegen](https://github.com/deepmap/oapi-codegen) を選択した。  
+コード生成には [https://github.com/deepmap/oapi-codegen](https://github.com/deepmap/oapi-codegen) を利用する。  
 
 ツール選定時には以下を検討した。
 
@@ -75,11 +79,6 @@ API定義: [https://manual.sakura.ad.jp/ds/phy/api/api-spec.html](https://manual
   - [https://github.com/OpenAPITools/openapi-generator](https://github.com/OpenAPITools/openapi-generator)
 
 参考: https://github.com/sacloud/libphy/issues/5
-
-
-## 参考文献
-
-TODO 
 
 ## レポジトリ
 
