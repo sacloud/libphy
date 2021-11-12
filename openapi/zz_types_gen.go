@@ -635,20 +635,20 @@ type PortChannelLinkSpeedType string
 
 // PrivateNetwork defines model for private_network.
 type PrivateNetwork struct {
-	Hybrid *HybridConnections `json:"hybrid,omitempty"`
+	Hybrid HybridConnections `json:"hybrid"`
 
 	// ローカルネットワークのID
-	PrivateNetworkId *string `json:"private_network_id,omitempty"`
+	PrivateNetworkId string `json:"private_network_id"`
 
 	// 接続済みサーバー数
-	ServerCount *int `json:"server_count,omitempty"`
+	ServerCount int `json:"server_count"`
 
 	// サービス情報
-	Service *ServiceQuiet `json:"service,omitempty"`
+	Service ServiceQuiet `json:"service"`
 
 	// VLAN ID
-	VlanId *int  `json:"vlan_id,omitempty"`
-	Zone   *Zone `json:"zone,omitempty"`
+	VlanId int  `json:"vlan_id"`
+	Zone   Zone `json:"zone"`
 }
 
 // PrivateNetworks defines model for private_networks.
