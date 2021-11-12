@@ -974,8 +974,8 @@ type ServerSpec struct {
 
 // Servers defines model for servers.
 type Servers struct {
-	Meta    *PaginateMeta `json:"meta,omitempty"`
-	Servers *[]Server     `json:"servers,omitempty"`
+	Meta    PaginateMeta `json:"meta"`
+	Servers []Server     `json:"servers"`
 }
 
 // Service defines model for service.
