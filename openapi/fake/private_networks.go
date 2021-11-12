@@ -19,14 +19,14 @@ import (
 	"github.com/sacloud/phy-go/openapi"
 )
 
-// GetPrivateNetworks ローカルネットワーク 一覧
+// ListPrivateNetworks ローカルネットワーク 一覧
 // (GET /private_networks/)
-func (s *Server) GetPrivateNetworks(c *gin.Context, params openapi.GetPrivateNetworksParams) {
+func (s *Server) ListPrivateNetworks(c *gin.Context, params openapi.ListPrivateNetworksParams) {
 
 }
 
-// GetPrivateNetworksPrivateNetworkId ローカルネットワーク 詳細
+// ReadPrivateNetwork ローカルネットワーク 詳細
 // (GET /private_networks/{private_network_id}/)
-func (s *Server) GetPrivateNetworksPrivateNetworkId(c *gin.Context, privateNetworkId openapi.PrivateNetworkId) {
+func (s *Server) ReadPrivateNetwork(c *gin.Context, privateNetworkId openapi.PrivateNetworkId) {
 
 }

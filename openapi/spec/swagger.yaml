@@ -11,7 +11,7 @@ info:
   description: |-
 
     ---
-        
+
     「さくらの専用サーバ PHY」が提供するAPIの利用方法とサンプルを公開しております。
 
     # 基本的な使い方
@@ -92,6 +92,7 @@ security:
 paths:
   /services/:
     get:
+      operationId: "ListServices"
       tags:
         - サービス情報
       summary: サービス一覧
@@ -136,20 +137,14 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  meta:
-                    $ref: '#/components/schemas/paginate_meta'
-                  services:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/service'
+                $ref: '#/components/schemas/services'
         '401':
           $ref: '#/components/responses/generic_401'
         '429':
           $ref: '#/components/responses/generic_429'
   '/services/{service_id}/':
     get:
+      operationId: "ReadService"
       tags:
         - サービス情報
       summary: サービス 詳細
@@ -177,6 +172,7 @@ paths:
         '429':
           $ref: '#/components/responses/generic_429'
     patch:
+      operationId: "UpdateService"
       tags:
         - サービス情報
       summary: サービスの名称・説明の変更
@@ -228,6 +224,7 @@ paths:
           $ref: '#/components/responses/generic_429'
   /servers/:
     get:
+      operationId: "ListServers"
       tags:
         - サーバー
       summary: サーバー一覧
@@ -301,14 +298,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  meta:
-                    $ref: '#/components/schemas/paginate_meta'
-                  servers:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/server'
+                $ref: '#/components/schemas/servers'
         '400':
           $ref: '#/components/responses/generic_400'
         '401':
@@ -323,6 +313,7 @@ paths:
           $ref: '#/components/responses/generic_429'
   '/servers/{server_id}/':
     get:
+      operationId: "ReadServer"
       tags:
         - サーバー
       summary: サーバー
@@ -351,6 +342,7 @@ paths:
           $ref: '#/components/responses/generic_429'
   '/servers/{server_id}/raid_status/':
     get:
+      operationId: "ReadRAIDStatus"
       tags:
         - サーバー
       summary: サーバーのRAID状態を取得
@@ -398,6 +390,7 @@ paths:
                 $ref: '#/components/schemas/problem_details_503'
   '/servers/{server_id}/os_images/':
     get:
+      operationId: "ListOSImages"
       tags:
         - サーバー
       summary: インストール可能OS一覧
@@ -415,30 +408,7 @@ paths:
                   os_images:
                     type: array
                     items:
-                      type: object
-                      properties:
-                        os_image_id:
-                          type: string
-                          description: インストール実行時に指定するOSイメージ名
-                          example: centos7-x86_64
-                        name:
-                          type: string
-                          description: OSの名称
-                          example: CentOS7 x86_64
-                        require_password:
-                          type: boolean
-                          description: |-
-                            インストール時にパスワード指定が必要か
-                            (パスワード指定が必要な場合 `true`)
-                        manual_partition:
-                          type: boolean
-                          description: |-
-                            パーティション手動構成が可能か
-                            (パーティション構成の指定が可能な場合に `true`)
-                        superuser_name:
-                          type: string
-                          description: OSインストール時に作成される管理ユーザー名
-                          example: root
+                      $ref: '#/components/schemas/os_image'
         '401':
           $ref: '#/components/responses/generic_401'
         '404':
@@ -451,6 +421,7 @@ paths:
           $ref: '#/components/responses/generic_429'
   '/servers/{server_id}/os_install/':
     post:
+      operationId: "OSInstall"
       tags:
         - サーバー
       summary: OSインストールの実行
@@ -505,6 +476,7 @@ paths:
           $ref: '#/components/responses/generic_429'
   '/servers/{server_id}/power_status/':
     get:
+      operationId: "ReadServerPowerStatus"
       tags:
         - サーバーの電源
       summary: サーバーの電源情報を取得する
@@ -539,6 +511,7 @@ paths:
                 $ref: '#/components/schemas/problem_details_503'
   '/servers/{server_id}/power_control/':
     post:
+      operationId: "SetServerPowerStatus"
       tags:
         - サーバーの電源
       summary: サーバーの電源操作
@@ -592,6 +565,7 @@ paths:
                 $ref: '#/components/schemas/problem_details_503'
   '/servers/{server_id}/port_channels/{port_channel_id}/':
     get:
+      operationId: "ReadServerPortChannel"
       tags:
         - サーバーネットワーク設定
       summary: ポートチャネル状態取得
@@ -633,6 +607,7 @@ paths:
                 $ref: '#/components/schemas/problem_details_503'
   '/servers/{server_id}/port_channels/{port_channel_id}/configure_bonding/':
     post:
+      operationId: "SetPortChannelBonding"
       tags:
         - サーバーネットワーク設定
       summary: ポートチャネル ボンディング設定
@@ -727,6 +702,7 @@ paths:
           $ref: '#/components/responses/generic_429'
   '/servers/{server_id}/ports/{port_id}/':
     get:
+      operationId: "ReadServerPort"
       tags:
         - サーバーネットワーク設定
       summary: ポート情報取得
@@ -761,6 +737,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/problem_details_503'
     patch:
+      operationId: "UpdateServerPort"
       tags:
         - サーバーネットワーク設定
       summary: ポート名称設定
@@ -809,6 +786,7 @@ paths:
           $ref: '#/components/responses/generic_429'
   '/servers/{server_id}/ports/{port_id}/traffic_graph/':
     get:
+      operationId: "ReadServerTrafficByPort"
       tags:
         - サーバーネットワーク設定
       summary: トラフィックデータ取得
@@ -848,37 +826,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  traffic_graph:
-                    type: object
-                    properties:
-                      transmit:
-                        type: array
-                        description: 送信方向トラフィック
-                        items:
-                          type: object
-                          properties:
-                            timestamp:
-                              type: string
-                              format: date-time
-                              description: 取得時刻
-                            value:
-                              type: integer
-                              description: 1つ前のデータからの平均トラフィック(bps)
-                      receive:
-                        type: array
-                        description: 受信方向トラフィック
-                        items:
-                          type: object
-                          properties:
-                            timestamp:
-                              type: string
-                              format: date-time
-                              description: 取得時刻
-                            value:
-                              type: integer
-                              description: 1つ前のデータからの平均トラフィック(bps)
+                $ref: '#/components/schemas/traffic_graph'
         '401':
           $ref: '#/components/responses/generic_401'
         '404':
@@ -891,6 +839,7 @@ paths:
           $ref: '#/components/responses/generic_429'
   '/servers/{server_id}/ports/{port_id}/enable/':
     post:
+      operationId: "SetServerPortEnabled"
       tags:
         - サーバーネットワーク設定
       summary: ポート有効/無効設定
@@ -941,6 +890,7 @@ paths:
           $ref: '#/components/responses/generic_429'
   '/servers/{server_id}/ports/{port_id}/assign_network/':
     post:
+      operationId: "SetServerPortNetworkConnection"
       tags:
         - サーバーネットワーク設定
       summary: ネットワーク接続設定の変更
@@ -954,60 +904,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              description: |-
-                ポートの接続ネットワーク指定
-
-                `mode=access`の場合は
-
-                * 共用グローバルネットワーク
-                * 専用グローバルネットワーク
-                * ローカルネットワーク
-
-                のいずれか1つのみ接続可能で、
-                複数のネットワークが指定されている場合はエラーとなる
-              required:
-                - mode
-              properties:
-                mode:
-                  type: string
-                  enum:
-                    - access
-                    - trunk
-                  description: |-
-                    ポートモード
-
-                    * `access` - アクセスポート
-                    * `trunk` - トランクポート
-                internet_type:
-                  type: string
-                  nullable: true
-                  default: null
-                  enum:
-                    - common_subnet
-                    - dedicated_subnet
-                  description: |-
-                    * `null` - インターネット接続なし
-                    * `common_subnet` - 共用グローバルネットワーク利用
-                    * `dedicated_subnet` - 専用グローバルネットワーク利用
-                  example: dedicated_subnet
-                dedicated_subnet_id:
-                  type: string
-                  nullable: true
-                  default: null
-                  description: |-
-                    専用グローバルネットワークのサービスコード指定
-                    `global_network_type`が`dedicated_subnet`の場合に必須
-                  example: '345678901234'
-                private_network_ids:
-                  type: array
-                  nullable: true
-                  default: null
-                  description: 接続先ローカルネットワークの配列
-                  items:
-                    type: string
-                    description: 接続先ローカルネットワークのサービスコード
-                    example: '234567890123'
+              $ref: '#/components/schemas/assign_network'
       responses:
         '200':
           description: 成功
@@ -1049,6 +946,7 @@ paths:
           $ref: '#/components/responses/generic_429'
   /dedicated_subnets/:
     get:
+      operationId: "ListDedicatedSubnets"
       tags:
         - 専用グローバルネットワーク
       summary: 専用グローバルネットワーク 一覧
@@ -1081,14 +979,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  meta:
-                    $ref: '#/components/schemas/paginate_meta'
-                  dedicated_subnets:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/dedicated_subnet'
+                $ref: '#/components/schemas/dedicated_subnets'
         '400':
           $ref: '#/components/responses/generic_400'
         '401':
@@ -1097,6 +988,7 @@ paths:
           $ref: '#/components/responses/generic_429'
   '/dedicated_subnets/{dedicated_subnet_id}/':
     get:
+      operationId: "ReadDedicatedSubnet"
       tags:
         - 専用グローバルネットワーク
       summary: 専用グローバルネットワーク
@@ -1138,6 +1030,7 @@ paths:
                 $ref: '#/components/schemas/problem_details_503'
   /private_networks/:
     get:
+      operationId: "ListPrivateNetworks"
       tags:
         - ローカルネットワーク
       summary: ローカルネットワーク 一覧
@@ -1186,6 +1079,7 @@ paths:
           $ref: '#/components/responses/generic_429'
   '/private_networks/{private_network_id}/':
     get:
+      operationId: "ReadPrivateNetwork"
       tags:
         - ローカルネットワーク
       summary: ローカルネットワーク 詳細
@@ -1285,29 +1179,6 @@ components:
           type: string
           maxLength: 50
       required: false
-#    zone_filter:
-#      in: query
-#      name: zone_id
-#      required: false
-#      schema:
-#        type: integer
-#        example: 303
-#      description: ネットワークゾーンで絞り込む
-#    notice_level_filter:
-#      in: query
-#      name: level
-#      description: |-
-#        通知レベル絞り込み
-#        __,__区切りで複数指定がある場合はいずれかにマッチ(OR)
-#      schema:
-#        type: array
-#        items:
-#          type: string
-#          enum:
-#            - information
-#            - warning
-#            - important
-#      required: false
     service_id:
       in: path
       name: service_id
@@ -1316,13 +1187,6 @@ components:
         type: string
         pattern: '^\d{12}$'
       description: サービスコード
-#    account_id:
-#      in: path
-#      name: account_id
-#      required: true
-#      schema:
-#        type: integer
-#      description: アカウントID
     server_id:
       in: path
       name: server_id
@@ -1331,22 +1195,6 @@ components:
         type: string
         pattern: '^\d{12}$'
       description: サーバーのサービスコード
-#    firewall_id:
-#      in: path
-#      name: firewall_id
-#      required: true
-#      schema:
-#        type: string
-#        pattern: '^\d{12}$'
-#      description: ファイアウォールのサービスコード
-#    load_balancer_id:
-#      in: path
-#      name: load_balancer_id
-#      required: true
-#      schema:
-#        type: string
-#        pattern: '^\d{12}$'
-#      description: ロードバランサーのサービスコード
     dedicated_subnet_id:
       in: path
       name: dedicated_subnet_id
@@ -1363,15 +1211,6 @@ components:
         type: string
         pattern: '^\d{12}$'
       description: ローカルネットワークのサービスコード
-#    channel_number:
-#      in: path
-#      name: channel_number
-#      required: true
-#      schema:
-#        type: integer
-#        minimum: 1
-#        maximum: 2
-#      description: ポートチャネル番号
     port_channel_id:
       in: path
       name: port_channel_id
@@ -1386,88 +1225,938 @@ components:
       schema:
         type: integer
       description: ポートID
-#    ip_address:
-#      in: path
-#      name: ip_address
-#      required: true
-#      schema:
-#        type: string
-#        format: ipv4
-#      description: IPアドレス
-#    tag_id:
-#      in: path
-#      name: tag_id
-#      required: true
-#      schema:
-#        type: integer
-#      description: タグID
-#    notice_id:
-#      in: path
-#      name: notice_id
-#      required: true
-#      schema:
-#        type: integer
-#      description: 通知ID
-#    vnc_session_id:
-#      in: path
-#      name: vnc_session_id
-#      required: true
-#      description: セッションID
-#      schema:
-#        type: integer
-#    zone_id:
-#      in: path
-#      name: zone_id
-#      required: true
-#      description: ネットワークゾーンID
-#      schema:
-#        type: integer
-#    plan_id:
-#      in: path
-#      name: plan_id
-#      required: true
-#      schema:
-#        type: integer
-#      description: プランID
-#    estimate_id:
-#      in: path
-#      name: estimate_id
-#      required: true
-#      schema:
-#        type: string
-#        format: uuid
-#      description: 見積もりID
-#    task_id:
-#      in: path
-#      name: task_id
-#      required: true
-#      schema:
-#        type: integer
-#      description: タスクID
-#  requestBodies:
-#    tag:
-#      required: true
-#      content:
-#        application/json:
-#          schema:
-#            type: object
-#            required:
-#              - label
-#            properties:
-#              label:
-#                type: string
-#                example: タグ入力例
-#                maxLength: 50
-#              color:
-#                type: string
-#                description: 表示色
-#                nullable: true
-#                default: null
-#                example: ffffff
-#                minLength: 6
-#                maxLength: 6
-#                pattern: '^[0-9a-fA-F]+$'
   schemas:
+    # services
+    services:
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/paginate_meta'
+        services:
+          type: array
+          items:
+            $ref: '#/components/schemas/service'
+      required:
+        - meta
+        - services
+    service:
+      type: object
+      properties:
+        service_id:
+          type: string
+          example: '123456789012'
+        nickname:
+          type: string
+          example: サーバーやネットワークの簡潔な名前
+          description: 名称：サーバーやネットワークなどの表示名
+        description:
+          type: string
+          nullable: true
+          example: |-
+            サーバーやネットワークの利用用途などを
+            自由に記述
+          description: メモ：サーバーやネットワークなどの説明
+        activated:
+          type: string
+          format: date-time
+          description: 利用開始日時
+        product_category:
+          type: string
+          example: server
+          enum:
+            - server
+            - dedicated_subnet
+            - private_network
+            - firewall
+            - load_balancer
+          description: |-
+            サービスの種類
+
+            * `server` - サーバー
+            * `dedicated_subnet` - 専用グローバルネットワーク
+            * `private_network` - ローカルネットワーク
+            * `firewall` - ファイアウォール
+            * `load_balancer` - ロードバランサー
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/tag'
+        plan:
+          $ref: '#/components/schemas/service_plan'
+        option_plans:
+          type: array
+          items:
+            type: object
+            properties:
+              plan_id:
+                type: string
+                description: プランID
+                example: opt-mem-48g
+              name:
+                type: string
+                example: 月払い OP・専用サーバ メモリ U/G RX2530M2 48GB増設 (Fujitsu) (16-12)
+                description: プラン名称
+              option_class:
+                type: string
+                enum:
+                  - upgrade_memory
+                  - upgrade_storage
+                  - additional_storage1
+                  - additional_storage2
+                  - additional_storage3
+                  - additional_nvme_storage1
+                  - additional_nvme_storage2
+                  - os
+                  - global_bandwidth
+                  - local_bandwidth
+                description: |-
+                  オプション申込区分
+
+                  * `upgrade_memory` - 拡張メモリ
+                  * `upgrade_storage` - ストレージ変更
+                  * `additional_storage1` - 追加ストレージ1
+                  * `additional_storage2` - 追加ストレージ2
+                  * `additional_storage3` - 追加ストレージ3
+                  * `additional_nvme_storage1` - 追加NVMeストレージ1
+                  * `additional_nvme_storage2` - 追加NVMeストレージ2
+                  * `os` - 有償OS
+                  * `global_bandwidth` - インターネット帯域オプション
+                  * `local_bandwidth` - ローカルネットワーク帯域オプション
+      required:
+        - service_id
+        - nickname
+        - description
+        - activated
+        - product_category
+        - tags
+        - plan
+        - optnion_plans
+    service_plan:
+      type: object
+      description: プラン情報(ローカルネットワークの場合は`null`)
+      nullable: true
+      properties:
+        plan_id:
+          type: string
+          example: st-f-1cpu-1804_monthly
+        name:
+          type: string
+          example: 月払い 専用サーバ Fujitsu RX2530 M2 Xeon 8Core (18-04)
+      required:
+        - plan_id
+        - name
+    service_quiet:
+      type: object
+      description: サービス情報
+      properties:
+        service_id:
+          type: string
+          description: サービスコード
+          example: '123456789012'
+        nickname:
+          type: string
+          example: サーバーやネットワークの簡潔な名前
+          description: 名称：サーバーやネットワークなどの表示名
+        description:
+          type: string
+          nullable: true
+          example: |-
+            サーバーやネットワークの利用用途などを
+            自由に記述
+          description: メモ：サーバーやネットワークなどの説明
+        activated:
+          type: string
+          format: date-time
+          description: 利用開始日時
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/tag'
+      required:
+        - service_id
+        - nickname
+        - description
+        - activated
+
+    # servers
+    servers:
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/paginate_meta'
+        servers:
+          type: array
+          items:
+            $ref: '#/components/schemas/server'
+    server:
+      type: object
+      properties:
+        server_id:
+          type: string
+          description: サーバーのサービスコード
+          example: '123456789012'
+        service:
+          $ref: '#/components/schemas/service_quiet'
+        zone:
+          $ref: '#/components/schemas/zone'
+        spec:
+          $ref: '#/components/schemas/server_spec'
+        cached_power_status:
+          $ref: '#/components/schemas/cached_power_status'
+        ipv4:
+          $ref: '#/components/schemas/server_ipv4_global'
+        port_channels:
+          type: array
+          items:
+            $ref: '#/components/schemas/port_channel'
+        ports:
+          type: array
+          items:
+            $ref: '#/components/schemas/interface_port'
+        lock_status:
+          type: string
+          nullable: true
+          enum:
+            - os_install
+            - configure_raid
+            - administrative_lock
+          description: |-
+            設定変更処理によるロック状態
+            `null`以外がセットされている場合は
+            OS再インストール,ネットワークIF設定(VLAN,通信無効など),電源操作を受け付けない
+
+            * `os_install` - OSインストール処理中
+            * `configure_raid` - RAID設定処理中
+            * `administrative_lock` - 機器交換,増設などの作業を行っている
+            * `null` - 設定変更を行っていない(処理を完了している)
+
+
+      required:
+        - server_id
+        - service
+        - zone
+        - spec
+        - cached_power_status
+        - ipv4
+        - port_channels
+        - ports
+        - lock_status
+    server_spec:
+      type: object
+      properties:
+        cpu_model_name:
+          type: string
+          description: CPU製品モデル名
+          example: Broadwell E5-2620v4
+        cpu_count:
+          type: integer
+          description: 物理CPU数
+          example: 1
+        cpu_core_count:
+          description: 総CPUコア数
+          type: integer
+          example: 8
+        cpu_clock_speed:
+          type: number
+          format: float
+          description: CPUクロック数(GHz)
+          example: 2.1
+        memory_size:
+          type: integer
+          description: 総メモリ数(GB)
+          example: 48
+        port_channel_1gbe_count:
+          type: integer
+          description: 1GbEネットワークインターフェース ポートチャネル数
+          example: 1
+        port_channel_10gbe_count:
+          type: integer
+          description: 10GbEネットワークインターフェース ポートチャネル数
+          example: 1
+        storages:
+          type: array
+          description: |-
+            ストレージ構成情報
+            同一構成(接続方式,記録方式,容量)ごとの配列
+          items:
+            $ref: '#/components/schemas/storage'
+        total_storage_device_count:
+          type: integer
+          description: ストレージ構成物理デバイス数の合計
+          example: 2
+      required:
+        - cpu_model_name
+        - cpu_count
+        - cpu_core_count
+        - cpu_clock_speed
+        - memory_size
+        - port_channel_1gbe_count
+        - port_channel_10gbe_count
+        - storages
+        - total_storage_device_count
+    storage:
+      type: object
+      properties:
+        size:
+          type: integer
+          description: ストレージ1つあたりの容量(GB)
+          example: 10000
+        bus_type:
+          type: string
+          enum:
+            - sata
+            - sas
+            - nvme
+          description: |-
+            ストレージ接続方式
+
+            * `sata` - SATA
+            * `sas` - SAS
+            * `nvme` - NVMe(PCIe)
+        media_type:
+          type: string
+          enum:
+            - hdd
+            - ssd
+            - flash_memory
+          description: |-
+            ストレージ記録方式
+
+            * `hdd` - 磁気HDD
+            * `ssd` - SSD
+            * `flash_memory` - Flash Memory(不揮発性メモリ)
+        device_count:
+          type: integer
+          description: ストレージ構成物理デバイス数
+          example: 2
+      required:
+        - size
+        - bus_type
+        - media_type
+        - device_count
+    cached_power_status:
+      type: object
+      description: キャッシュされた電源状態(未キャッシュならば`null`)
+      nullable: true
+      properties:
+        status:
+          type: string
+          enum:
+            - 'on'
+            - 'off'
+          description: 電源状態
+        stored:
+          type: string
+          format: date-time
+          description: 電源状態キャッシュの保存時刻
+      required:
+        - status
+        - stored
+    server_ipv4_global:
+      type: object
+      description: グローバルIPアドレス割り当て情報(未設定時は`null`)
+      nullable: true
+      properties:
+        type:
+          type: string
+          enum:
+            - common_ip_address
+            - dedicated_ip_address
+          description: |-
+            IPアドレスの種類
+
+            * `common_ip_address` - 共用グローバルネットワークのIPアドレス
+            * `dedicated_ip_address` - 専用グローバルネットワークのIPアドレス(割り当て設定が必要)
+        ip_address:
+          type: string
+          format: ipv4
+          description: IPアドレス
+          example: 192.0.2.10
+        network_address:
+          type: string
+          format: ipv4
+          description: ネットワークアドレス
+          example: 192.0.2.0
+        prefix_length:
+          type: integer
+          example: 24
+          description: ネットワーク長
+        gateway_address:
+          type: string
+          format: ipv4
+          description: ゲートウェイアドレス
+          example: 192.0.2.1
+        name_servers:
+          type: array
+          description: DNSサーバーリスト
+          items:
+            type: string
+            format: ipv4
+            description: DNSサーバーIPアドレス
+            example: 192.0.2.200
+      required:
+        - type
+        - ip_address
+        - network_address
+        - prefix_length
+        - gateway_address
+        - name_servers
+    port_channel:
+      type: object
+      description: ネットワークインターフェース ポートチャネル情報
+      properties:
+        port_channel_id:
+          type: integer
+          description: ポートチャネルID
+          example: 1
+        bonding_type:
+          type: string
+          enum:
+            - lacp
+            - static
+            - single
+          description: |-
+            ボンディング方式
+
+            * `lacp` - LACP
+            * `static` - static link aggregation
+            * `single` - ボンディングなし(単体構成)
+        ports:
+          type: array
+          description: ポートチャネルを構成するポートIDのリスト
+          items:
+            type: integer
+            description: ポートID
+          maxItems: 2
+          minItems: 2
+          example:
+            - 1
+            - 2
+        locked:
+          type: boolean
+          description: 設定変更によるロック状態(ロック中の場合は `true`)
+        link_speed_type:
+          type: string
+          enum:
+            - 1gbe
+            - 10gbe
+          description: |-
+            提供速度分類
+
+            * `1gbe` - 1GbE
+            * `10gbe` - 10GbE
+      required:
+        - port_channel_id
+        - bonding_type
+        - ports
+        - locked
+        - link_speed_type
+    interface_port:
+      type: object
+      description: ネットワークインターフェースの接続ポート情報
+      properties:
+        port_id:
+          type: integer
+          description: ポートID
+          example: 1
+        nickname:
+          type: string
+          description: インターフェース名称
+          example: インターフェース 1234abcd
+        port_channel_id:
+          type: integer
+          description: 所属ポートチャネルID
+          example: 1
+        mode:
+          type: string
+          nullable: true
+          enum:
+            - access
+            - trunk
+          description: 動作モード(初期化後の未設定時は`null`)
+        global_bandwidth_mbps:
+          type: integer
+          description: |-
+            グローバル側の帯域幅(Mbps)
+            ボンディングされている場合は合計値
+          example: 100
+          nullable: true
+        local_bandwidth_mbps:
+          type: integer
+          description: |-
+            ローカル側の帯域幅(Mbps)
+            ボンディングされている場合は合計値
+          example: 1000
+          nullable: true
+        enabled:
+          type: boolean
+          description: ポート有効状態(通信が有効になっている場合 `true`)
+        internet:
+          $ref: '#/components/schemas/internet'
+        private_networks:
+          type: array
+          items:
+            $ref: '#/components/schemas/attached_private_network'
+      required:
+        - port_id
+        - nickname
+        - port_channel_id
+        - mode
+        - global_bandwidth_mbps
+        - local_bandwidth_mbps
+        - enabled
+        - internet
+        - private_networks
+    internet:
+      type: object
+      nullable: true
+      description: |-
+        グローバルネットワーク情報
+        このポートにインターネット接続が割り当てられていない場合は`null`
+      properties:
+        subnet_type:
+          type: string
+          enum:
+            - common_subnet
+            - dedicated_subnet
+          description: |-
+            グローバルネットワーク分類
+
+            * `common_subnet` - 共用グローバルネットワークのIPアドレスを割り当て
+            * `dedicated_subnet` - 専用グローバルネットワーク割り当て
+        dedicated_subnet:
+          type: object
+          description: 専用グローバルネットワーク情報(共用グローバルネットワーク割り当て時は`null`)
+          nullable: true
+          properties:
+            dedicated_subnet_id:
+              type: string
+              description: 専用グローバルネットワークのサービスコード
+              example: '345678901234'
+            nickname:
+              type: string
+              description: 専用グローバルネットワークに設定した名称
+              example: グローバルネットワーク名
+        network_address:
+          type: string
+          format: ipv4
+          description: ネットワークアドレス
+          example: 192.0.2.0
+        prefix_length:
+          type: integer
+          example: 24
+          description: ネットワーク長
+      required:
+        - subnet_type
+        - dedicated_subnet
+        - network_address
+        - prefix_length
+    attached_private_network:
+      type: object
+      description: ローカルネットワーク情報
+      properties:
+        private_network_id:
+          type: string
+          description: ローカルネットワークID
+          example: '234567890123'
+        nickname:
+          type: string
+          description: ローカルネットワークに設定した名称
+          example: ローカルネットワーク名
+      required:
+        - private_network_id
+        - nickname
+    server_power_status:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - 'on'
+            - 'off'
+          description: |-
+            サーバーの電源状態
+
+            * `on` - 起動
+            * `off` - 停止
+    raid_status:
+      type: object
+      properties:
+        overall_status:
+          type: string
+          nullable: true
+          enum:
+            - ok
+            - rebuilding
+            - degraded
+            - failed
+          description: |-
+            総合的なRAID論理ボリューム状態
+
+            * `ok` - 全てのRAID論理ボリュームと物理デバイスが正常
+            * `rebuilding` - 再構築中のRAID論理ボリュームが1つ以上ある(物理デバイスは全て正常、冗長性は低下している)
+            * `degraded` - 異常検出した物理デバイスが1つ以上ある(論理ボリュームは利用可能、冗長性は低下している)
+            * `failed` - 故障したRAID論理ボリュームが1つ以上ある(2つ以上の物理デバイスに異常があるRAID5など)
+            * `null` - RAID論理ボリュームがない
+
+            `failed > degraded > rebuilding > ok` の順でより深刻なものが選択される
+        monitored:
+          type: string
+          format: date-time
+          description: RAID状態を取得した時刻
+        logical_volumes:
+          type: array
+          description: 作成済みRAID論理ボリュームのリスト
+          items:
+            type: object
+            properties:
+              volume_id:
+                type: string
+                description: このサーバーのRAID論理ボリュームの一意な識別子
+              status:
+                type: string
+                enum:
+                  - ok
+                  - rebuilding
+                  - degraded
+                  - failed
+                description: このRAID論理ボリュームの状態
+              raid_level:
+                type: string
+                description: RAIDレベル
+              physical_device_ids:
+                type: array
+                items:
+                  type: string
+                  description: この論理ボリューム内の認識済みデバイスの識別子
+                  example: '1'
+        physical_devices:
+          description: 認識済み物理ストレージデバイスのリスト
+          type: array
+          items:
+            type: object
+            properties:
+              device_id:
+                type: string
+                description: サーバーの物理ストレージデバイスの一意な識別子
+                example: '1'
+              slot:
+                type: integer
+                description: 接続スロット番号
+              status:
+                type: string
+                enum:
+                  - ok
+                  - failed
+                description: |-
+                  この物理ストレージデバイスの状態
+
+                  * `ok` - 正常
+                  * `failed` - 異常を検知
+    os_image:
+      type: object
+      properties:
+        os_image_id:
+          type: string
+          description: インストール実行時に指定するOSイメージ名
+          example: centos7-x86_64
+        name:
+          type: string
+          description: OSの名称
+          example: CentOS7 x86_64
+        require_password:
+          type: boolean
+          description: |-
+            インストール時にパスワード指定が必要か
+            (パスワード指定が必要な場合 `true`)
+        manual_partition:
+          type: boolean
+          description: |-
+            パーティション手動構成が可能か
+            (パーティション構成の指定が可能な場合に `true`)
+        superuser_name:
+          type: string
+          description: OSインストール時に作成される管理ユーザー名
+          example: root
+    traffic_graph:
+      type: object
+      properties:
+        transmit:
+          type: array
+          description: 送信方向トラフィック
+          items:
+            type: object
+            properties:
+              timestamp:
+                type: string
+                format: date-time
+                description: 取得時刻
+              value:
+                type: integer
+                description: 1つ前のデータからの平均トラフィック(bps)
+        receive:
+          type: array
+          description: 受信方向トラフィック
+          items:
+            type: object
+            properties:
+              timestamp:
+                type: string
+                format: date-time
+                description: 取得時刻
+              value:
+                type: integer
+                description: 1つ前のデータからの平均トラフィック(bps)
+    assign_network:
+      type: object
+      description: |-
+        ポートの接続ネットワーク指定
+
+        `mode=access`の場合は
+
+        * 共用グローバルネットワーク
+        * 専用グローバルネットワーク
+        * ローカルネットワーク
+
+        のいずれか1つのみ接続可能で、
+        複数のネットワークが指定されている場合はエラーとなる
+      required:
+        - mode
+      properties:
+        mode:
+          type: string
+          enum:
+            - access
+            - trunk
+          description: |-
+            ポートモード
+
+            * `access` - アクセスポート
+            * `trunk` - トランクポート
+        internet_type:
+          type: string
+          nullable: true
+          default: null
+          enum:
+            - common_subnet
+            - dedicated_subnet
+          description: |-
+            * `null` - インターネット接続なし
+            * `common_subnet` - 共用グローバルネットワーク利用
+            * `dedicated_subnet` - 専用グローバルネットワーク利用
+          example: dedicated_subnet
+        dedicated_subnet_id:
+          type: string
+          nullable: true
+          default: null
+          description: |-
+            専用グローバルネットワークのサービスコード指定
+            `global_network_type`が`dedicated_subnet`の場合に必須
+          example: '345678901234'
+        private_network_ids:
+          type: array
+          nullable: true
+          default: null
+          description: 接続先ローカルネットワークの配列
+          items:
+            type: string
+            description: 接続先ローカルネットワークのサービスコード
+            example: '234567890123'
+
+    # dedicated subnets
+    dedicated_subnets:
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/paginate_meta'
+        dedicated_subnets:
+          type: array
+          items:
+            $ref: '#/components/schemas/dedicated_subnet'
+      required:
+        - meta
+        - dedicated_subnets
+    dedicated_subnet:
+      type: object
+      properties:
+        dedicated_subnet_id:
+          type: string
+          description: 専用グローバルネットワークのサービスコード
+          example: '123456789012'
+        service:
+          $ref: '#/components/schemas/service_quiet'
+        zone:
+          $ref: "#/components/schemas/zone"
+        ipv4:
+          $ref: "#/components/schemas/ipv4"
+        ipv6:
+          $ref: "#/components/schemas/ipv6"
+        server_count:
+          type: integer
+          description: 割り当て済みサーバー数
+          example: 1
+        firewall:
+          $ref: '#/components/schemas/attached_firewall'
+        load_balancer:
+          $ref: '#/components/schemas/attached_load_balancer'
+        config_status:
+          type: string
+          enum:
+            - operational
+            - configure_lb
+            - configure_fw
+            - enable_ipv6
+            - administrative_lock
+          description: |-
+            設定変更によるロック状態
+            `operational` 以外の状態では各種設定変更は不可
+
+            * `operational` - 操作可能
+            * `configure_lb` - LBを設定中
+            * `configure_fw` - FWを設定中
+            * `enable_ipv6` - IPv6設定中
+            * `administrative_lock` - 機器交換などの作業を行っている
+      required:
+        - dedicated_subnet_id
+        - service
+        - zone
+        - ipv4
+        - ipv6
+        - server_count
+        - firewall
+        - load_balancer
+        - config_status
+    attached_firewall:
+      type: object
+      nullable: true
+      description: 割り当て済みファイアウォール(利用していない場合は`null`)
+      properties:
+        firewall_id:
+          type: string
+          description: ファイアウォールのサービスコード
+          example: '234567890123'
+        nickname:
+          type: string
+          description: ファイアウォールの名称
+          example: FW名
+      required:
+        - firewall_id
+        - nickname
+    attached_load_balancer:
+      type: object
+      nullable: true
+      description: 割り当て済みロードバランサー(利用していない場合は`null`)
+      properties:
+        load_balancer_id:
+          type: string
+          description: ロードバランサーのサービスコード
+          nullable: true
+          example: '345678901234'
+        nickname:
+          type: string
+          description: ロードバランサーの名称
+          example: LB名
+      required:
+        - load_balancer_id
+        - nickname
+    ipam:
+      type: object
+      properties:
+        ip_address:
+          type: string
+          format: ipv4
+          description: 専用グローバルネットワークのIPアドレス
+        description:
+          type: string
+          example: |-
+            説明文の
+            中身
+          description: IPアドレスに対しての説明文
+        type:
+          type: string
+          enum:
+            - gateway
+            - gateway_real
+            - load_balancer
+            - server
+            - void
+          description: |-
+            割り当て用途分類
+
+            * `gateway` - ゲートウェイアドレス
+            * `gateway_real` - ゲートウェイ機器実機
+            * `load_balancer` - ロードバランサー
+            * `server` - サーバー
+            * `void` - 用途登録なし
+          example: server
+        server:
+          type: object
+          nullable: true
+          properties:
+            server_id:
+              type: string
+              description: サーバーのサービスコード(用途分類が`server`の場合のみ)
+              example: '123456789012'
+            nickname:
+              type: string
+              description: サーバーの名称
+              example: サーバー名
+        use_rdns:
+          type: boolean
+          description: 逆引きDNSを設定しているか否か(設定済みの場合 `true`)
+
+    # private networks
+    private_network:
+      type: object
+      properties:
+        private_network_id:
+          description: ローカルネットワークのID
+          type: string
+          example: '123456789012'
+        service:
+          $ref: '#/components/schemas/service_quiet'
+        zone:
+          $ref: '#/components/schemas/zone'
+        vlan_id:
+          type: integer
+          description: VLAN ID
+          example: 3000
+        hybrid:
+          $ref: '#/components/schemas/hybrid_connections'
+        server_count:
+          type: integer
+          description: 接続済みサーバー数
+          example: 1
+    hybrid_connections:
+      type: object
+      properties:
+        service_id:
+          type: string
+          description: ハイブリッド接続のサービスコード
+        destinations:
+          type: array
+          items:
+            $ref: '#/components/schemas/hybrid_connection'
+      required:
+        - service_id
+        - destinations
+    hybrid_connection:
+      type: object
+      properties:
+        destination_side_id:
+          type: string
+          description: 接続先サービスでの一意なネットワーク識別子
+          example: '567890123456'
+        service_name:
+          type: string
+          description: 接続先を分類する名称
+          example: クラウド石狩第1ゾーン
+        bridge_service_id:
+          type: string
+          description: 接続先別ハイブリッド接続のサービスコード
+          example: '678901234567'
+
+    # commons
     password_input:
       type: string
       format: password
@@ -1485,6 +2174,125 @@ components:
           type: integer
           description: 総件数
           example: 10
+      required:
+        - count
+    tag:
+      type: object
+      properties:
+        tag_id:
+          type: integer
+          description: タグID
+          example: 1
+        label:
+          type: string
+          description: タグの名称
+          example: タグ入力例
+        color:
+          type: string
+          description: タグの色
+          example: ffffff
+          nullable: true
+      required:
+        - tag_id
+        - label
+        - color
+    zone:
+      type: object
+      properties:
+        zone_id:
+          type: integer
+          description: ネットワークゾーンID
+          example: 303
+        region:
+          type: string
+          description: 地域名
+          example: 石狩
+      required:
+        - zone_id
+        - region
+    ipv4:
+      type: object
+      properties:
+        network_address:
+          type: string
+          format: ipv4
+          description: ネットワークアドレス
+          example: 192.0.2.224
+        prefix_length:
+          type: integer
+          description: ネットワーク長
+          example: 28
+        gateway_address:
+          type: string
+          format: ipv4
+          description: ゲートウェイアドレス
+          example: 192.0.2.225
+        broadcast_address:
+          type: string
+          format: ipv4
+          description: ブロードキャストアドレス
+          example: 192.0.2.239
+        special_use_addresses:
+          type: array
+          description: 特別な用途で割り当て済みのIPアドレスのリスト
+          items:
+            $ref: '#/components/schemas/ipam'
+      required:
+        - network_address
+        - prefix_length
+        - gateway_address
+        - broadcast_address
+        - special_use_address
+    ipv6:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          description: IPv6が有効になっているか
+        network_address:
+          type: string
+          format: ipv6
+          description: ネットワークIPアドレス
+        prefix_length:
+          type: integer
+          description: ネットワーク長
+          example: 64
+        gateway_address:
+          type: string
+          format: ipv6
+          description: ゲートウェイアドレス
+        broadcast_address:
+          type: string
+          format: ipv6
+          description: ブロードキャストアドレス
+        special_use_addresses:
+          type: array
+          description: 特別な用途で割り当て済みのIPアドレスのリスト
+          items:
+            type: object
+            properties:
+              ip_address:
+                type: string
+                format: ipv6
+              type:
+                type: string
+                enum:
+                  - gateway
+                  - gateway_real
+                description: |-
+                  割り当て用途分類
+
+                  * `gateway` - ゲートウェイアドレス
+                  * `gateway_real` - ゲートウェイ機器実機
+      required:
+        - enabled
+        - network_address
+        - prefix_length
+        - gateway_address
+        - broadcast_address
+        - special_use_address
+
+    # errors
     invalid_parameter_detail:
       type: array
       items:
@@ -1622,28 +2430,6 @@ components:
           type: integer
           description: HTTPステータスコード
           example: 429
-#    problem_details_500:
-#      type: object
-#      properties:
-#        type:
-#          type: string
-#          format: uri
-#          example: 'about:blank'
-#        title:
-#          type: string
-#          enum:
-#            - server_error
-#          description: |-
-#            エラー内容を示す簡潔な識別子
-#
-#            * `server_error` - 予期せぬエラー
-#        detail:
-#          type: string
-#          description: 人間のためのエラーメッセージ
-#        status:
-#          type: integer
-#          description: HTTPステータスコード
-#          example: 500
     problem_details_503:
       type: object
       properties:
@@ -1666,774 +2452,6 @@ components:
           type: integer
           description: HTTPステータスコード
           example: 503
-    tag:
-      type: object
-      properties:
-        tag_id:
-          type: integer
-          description: タグID
-          example: 1
-        label:
-          type: string
-          description: タグの名称
-          example: タグ入力例
-        color:
-          type: string
-          description: タグの色
-          example: ffffff
-          nullable: true
-    server:
-      type: object
-      properties:
-        server_id:
-          type: string
-          description: サーバーのサービスコード
-          example: '123456789012'
-        service:
-          $ref: '#/components/schemas/service_quiet'
-        zone:
-          type: object
-          properties:
-            zone_id:
-              type: integer
-              description: ネットワークゾーンID
-              example: 303
-            region:
-              type: string
-              description: 地域名
-              example: 石狩
-        spec:
-          type: object
-          properties:
-            cpu_model_name:
-              type: string
-              description: CPU製品モデル名
-              example: Broadwell E5-2620v4
-            cpu_count:
-              type: integer
-              description: 物理CPU数
-              example: 1
-            cpu_core_count:
-              description: 総CPUコア数
-              type: integer
-              example: 8
-            cpu_clock_speed:
-              type: number
-              format: float
-              description: CPUクロック数(GHz)
-              example: 2.1
-            memory_size:
-              type: integer
-              description: 総メモリ数(GB)
-              example: 48
-            port_channel_1gbe_count:
-              type: integer
-              description: 1GbEネットワークインターフェース ポートチャネル数
-              example: 1
-            port_channel_10gbe_count:
-              type: integer
-              description: 10GbEネットワークインターフェース ポートチャネル数
-              example: 1
-            storages:
-              type: array
-              description: |-
-                ストレージ構成情報
-                同一構成(接続方式,記録方式,容量)ごとの配列
-              items:
-                type: object
-                properties:
-                  size:
-                    type: integer
-                    description: ストレージ1つあたりの容量(GB)
-                    example: 10000
-                  bus_type:
-                    type: string
-                    enum:
-                      - sata
-                      - sas
-                      - nvme
-                    description: |-
-                      ストレージ接続方式
-
-                      * `sata` - SATA
-                      * `sas` - SAS
-                      * `nvme` - NVMe(PCIe)
-                  media_type:
-                    type: string
-                    enum:
-                      - hdd
-                      - ssd
-                      - flash_memory
-                    description: |-
-                      ストレージ記録方式
-
-                      * `hdd` - 磁気HDD
-                      * `ssd` - SSD
-                      * `flash_memory` - Flash Memory(不揮発性メモリ)
-                  device_count:
-                    type: integer
-                    description: ストレージ構成物理デバイス数
-                    example: 2
-            total_storage_device_count:
-              type: integer
-              description: ストレージ構成物理デバイス数の合計
-              example: 2
-        cached_power_status:
-          type: object
-          description: キャッシュされた電源状態(未キャッシュならば`null`)
-          nullable: true
-          properties:
-            status:
-              type: string
-              enum:
-                - 'on'
-                - 'off'
-              description: 電源状態
-            stored:
-              type: string
-              format: date-time
-              description: 電源状態キャッシュの保存時刻
-        ipv4:
-          type: object
-          description: グローバルIPアドレス割り当て情報(未設定時は`null`)
-          nullable: true
-          properties:
-            type:
-              type: string
-              enum:
-                - common_ip_address
-                - dedicated_ip_address
-              description: |-
-                IPアドレスの種類
-
-                * `common_ip_address` - 共用グローバルネットワークのIPアドレス
-                * `dedicated_ip_address` - 専用グローバルネットワークのIPアドレス(割り当て設定が必要)
-            ip_address:
-              type: string
-              format: ipv4
-              description: IPアドレス
-              example: 192.0.2.10
-            network_address:
-              type: string
-              format: ipv4
-              description: ネットワークアドレス
-              example: 192.0.2.0
-            prefix_length:
-              type: integer
-              example: 24
-              description: ネットワーク長
-            gateway_address:
-              type: string
-              format: ipv4
-              description: ゲートウェイアドレス
-              example: 192.0.2.1
-            name_servers:
-              type: array
-              description: DNSサーバーリスト
-              items:
-                type: string
-                format: ipv4
-                description: DNSサーバーIPアドレス
-                example: 192.0.2.200
-        port_channels:
-          type: array
-          items:
-            $ref: '#/components/schemas/port_channel'
-        ports:
-          type: array
-          items:
-            $ref: '#/components/schemas/interface_port'
-        lock_status:
-          type: string
-          nullable: true
-          enum:
-            - os_install
-            - configure_raid
-            - administrative_lock
-          description: |-
-            設定変更処理によるロック状態
-            `null`以外がセットされている場合は
-            OS再インストール,ネットワークIF設定(VLAN,通信無効など),電源操作を受け付けない
-
-            * `os_install` - OSインストール処理中
-            * `configure_raid` - RAID設定処理中
-            * `administrative_lock` - 機器交換,増設などの作業を行っている
-            * `null` - 設定変更を行っていない(処理を完了している)
-    port_channel:
-      type: object
-      description: ネットワークインターフェース ポートチャネル情報
-      properties:
-        port_channel_id:
-          type: integer
-          description: ポートチャネルID
-          example: 1
-        bonding_type:
-          type: string
-          enum:
-            - lacp
-            - static
-            - single
-          description: |-
-            ボンディング方式
-
-            * `lacp` - LACP
-            * `static` - static link aggregation
-            * `single` - ボンディングなし(単体構成)
-        ports:
-          type: array
-          description: ポートチャネルを構成するポートIDのリスト
-          items:
-            type: integer
-            description: ポートID
-          maxItems: 2
-          minItems: 2
-          example:
-            - 1
-            - 2
-        locked:
-          type: boolean
-          description: 設定変更によるロック状態(ロック中の場合は `true`)
-        link_speed_type:
-          type: string
-          enum:
-            - 1gbe
-            - 10gbe
-          description: |-
-            提供速度分類
-
-            * `1gbe` - 1GbE
-            * `10gbe` - 10GbE
-    interface_port:
-      type: object
-      description: ネットワークインターフェースの接続ポート情報
-      properties:
-        port_id:
-          type: integer
-          description: ポートID
-          example: 1
-        nickname:
-          type: string
-          description: インターフェース名称
-          example: インターフェース 1234abcd
-        port_channel_id:
-          type: integer
-          description: 所属ポートチャネルID
-          example: 1
-        mode:
-          type: string
-          nullable: true
-          enum:
-            - access
-            - trunk
-          description: 動作モード(初期化後の未設定時は`null`)
-        global_bandwidth_mbps:
-          type: integer
-          description: |-
-            グローバル側の帯域幅(Mbps)
-            ボンディングされている場合は合計値
-          example: 100
-          nullable: true
-        local_bandwidth_mbps:
-          type: integer
-          description: |-
-            ローカル側の帯域幅(Mbps)
-            ボンディングされている場合は合計値
-          example: 1000
-          nullable: true
-        enabled:
-          type: boolean
-          description: ポート有効状態(通信が有効になっている場合 `true`)
-        internet:
-          type: object
-          nullable: true
-          description: |-
-            グローバルネットワーク情報
-            このポートにインターネット接続が割り当てられていない場合は`null`
-          properties:
-            subnet_type:
-              type: string
-              enum:
-                - common_subnet
-                - dedicated_subnet
-              description: |-
-                グローバルネットワーク分類
-
-                * `common_subnet` - 共用グローバルネットワークのIPアドレスを割り当て
-                * `dedicated_subnet` - 専用グローバルネットワーク割り当て
-            dedicated_subnet:
-              type: object
-              description: 専用グローバルネットワーク情報(共用グローバルネットワーク割り当て時は`null`)
-              nullable: true
-              properties:
-                dedicated_subnet_id:
-                  type: string
-                  description: 専用グローバルネットワークのサービスコード
-                  example: '345678901234'
-                nickname:
-                  type: string
-                  description: 専用グローバルネットワークに設定した名称
-                  example: グローバルネットワーク名
-            network_address:
-              type: string
-              format: ipv4
-              description: ネットワークアドレス
-              example: 192.0.2.0
-            prefix_length:
-              type: integer
-              example: 24
-              description: ネットワーク長
-        private_networks:
-          type: array
-          items:
-            type: object
-            description: ローカルネットワーク情報
-            properties:
-              private_network_id:
-                type: string
-                description: ローカルネットワークID
-                example: '234567890123'
-              nickname:
-                type: string
-                description: ローカルネットワークに設定した名称
-                example: ローカルネットワーク名
-    dedicated_subnet:
-      type: object
-      properties:
-        dedicated_subnet_id:
-          type: string
-          description: 専用グローバルネットワークのサービスコード
-          example: '123456789012'
-        service:
-          $ref: '#/components/schemas/service_quiet'
-        zone:
-          type: object
-          properties:
-            zone_id:
-              type: integer
-              description: ネットワークゾーンID
-              example: 303
-            region:
-              type: string
-              description: 地域名
-              example: 石狩
-        ipv4:
-          type: object
-          properties:
-            network_address:
-              type: string
-              format: ipv4
-              description: ネットワークアドレス
-              example: 192.0.2.224
-            prefix_length:
-              type: integer
-              description: ネットワーク長
-              example: 28
-            gateway_address:
-              type: string
-              format: ipv4
-              description: ゲートウェイアドレス
-              example: 192.0.2.225
-            broadcast_address:
-              type: string
-              format: ipv4
-              description: ブロードキャストアドレス
-              example: 192.0.2.239
-            special_use_addresses:
-              type: array
-              description: 特別な用途で割り当て済みのIPアドレスのリスト
-              items:
-                $ref: '#/components/schemas/ipam'
-        ipv6:
-          type: object
-          properties:
-            enabled:
-              type: boolean
-              description: IPv6が有効になっているか
-            network_address:
-              type: string
-              format: ipv6
-              description: ネットワークIPアドレス
-            prefix_length:
-              type: integer
-              description: ネットワーク長
-              example: 64
-            gateway_address:
-              type: string
-              format: ipv6
-              description: ゲートウェイアドレス
-            broadcast_address:
-              type: string
-              format: ipv6
-              description: ブロードキャストアドレス
-            special_use_addresses:
-              type: array
-              description: 特別な用途で割り当て済みのIPアドレスのリスト
-              items:
-                type: object
-                properties:
-                  ip_address:
-                    type: string
-                    format: ipv6
-                  type:
-                    type: string
-                    enum:
-                      - gateway
-                      - gateway_real
-                    description: |-
-                      割り当て用途分類
-
-                      * `gateway` - ゲートウェイアドレス
-                      * `gateway_real` - ゲートウェイ機器実機
-        server_count:
-          type: integer
-          description: 割り当て済みサーバー数
-          example: 1
-        firewall:
-          type: object
-          nullable: true
-          description: 割り当て済みファイアウォール(利用していない場合は`null`)
-          properties:
-            firewall_id:
-              type: string
-              description: ファイアウォールのサービスコード
-              example: '234567890123'
-            nickname:
-              type: string
-              description: ファイアウォールの名称
-              example: FW名
-        load_balancer:
-          description: 割り当て済みロードバランサー(利用していない場合は`null`)
-          nullable: true
-          properties:
-            load_balancer_id:
-              type: string
-              description: ロードバランサーのサービスコード
-              nullable: true
-              example: '345678901234'
-            nickname:
-              type: string
-              description: ロードバランサーの名称
-              example: LB名
-        config_status:
-          type: string
-          enum:
-            - operational
-            - configure_lb
-            - configure_fw
-            - enable_ipv6
-            - administrative_lock
-          description: |-
-            設定変更によるロック状態
-            `operational` 以外の状態では各種設定変更は不可
-
-            * `operational` - 操作可能
-            * `configure_lb` - LBを設定中
-            * `configure_fw` - FWを設定中
-            * `enable_ipv6` - IPv6設定中
-            * `administrative_lock` - 機器交換などの作業を行っている
-    ipam:
-      type: object
-      properties:
-        ip_address:
-          type: string
-          format: ipv4
-          description: 専用グローバルネットワークのIPアドレス
-        description:
-          type: string
-          example: |-
-            説明文の
-            中身
-          description: IPアドレスに対しての説明文
-        type:
-          type: string
-          enum:
-            - gateway
-            - gateway_real
-            - load_balancer
-            - server
-            - void
-          description: |-
-            割り当て用途分類
-
-            * `gateway` - ゲートウェイアドレス
-            * `gateway_real` - ゲートウェイ機器実機
-            * `load_balancer` - ロードバランサー
-            * `server` - サーバー
-            * `void` - 用途登録なし
-          example: server
-        server:
-          type: object
-          nullable: true
-          properties:
-            server_id:
-              type: string
-              description: サーバーのサービスコード(用途分類が`server`の場合のみ)
-              example: '123456789012'
-            nickname:
-              type: string
-              description: サーバーの名称
-              example: サーバー名
-        use_rdns:
-          type: boolean
-          description: 逆引きDNSを設定しているか否か(設定済みの場合 `true`)
-    private_network:
-      type: object
-      properties:
-        private_network_id:
-          description: ローカルネットワークのID
-          type: string
-          example: '123456789012'
-        service:
-          $ref: '#/components/schemas/service_quiet'
-        zone:
-          type: object
-          properties:
-            zone_id:
-              type: integer
-              description: ネットワークゾーンID
-              example: 303
-            region:
-              type: string
-              description: 地域名
-              example: 石狩
-        vlan_id:
-          type: integer
-          description: VLAN ID
-          example: 3000
-        hybrid:
-          type: object
-          properties:
-            service_id:
-              type: string
-              description: ハイブリッド接続のサービスコード
-            destinations:
-              type: array
-              items:
-                type: object
-                properties:
-                  destination_side_id:
-                    type: string
-                    description: 接続先サービスでの一意なネットワーク識別子
-                    example: '567890123456'
-                  service_name:
-                    type: string
-                    description: 接続先を分類する名称
-                    example: クラウド石狩第1ゾーン
-                  bridge_service_id:
-                    type: string
-                    description: 接続先別ハイブリッド接続のサービスコード
-                    example: '678901234567'
-        server_count:
-          type: integer
-          description: 接続済みサーバー数
-          example: 1
-    service:
-      type: object
-      properties:
-        service_id:
-          type: string
-          example: '123456789012'
-        nickname:
-          type: string
-          example: サーバーやネットワークの簡潔な名前
-          description: 名称：サーバーやネットワークなどの表示名
-        description:
-          type: string
-          nullable: true
-          example: |-
-            サーバーやネットワークの利用用途などを
-            自由に記述
-          description: メモ：サーバーやネットワークなどの説明
-        activated:
-          type: string
-          format: date-time
-          description: 利用開始日時
-        product_category:
-          type: string
-          example: server
-          enum:
-            - server
-            - dedicated_subnet
-            - private_network
-            - firewall
-            - load_balancer
-          description: |-
-            サービスの種類
-
-            * `server` - サーバー
-            * `dedicated_subnet` - 専用グローバルネットワーク
-            * `private_network` - ローカルネットワーク
-            * `firewall` - ファイアウォール
-            * `load_balancer` - ロードバランサー
-        tags:
-          type: array
-          items:
-            $ref: '#/components/schemas/tag'
-        plan:
-          type: object
-          description: プラン情報(ローカルネットワークの場合は`null`)
-          nullable: true
-          properties:
-            plan_id:
-              type: string
-              example: st-f-1cpu-1804_monthly
-            name:
-              type: string
-              example: 月払い 専用サーバ Fujitsu RX2530 M2 Xeon 8Core (18-04)
-        option_plans:
-          type: array
-          items:
-            type: object
-            properties:
-              plan_id:
-                type: string
-                description: プランID
-                example: opt-mem-48g
-              name:
-                type: string
-                example: 月払い OP・専用サーバ メモリ U/G RX2530M2 48GB増設 (Fujitsu) (16-12)
-                description: プラン名称
-              option_class:
-                type: string
-                enum:
-                  - upgrade_memory
-                  - upgrade_storage
-                  - additional_storage1
-                  - additional_storage2
-                  - additional_storage3
-                  - additional_nvme_storage1
-                  - additional_nvme_storage2
-                  - os
-                  - global_bandwidth
-                  - local_bandwidth
-                description: |-
-                  オプション申込区分
-
-                  * `upgrade_memory` - 拡張メモリ
-                  * `upgrade_storage` - ストレージ変更
-                  * `additional_storage1` - 追加ストレージ1
-                  * `additional_storage2` - 追加ストレージ2
-                  * `additional_storage3` - 追加ストレージ3
-                  * `additional_nvme_storage1` - 追加NVMeストレージ1
-                  * `additional_nvme_storage2` - 追加NVMeストレージ2
-                  * `os` - 有償OS
-                  * `global_bandwidth` - インターネット帯域オプション
-                  * `local_bandwidth` - ローカルネットワーク帯域オプション
-    service_quiet:
-      type: object
-      description: サービス情報
-      properties:
-        service_id:
-          type: string
-          description: サービスコード
-          example: '123456789012'
-        nickname:
-          type: string
-          example: サーバーやネットワークの簡潔な名前
-          description: 名称：サーバーやネットワークなどの表示名
-        description:
-          type: string
-          nullable: true
-          example: |-
-            サーバーやネットワークの利用用途などを
-            自由に記述
-          description: メモ：サーバーやネットワークなどの説明
-        activated:
-          type: string
-          format: date-time
-          description: 利用開始日時
-        tags:
-          type: array
-          items:
-            $ref: '#/components/schemas/tag'
-    server_power_status:
-      type: object
-      properties:
-        status:
-          type: string
-          enum:
-            - 'on'
-            - 'off'
-          description: |-
-            サーバーの電源状態
-
-            * `on` - 起動
-            * `off` - 停止
-    raid_status:
-      type: object
-      properties:
-        overall_status:
-          type: string
-          nullable: true
-          enum:
-            - ok
-            - rebuilding
-            - degraded
-            - failed
-          description: |-
-            総合的なRAID論理ボリューム状態
-
-            * `ok` - 全てのRAID論理ボリュームと物理デバイスが正常
-            * `rebuilding` - 再構築中のRAID論理ボリュームが1つ以上ある(物理デバイスは全て正常、冗長性は低下している)
-            * `degraded` - 異常検出した物理デバイスが1つ以上ある(論理ボリュームは利用可能、冗長性は低下している)
-            * `failed` - 故障したRAID論理ボリュームが1つ以上ある(2つ以上の物理デバイスに異常があるRAID5など)
-            * `null` - RAID論理ボリュームがない
-
-            `failed > degraded > rebuilding > ok` の順でより深刻なものが選択される
-        monitored:
-          type: string
-          format: date-time
-          description: RAID状態を取得した時刻
-        logical_volumes:
-          type: array
-          description: 作成済みRAID論理ボリュームのリスト
-          items:
-            type: object
-            properties:
-              volume_id:
-                type: string
-                description: このサーバーのRAID論理ボリュームの一意な識別子
-              status:
-                type: string
-                enum:
-                  - ok
-                  - rebuilding
-                  - degraded
-                  - failed
-                description: このRAID論理ボリュームの状態
-              raid_level:
-                type: string
-                description: RAIDレベル
-              physical_device_ids:
-                type: array
-                items:
-                  type: string
-                  description: この論理ボリューム内の認識済みデバイスの識別子
-                  example: '1'
-        physical_devices:
-          description: 認識済み物理ストレージデバイスのリスト
-          type: array
-          items:
-            type: object
-            properties:
-              device_id:
-                type: string
-                description: サーバーの物理ストレージデバイスの一意な識別子
-                example: '1'
-              slot:
-                type: integer
-                description: 接続スロット番号
-              status:
-                type: string
-                enum:
-                  - ok
-                  - failed
-                description: |-
-                  この物理ストレージデバイスの状態
-
-                  * `ok` - 正常
-                  * `failed` - 異常を検知
-
   responses:
     generic_400:
       description: 入力値検証エラー

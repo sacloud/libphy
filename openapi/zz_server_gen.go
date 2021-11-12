@@ -29,67 +29,67 @@ import (
 type ServerInterface interface {
 	// 専用グローバルネットワーク 一覧
 	// (GET /dedicated_subnets/)
-	GetDedicatedSubnets(c *gin.Context, params GetDedicatedSubnetsParams)
+	ListDedicatedSubnets(c *gin.Context, params ListDedicatedSubnetsParams)
 	// 専用グローバルネットワーク
 	// (GET /dedicated_subnets/{dedicated_subnet_id}/)
-	GetDedicatedSubnetsDedicatedSubnetId(c *gin.Context, dedicatedSubnetId DedicatedSubnetId, params GetDedicatedSubnetsDedicatedSubnetIdParams)
+	ReadDedicatedSubnet(c *gin.Context, dedicatedSubnetId DedicatedSubnetId, params ReadDedicatedSubnetParams)
 	// ローカルネットワーク 一覧
 	// (GET /private_networks/)
-	GetPrivateNetworks(c *gin.Context, params GetPrivateNetworksParams)
+	ListPrivateNetworks(c *gin.Context, params ListPrivateNetworksParams)
 	// ローカルネットワーク 詳細
 	// (GET /private_networks/{private_network_id}/)
-	GetPrivateNetworksPrivateNetworkId(c *gin.Context, privateNetworkId PrivateNetworkId)
+	ReadPrivateNetwork(c *gin.Context, privateNetworkId PrivateNetworkId)
 	// サーバー一覧
 	// (GET /servers/)
-	GetServers(c *gin.Context, params GetServersParams)
+	ListServers(c *gin.Context, params ListServersParams)
 	// サーバー
 	// (GET /servers/{server_id}/)
-	GetServersServerId(c *gin.Context, serverId ServerId)
+	ReadServer(c *gin.Context, serverId ServerId)
 	// インストール可能OS一覧
 	// (GET /servers/{server_id}/os_images/)
-	GetServersServerIdOsImages(c *gin.Context, serverId ServerId)
+	ListOSImages(c *gin.Context, serverId ServerId)
 	// OSインストールの実行
 	// (POST /servers/{server_id}/os_install/)
-	PostServersServerIdOsInstall(c *gin.Context, serverId ServerId, params PostServersServerIdOsInstallParams)
+	OSInstall(c *gin.Context, serverId ServerId, params OSInstallParams)
 	// ポートチャネル状態取得
 	// (GET /servers/{server_id}/port_channels/{port_channel_id}/)
-	GetServersServerIdPortChannelsPortChannelId(c *gin.Context, serverId ServerId, portChannelId PortChannelId)
+	ReadServerPortChannel(c *gin.Context, serverId ServerId, portChannelId PortChannelId)
 	// ポートチャネル ボンディング設定
 	// (POST /servers/{server_id}/port_channels/{port_channel_id}/configure_bonding/)
-	PostServersServerIdPortChannelsPortChannelIdConfigureBonding(c *gin.Context, serverId ServerId, portChannelId PortChannelId, params PostServersServerIdPortChannelsPortChannelIdConfigureBondingParams)
+	SetPortChannelBonding(c *gin.Context, serverId ServerId, portChannelId PortChannelId, params SetPortChannelBondingParams)
 	// ポート情報取得
 	// (GET /servers/{server_id}/ports/{port_id}/)
-	GetServersServerIdPortsPortId(c *gin.Context, serverId ServerId, portId PortId)
+	ReadServerPort(c *gin.Context, serverId ServerId, portId PortId)
 	// ポート名称設定
 	// (PATCH /servers/{server_id}/ports/{port_id}/)
-	PatchServersServerIdPortsPortId(c *gin.Context, serverId ServerId, portId PortId, params PatchServersServerIdPortsPortIdParams)
+	UpdateServerPort(c *gin.Context, serverId ServerId, portId PortId, params UpdateServerPortParams)
 	// ネットワーク接続設定の変更
 	// (POST /servers/{server_id}/ports/{port_id}/assign_network/)
-	PostServersServerIdPortsPortIdAssignNetwork(c *gin.Context, serverId ServerId, portId PortId, params PostServersServerIdPortsPortIdAssignNetworkParams)
+	SetServerPortNetworkConnection(c *gin.Context, serverId ServerId, portId PortId, params SetServerPortNetworkConnectionParams)
 	// ポート有効/無効設定
 	// (POST /servers/{server_id}/ports/{port_id}/enable/)
-	PostServersServerIdPortsPortIdEnable(c *gin.Context, serverId ServerId, portId PortId, params PostServersServerIdPortsPortIdEnableParams)
+	SetServerPortEnabled(c *gin.Context, serverId ServerId, portId PortId, params SetServerPortEnabledParams)
 	// トラフィックデータ取得
 	// (GET /servers/{server_id}/ports/{port_id}/traffic_graph/)
-	GetServersServerIdPortsPortIdTrafficGraph(c *gin.Context, serverId ServerId, portId PortId, params GetServersServerIdPortsPortIdTrafficGraphParams)
+	ReadServerTrafficByPort(c *gin.Context, serverId ServerId, portId PortId, params ReadServerTrafficByPortParams)
 	// サーバーの電源操作
 	// (POST /servers/{server_id}/power_control/)
-	PostServersServerIdPowerControl(c *gin.Context, serverId ServerId, params PostServersServerIdPowerControlParams)
+	SetServerPowerStatus(c *gin.Context, serverId ServerId, params SetServerPowerStatusParams)
 	// サーバーの電源情報を取得する
 	// (GET /servers/{server_id}/power_status/)
-	GetServersServerIdPowerStatus(c *gin.Context, serverId ServerId)
+	ReadServerPowerStatus(c *gin.Context, serverId ServerId)
 	// サーバーのRAID状態を取得
 	// (GET /servers/{server_id}/raid_status/)
-	GetServersServerIdRaidStatus(c *gin.Context, serverId ServerId, params GetServersServerIdRaidStatusParams)
+	ReadRAIDStatus(c *gin.Context, serverId ServerId, params ReadRAIDStatusParams)
 	// サービス一覧
 	// (GET /services/)
-	GetServices(c *gin.Context, params GetServicesParams)
+	ListServices(c *gin.Context, params ListServicesParams)
 	// サービス 詳細
 	// (GET /services/{service_id}/)
-	GetServicesServiceId(c *gin.Context, serviceId ServiceId)
+	ReadService(c *gin.Context, serviceId ServiceId)
 	// サービスの名称・説明の変更
 	// (PATCH /services/{service_id}/)
-	PatchServicesServiceId(c *gin.Context, serviceId ServiceId, params PatchServicesServiceIdParams)
+	UpdateService(c *gin.Context, serviceId ServiceId, params UpdateServiceParams)
 }
 
 // ServerInterfaceWrapper converts contexts to parameters.
@@ -100,15 +100,15 @@ type ServerInterfaceWrapper struct {
 
 type MiddlewareFunc func(c *gin.Context)
 
-// GetDedicatedSubnets operation middleware
-func (siw *ServerInterfaceWrapper) GetDedicatedSubnets(c *gin.Context) {
+// ListDedicatedSubnets operation middleware
+func (siw *ServerInterfaceWrapper) ListDedicatedSubnets(c *gin.Context) {
 
 	var err error
 
 	c.Set(Account_api_keyScopes, []string{""})
 
 	// Parameter object where we will unmarshal all parameters from the context
-	var params GetDedicatedSubnetsParams
+	var params ListDedicatedSubnetsParams
 
 	// ------------- Optional query parameter "tag" -------------
 	if paramValue := c.Query("tag"); paramValue != "" {
@@ -169,11 +169,11 @@ func (siw *ServerInterfaceWrapper) GetDedicatedSubnets(c *gin.Context) {
 		middleware(c)
 	}
 
-	siw.Handler.GetDedicatedSubnets(c, params)
+	siw.Handler.ListDedicatedSubnets(c, params)
 }
 
-// GetDedicatedSubnetsDedicatedSubnetId operation middleware
-func (siw *ServerInterfaceWrapper) GetDedicatedSubnetsDedicatedSubnetId(c *gin.Context) {
+// ReadDedicatedSubnet operation middleware
+func (siw *ServerInterfaceWrapper) ReadDedicatedSubnet(c *gin.Context) {
 
 	var err error
 
@@ -189,7 +189,7 @@ func (siw *ServerInterfaceWrapper) GetDedicatedSubnetsDedicatedSubnetId(c *gin.C
 	c.Set(Account_api_keyScopes, []string{""})
 
 	// Parameter object where we will unmarshal all parameters from the context
-	var params GetDedicatedSubnetsDedicatedSubnetIdParams
+	var params ReadDedicatedSubnetParams
 
 	// ------------- Optional query parameter "refresh" -------------
 	if paramValue := c.Query("refresh"); paramValue != "" {
@@ -206,18 +206,18 @@ func (siw *ServerInterfaceWrapper) GetDedicatedSubnetsDedicatedSubnetId(c *gin.C
 		middleware(c)
 	}
 
-	siw.Handler.GetDedicatedSubnetsDedicatedSubnetId(c, dedicatedSubnetId, params)
+	siw.Handler.ReadDedicatedSubnet(c, dedicatedSubnetId, params)
 }
 
-// GetPrivateNetworks operation middleware
-func (siw *ServerInterfaceWrapper) GetPrivateNetworks(c *gin.Context) {
+// ListPrivateNetworks operation middleware
+func (siw *ServerInterfaceWrapper) ListPrivateNetworks(c *gin.Context) {
 
 	var err error
 
 	c.Set(Account_api_keyScopes, []string{""})
 
 	// Parameter object where we will unmarshal all parameters from the context
-	var params GetPrivateNetworksParams
+	var params ListPrivateNetworksParams
 
 	// ------------- Optional query parameter "tag" -------------
 	if paramValue := c.Query("tag"); paramValue != "" {
@@ -278,11 +278,11 @@ func (siw *ServerInterfaceWrapper) GetPrivateNetworks(c *gin.Context) {
 		middleware(c)
 	}
 
-	siw.Handler.GetPrivateNetworks(c, params)
+	siw.Handler.ListPrivateNetworks(c, params)
 }
 
-// GetPrivateNetworksPrivateNetworkId operation middleware
-func (siw *ServerInterfaceWrapper) GetPrivateNetworksPrivateNetworkId(c *gin.Context) {
+// ReadPrivateNetwork operation middleware
+func (siw *ServerInterfaceWrapper) ReadPrivateNetwork(c *gin.Context) {
 
 	var err error
 
@@ -301,18 +301,18 @@ func (siw *ServerInterfaceWrapper) GetPrivateNetworksPrivateNetworkId(c *gin.Con
 		middleware(c)
 	}
 
-	siw.Handler.GetPrivateNetworksPrivateNetworkId(c, privateNetworkId)
+	siw.Handler.ReadPrivateNetwork(c, privateNetworkId)
 }
 
-// GetServers operation middleware
-func (siw *ServerInterfaceWrapper) GetServers(c *gin.Context) {
+// ListServers operation middleware
+func (siw *ServerInterfaceWrapper) ListServers(c *gin.Context) {
 
 	var err error
 
 	c.Set(Account_api_keyScopes, []string{""})
 
 	// Parameter object where we will unmarshal all parameters from the context
-	var params GetServersParams
+	var params ListServersParams
 
 	// ------------- Optional query parameter "power_status" -------------
 	if paramValue := c.Query("power_status"); paramValue != "" {
@@ -406,11 +406,11 @@ func (siw *ServerInterfaceWrapper) GetServers(c *gin.Context) {
 		middleware(c)
 	}
 
-	siw.Handler.GetServers(c, params)
+	siw.Handler.ListServers(c, params)
 }
 
-// GetServersServerId operation middleware
-func (siw *ServerInterfaceWrapper) GetServersServerId(c *gin.Context) {
+// ReadServer operation middleware
+func (siw *ServerInterfaceWrapper) ReadServer(c *gin.Context) {
 
 	var err error
 
@@ -429,11 +429,11 @@ func (siw *ServerInterfaceWrapper) GetServersServerId(c *gin.Context) {
 		middleware(c)
 	}
 
-	siw.Handler.GetServersServerId(c, serverId)
+	siw.Handler.ReadServer(c, serverId)
 }
 
-// GetServersServerIdOsImages operation middleware
-func (siw *ServerInterfaceWrapper) GetServersServerIdOsImages(c *gin.Context) {
+// ListOSImages operation middleware
+func (siw *ServerInterfaceWrapper) ListOSImages(c *gin.Context) {
 
 	var err error
 
@@ -452,11 +452,11 @@ func (siw *ServerInterfaceWrapper) GetServersServerIdOsImages(c *gin.Context) {
 		middleware(c)
 	}
 
-	siw.Handler.GetServersServerIdOsImages(c, serverId)
+	siw.Handler.ListOSImages(c, serverId)
 }
 
-// PostServersServerIdOsInstall operation middleware
-func (siw *ServerInterfaceWrapper) PostServersServerIdOsInstall(c *gin.Context) {
+// OSInstall operation middleware
+func (siw *ServerInterfaceWrapper) OSInstall(c *gin.Context) {
 
 	var err error
 
@@ -472,13 +472,13 @@ func (siw *ServerInterfaceWrapper) PostServersServerIdOsInstall(c *gin.Context) 
 	c.Set(Account_api_keyScopes, []string{""})
 
 	// Parameter object where we will unmarshal all parameters from the context
-	var params PostServersServerIdOsInstallParams
+	var params OSInstallParams
 
 	headers := c.Request.Header
 
 	// ------------- Required header parameter "X-Requested-With" -------------
 	if valueList, found := headers[http.CanonicalHeaderKey("X-Requested-With")]; found {
-		var XRequestedWith PostServersServerIdOsInstallParamsXRequestedWith
+		var XRequestedWith OSInstallParamsXRequestedWith
 		n := len(valueList)
 		if n != 1 {
 			c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Expected one value for X-Requested-With, got %d", n)})
@@ -502,11 +502,11 @@ func (siw *ServerInterfaceWrapper) PostServersServerIdOsInstall(c *gin.Context) 
 		middleware(c)
 	}
 
-	siw.Handler.PostServersServerIdOsInstall(c, serverId, params)
+	siw.Handler.OSInstall(c, serverId, params)
 }
 
-// GetServersServerIdPortChannelsPortChannelId operation middleware
-func (siw *ServerInterfaceWrapper) GetServersServerIdPortChannelsPortChannelId(c *gin.Context) {
+// ReadServerPortChannel operation middleware
+func (siw *ServerInterfaceWrapper) ReadServerPortChannel(c *gin.Context) {
 
 	var err error
 
@@ -534,11 +534,11 @@ func (siw *ServerInterfaceWrapper) GetServersServerIdPortChannelsPortChannelId(c
 		middleware(c)
 	}
 
-	siw.Handler.GetServersServerIdPortChannelsPortChannelId(c, serverId, portChannelId)
+	siw.Handler.ReadServerPortChannel(c, serverId, portChannelId)
 }
 
-// PostServersServerIdPortChannelsPortChannelIdConfigureBonding operation middleware
-func (siw *ServerInterfaceWrapper) PostServersServerIdPortChannelsPortChannelIdConfigureBonding(c *gin.Context) {
+// SetPortChannelBonding operation middleware
+func (siw *ServerInterfaceWrapper) SetPortChannelBonding(c *gin.Context) {
 
 	var err error
 
@@ -563,13 +563,13 @@ func (siw *ServerInterfaceWrapper) PostServersServerIdPortChannelsPortChannelIdC
 	c.Set(Account_api_keyScopes, []string{""})
 
 	// Parameter object where we will unmarshal all parameters from the context
-	var params PostServersServerIdPortChannelsPortChannelIdConfigureBondingParams
+	var params SetPortChannelBondingParams
 
 	headers := c.Request.Header
 
 	// ------------- Required header parameter "X-Requested-With" -------------
 	if valueList, found := headers[http.CanonicalHeaderKey("X-Requested-With")]; found {
-		var XRequestedWith PostServersServerIdPortChannelsPortChannelIdConfigureBondingParamsXRequestedWith
+		var XRequestedWith SetPortChannelBondingParamsXRequestedWith
 		n := len(valueList)
 		if n != 1 {
 			c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Expected one value for X-Requested-With, got %d", n)})
@@ -593,11 +593,11 @@ func (siw *ServerInterfaceWrapper) PostServersServerIdPortChannelsPortChannelIdC
 		middleware(c)
 	}
 
-	siw.Handler.PostServersServerIdPortChannelsPortChannelIdConfigureBonding(c, serverId, portChannelId, params)
+	siw.Handler.SetPortChannelBonding(c, serverId, portChannelId, params)
 }
 
-// GetServersServerIdPortsPortId operation middleware
-func (siw *ServerInterfaceWrapper) GetServersServerIdPortsPortId(c *gin.Context) {
+// ReadServerPort operation middleware
+func (siw *ServerInterfaceWrapper) ReadServerPort(c *gin.Context) {
 
 	var err error
 
@@ -625,11 +625,11 @@ func (siw *ServerInterfaceWrapper) GetServersServerIdPortsPortId(c *gin.Context)
 		middleware(c)
 	}
 
-	siw.Handler.GetServersServerIdPortsPortId(c, serverId, portId)
+	siw.Handler.ReadServerPort(c, serverId, portId)
 }
 
-// PatchServersServerIdPortsPortId operation middleware
-func (siw *ServerInterfaceWrapper) PatchServersServerIdPortsPortId(c *gin.Context) {
+// UpdateServerPort operation middleware
+func (siw *ServerInterfaceWrapper) UpdateServerPort(c *gin.Context) {
 
 	var err error
 
@@ -654,13 +654,13 @@ func (siw *ServerInterfaceWrapper) PatchServersServerIdPortsPortId(c *gin.Contex
 	c.Set(Account_api_keyScopes, []string{""})
 
 	// Parameter object where we will unmarshal all parameters from the context
-	var params PatchServersServerIdPortsPortIdParams
+	var params UpdateServerPortParams
 
 	headers := c.Request.Header
 
 	// ------------- Required header parameter "X-Requested-With" -------------
 	if valueList, found := headers[http.CanonicalHeaderKey("X-Requested-With")]; found {
-		var XRequestedWith PatchServersServerIdPortsPortIdParamsXRequestedWith
+		var XRequestedWith UpdateServerPortParamsXRequestedWith
 		n := len(valueList)
 		if n != 1 {
 			c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Expected one value for X-Requested-With, got %d", n)})
@@ -684,11 +684,11 @@ func (siw *ServerInterfaceWrapper) PatchServersServerIdPortsPortId(c *gin.Contex
 		middleware(c)
 	}
 
-	siw.Handler.PatchServersServerIdPortsPortId(c, serverId, portId, params)
+	siw.Handler.UpdateServerPort(c, serverId, portId, params)
 }
 
-// PostServersServerIdPortsPortIdAssignNetwork operation middleware
-func (siw *ServerInterfaceWrapper) PostServersServerIdPortsPortIdAssignNetwork(c *gin.Context) {
+// SetServerPortNetworkConnection operation middleware
+func (siw *ServerInterfaceWrapper) SetServerPortNetworkConnection(c *gin.Context) {
 
 	var err error
 
@@ -713,13 +713,13 @@ func (siw *ServerInterfaceWrapper) PostServersServerIdPortsPortIdAssignNetwork(c
 	c.Set(Account_api_keyScopes, []string{""})
 
 	// Parameter object where we will unmarshal all parameters from the context
-	var params PostServersServerIdPortsPortIdAssignNetworkParams
+	var params SetServerPortNetworkConnectionParams
 
 	headers := c.Request.Header
 
 	// ------------- Required header parameter "X-Requested-With" -------------
 	if valueList, found := headers[http.CanonicalHeaderKey("X-Requested-With")]; found {
-		var XRequestedWith PostServersServerIdPortsPortIdAssignNetworkParamsXRequestedWith
+		var XRequestedWith SetServerPortNetworkConnectionParamsXRequestedWith
 		n := len(valueList)
 		if n != 1 {
 			c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Expected one value for X-Requested-With, got %d", n)})
@@ -743,11 +743,11 @@ func (siw *ServerInterfaceWrapper) PostServersServerIdPortsPortIdAssignNetwork(c
 		middleware(c)
 	}
 
-	siw.Handler.PostServersServerIdPortsPortIdAssignNetwork(c, serverId, portId, params)
+	siw.Handler.SetServerPortNetworkConnection(c, serverId, portId, params)
 }
 
-// PostServersServerIdPortsPortIdEnable operation middleware
-func (siw *ServerInterfaceWrapper) PostServersServerIdPortsPortIdEnable(c *gin.Context) {
+// SetServerPortEnabled operation middleware
+func (siw *ServerInterfaceWrapper) SetServerPortEnabled(c *gin.Context) {
 
 	var err error
 
@@ -772,13 +772,13 @@ func (siw *ServerInterfaceWrapper) PostServersServerIdPortsPortIdEnable(c *gin.C
 	c.Set(Account_api_keyScopes, []string{""})
 
 	// Parameter object where we will unmarshal all parameters from the context
-	var params PostServersServerIdPortsPortIdEnableParams
+	var params SetServerPortEnabledParams
 
 	headers := c.Request.Header
 
 	// ------------- Required header parameter "X-Requested-With" -------------
 	if valueList, found := headers[http.CanonicalHeaderKey("X-Requested-With")]; found {
-		var XRequestedWith PostServersServerIdPortsPortIdEnableParamsXRequestedWith
+		var XRequestedWith SetServerPortEnabledParamsXRequestedWith
 		n := len(valueList)
 		if n != 1 {
 			c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Expected one value for X-Requested-With, got %d", n)})
@@ -802,11 +802,11 @@ func (siw *ServerInterfaceWrapper) PostServersServerIdPortsPortIdEnable(c *gin.C
 		middleware(c)
 	}
 
-	siw.Handler.PostServersServerIdPortsPortIdEnable(c, serverId, portId, params)
+	siw.Handler.SetServerPortEnabled(c, serverId, portId, params)
 }
 
-// GetServersServerIdPortsPortIdTrafficGraph operation middleware
-func (siw *ServerInterfaceWrapper) GetServersServerIdPortsPortIdTrafficGraph(c *gin.Context) {
+// ReadServerTrafficByPort operation middleware
+func (siw *ServerInterfaceWrapper) ReadServerTrafficByPort(c *gin.Context) {
 
 	var err error
 
@@ -831,7 +831,7 @@ func (siw *ServerInterfaceWrapper) GetServersServerIdPortsPortIdTrafficGraph(c *
 	c.Set(Account_api_keyScopes, []string{""})
 
 	// Parameter object where we will unmarshal all parameters from the context
-	var params GetServersServerIdPortsPortIdTrafficGraphParams
+	var params ReadServerTrafficByPortParams
 
 	// ------------- Optional query parameter "since" -------------
 	if paramValue := c.Query("since"); paramValue != "" {
@@ -870,11 +870,11 @@ func (siw *ServerInterfaceWrapper) GetServersServerIdPortsPortIdTrafficGraph(c *
 		middleware(c)
 	}
 
-	siw.Handler.GetServersServerIdPortsPortIdTrafficGraph(c, serverId, portId, params)
+	siw.Handler.ReadServerTrafficByPort(c, serverId, portId, params)
 }
 
-// PostServersServerIdPowerControl operation middleware
-func (siw *ServerInterfaceWrapper) PostServersServerIdPowerControl(c *gin.Context) {
+// SetServerPowerStatus operation middleware
+func (siw *ServerInterfaceWrapper) SetServerPowerStatus(c *gin.Context) {
 
 	var err error
 
@@ -890,13 +890,13 @@ func (siw *ServerInterfaceWrapper) PostServersServerIdPowerControl(c *gin.Contex
 	c.Set(Account_api_keyScopes, []string{""})
 
 	// Parameter object where we will unmarshal all parameters from the context
-	var params PostServersServerIdPowerControlParams
+	var params SetServerPowerStatusParams
 
 	headers := c.Request.Header
 
 	// ------------- Required header parameter "X-Requested-With" -------------
 	if valueList, found := headers[http.CanonicalHeaderKey("X-Requested-With")]; found {
-		var XRequestedWith PostServersServerIdPowerControlParamsXRequestedWith
+		var XRequestedWith SetServerPowerStatusParamsXRequestedWith
 		n := len(valueList)
 		if n != 1 {
 			c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Expected one value for X-Requested-With, got %d", n)})
@@ -920,11 +920,11 @@ func (siw *ServerInterfaceWrapper) PostServersServerIdPowerControl(c *gin.Contex
 		middleware(c)
 	}
 
-	siw.Handler.PostServersServerIdPowerControl(c, serverId, params)
+	siw.Handler.SetServerPowerStatus(c, serverId, params)
 }
 
-// GetServersServerIdPowerStatus operation middleware
-func (siw *ServerInterfaceWrapper) GetServersServerIdPowerStatus(c *gin.Context) {
+// ReadServerPowerStatus operation middleware
+func (siw *ServerInterfaceWrapper) ReadServerPowerStatus(c *gin.Context) {
 
 	var err error
 
@@ -943,11 +943,11 @@ func (siw *ServerInterfaceWrapper) GetServersServerIdPowerStatus(c *gin.Context)
 		middleware(c)
 	}
 
-	siw.Handler.GetServersServerIdPowerStatus(c, serverId)
+	siw.Handler.ReadServerPowerStatus(c, serverId)
 }
 
-// GetServersServerIdRaidStatus operation middleware
-func (siw *ServerInterfaceWrapper) GetServersServerIdRaidStatus(c *gin.Context) {
+// ReadRAIDStatus operation middleware
+func (siw *ServerInterfaceWrapper) ReadRAIDStatus(c *gin.Context) {
 
 	var err error
 
@@ -963,7 +963,7 @@ func (siw *ServerInterfaceWrapper) GetServersServerIdRaidStatus(c *gin.Context) 
 	c.Set(Account_api_keyScopes, []string{""})
 
 	// Parameter object where we will unmarshal all parameters from the context
-	var params GetServersServerIdRaidStatusParams
+	var params ReadRAIDStatusParams
 
 	// ------------- Optional query parameter "refresh" -------------
 	if paramValue := c.Query("refresh"); paramValue != "" {
@@ -980,18 +980,18 @@ func (siw *ServerInterfaceWrapper) GetServersServerIdRaidStatus(c *gin.Context) 
 		middleware(c)
 	}
 
-	siw.Handler.GetServersServerIdRaidStatus(c, serverId, params)
+	siw.Handler.ReadRAIDStatus(c, serverId, params)
 }
 
-// GetServices operation middleware
-func (siw *ServerInterfaceWrapper) GetServices(c *gin.Context) {
+// ListServices operation middleware
+func (siw *ServerInterfaceWrapper) ListServices(c *gin.Context) {
 
 	var err error
 
 	c.Set(Account_api_keyScopes, []string{""})
 
 	// Parameter object where we will unmarshal all parameters from the context
-	var params GetServicesParams
+	var params ListServicesParams
 
 	// ------------- Optional query parameter "product_category" -------------
 	if paramValue := c.Query("product_category"); paramValue != "" {
@@ -1063,11 +1063,11 @@ func (siw *ServerInterfaceWrapper) GetServices(c *gin.Context) {
 		middleware(c)
 	}
 
-	siw.Handler.GetServices(c, params)
+	siw.Handler.ListServices(c, params)
 }
 
-// GetServicesServiceId operation middleware
-func (siw *ServerInterfaceWrapper) GetServicesServiceId(c *gin.Context) {
+// ReadService operation middleware
+func (siw *ServerInterfaceWrapper) ReadService(c *gin.Context) {
 
 	var err error
 
@@ -1086,11 +1086,11 @@ func (siw *ServerInterfaceWrapper) GetServicesServiceId(c *gin.Context) {
 		middleware(c)
 	}
 
-	siw.Handler.GetServicesServiceId(c, serviceId)
+	siw.Handler.ReadService(c, serviceId)
 }
 
-// PatchServicesServiceId operation middleware
-func (siw *ServerInterfaceWrapper) PatchServicesServiceId(c *gin.Context) {
+// UpdateService operation middleware
+func (siw *ServerInterfaceWrapper) UpdateService(c *gin.Context) {
 
 	var err error
 
@@ -1106,13 +1106,13 @@ func (siw *ServerInterfaceWrapper) PatchServicesServiceId(c *gin.Context) {
 	c.Set(Account_api_keyScopes, []string{""})
 
 	// Parameter object where we will unmarshal all parameters from the context
-	var params PatchServicesServiceIdParams
+	var params UpdateServiceParams
 
 	headers := c.Request.Header
 
 	// ------------- Required header parameter "X-Requested-With" -------------
 	if valueList, found := headers[http.CanonicalHeaderKey("X-Requested-With")]; found {
-		var XRequestedWith PatchServicesServiceIdParamsXRequestedWith
+		var XRequestedWith UpdateServiceParamsXRequestedWith
 		n := len(valueList)
 		if n != 1 {
 			c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Expected one value for X-Requested-With, got %d", n)})
@@ -1136,7 +1136,7 @@ func (siw *ServerInterfaceWrapper) PatchServicesServiceId(c *gin.Context) {
 		middleware(c)
 	}
 
-	siw.Handler.PatchServicesServiceId(c, serviceId, params)
+	siw.Handler.UpdateService(c, serviceId, params)
 }
 
 // GinServerOptions provides options for the Gin server.
@@ -1157,47 +1157,47 @@ func RegisterHandlersWithOptions(router *gin.Engine, si ServerInterface, options
 		HandlerMiddlewares: options.Middlewares,
 	}
 
-	router.GET(options.BaseURL+"/dedicated_subnets/", wrapper.GetDedicatedSubnets)
+	router.GET(options.BaseURL+"/dedicated_subnets/", wrapper.ListDedicatedSubnets)
 
-	router.GET(options.BaseURL+"/dedicated_subnets/:dedicated_subnet_id/", wrapper.GetDedicatedSubnetsDedicatedSubnetId)
+	router.GET(options.BaseURL+"/dedicated_subnets/:dedicated_subnet_id/", wrapper.ReadDedicatedSubnet)
 
-	router.GET(options.BaseURL+"/private_networks/", wrapper.GetPrivateNetworks)
+	router.GET(options.BaseURL+"/private_networks/", wrapper.ListPrivateNetworks)
 
-	router.GET(options.BaseURL+"/private_networks/:private_network_id/", wrapper.GetPrivateNetworksPrivateNetworkId)
+	router.GET(options.BaseURL+"/private_networks/:private_network_id/", wrapper.ReadPrivateNetwork)
 
-	router.GET(options.BaseURL+"/servers/", wrapper.GetServers)
+	router.GET(options.BaseURL+"/servers/", wrapper.ListServers)
 
-	router.GET(options.BaseURL+"/servers/:server_id/", wrapper.GetServersServerId)
+	router.GET(options.BaseURL+"/servers/:server_id/", wrapper.ReadServer)
 
-	router.GET(options.BaseURL+"/servers/:server_id/os_images/", wrapper.GetServersServerIdOsImages)
+	router.GET(options.BaseURL+"/servers/:server_id/os_images/", wrapper.ListOSImages)
 
-	router.POST(options.BaseURL+"/servers/:server_id/os_install/", wrapper.PostServersServerIdOsInstall)
+	router.POST(options.BaseURL+"/servers/:server_id/os_install/", wrapper.OSInstall)
 
-	router.GET(options.BaseURL+"/servers/:server_id/port_channels/:port_channel_id/", wrapper.GetServersServerIdPortChannelsPortChannelId)
+	router.GET(options.BaseURL+"/servers/:server_id/port_channels/:port_channel_id/", wrapper.ReadServerPortChannel)
 
-	router.POST(options.BaseURL+"/servers/:server_id/port_channels/:port_channel_id/configure_bonding/", wrapper.PostServersServerIdPortChannelsPortChannelIdConfigureBonding)
+	router.POST(options.BaseURL+"/servers/:server_id/port_channels/:port_channel_id/configure_bonding/", wrapper.SetPortChannelBonding)
 
-	router.GET(options.BaseURL+"/servers/:server_id/ports/:port_id/", wrapper.GetServersServerIdPortsPortId)
+	router.GET(options.BaseURL+"/servers/:server_id/ports/:port_id/", wrapper.ReadServerPort)
 
-	router.PATCH(options.BaseURL+"/servers/:server_id/ports/:port_id/", wrapper.PatchServersServerIdPortsPortId)
+	router.PATCH(options.BaseURL+"/servers/:server_id/ports/:port_id/", wrapper.UpdateServerPort)
 
-	router.POST(options.BaseURL+"/servers/:server_id/ports/:port_id/assign_network/", wrapper.PostServersServerIdPortsPortIdAssignNetwork)
+	router.POST(options.BaseURL+"/servers/:server_id/ports/:port_id/assign_network/", wrapper.SetServerPortNetworkConnection)
 
-	router.POST(options.BaseURL+"/servers/:server_id/ports/:port_id/enable/", wrapper.PostServersServerIdPortsPortIdEnable)
+	router.POST(options.BaseURL+"/servers/:server_id/ports/:port_id/enable/", wrapper.SetServerPortEnabled)
 
-	router.GET(options.BaseURL+"/servers/:server_id/ports/:port_id/traffic_graph/", wrapper.GetServersServerIdPortsPortIdTrafficGraph)
+	router.GET(options.BaseURL+"/servers/:server_id/ports/:port_id/traffic_graph/", wrapper.ReadServerTrafficByPort)
 
-	router.POST(options.BaseURL+"/servers/:server_id/power_control/", wrapper.PostServersServerIdPowerControl)
+	router.POST(options.BaseURL+"/servers/:server_id/power_control/", wrapper.SetServerPowerStatus)
 
-	router.GET(options.BaseURL+"/servers/:server_id/power_status/", wrapper.GetServersServerIdPowerStatus)
+	router.GET(options.BaseURL+"/servers/:server_id/power_status/", wrapper.ReadServerPowerStatus)
 
-	router.GET(options.BaseURL+"/servers/:server_id/raid_status/", wrapper.GetServersServerIdRaidStatus)
+	router.GET(options.BaseURL+"/servers/:server_id/raid_status/", wrapper.ReadRAIDStatus)
 
-	router.GET(options.BaseURL+"/services/", wrapper.GetServices)
+	router.GET(options.BaseURL+"/services/", wrapper.ListServices)
 
-	router.GET(options.BaseURL+"/services/:service_id/", wrapper.GetServicesServiceId)
+	router.GET(options.BaseURL+"/services/:service_id/", wrapper.ReadService)
 
-	router.PATCH(options.BaseURL+"/services/:service_id/", wrapper.PatchServicesServiceId)
+	router.PATCH(options.BaseURL+"/services/:service_id/", wrapper.UpdateService)
 
 	return router
 }

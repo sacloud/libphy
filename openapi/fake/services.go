@@ -19,20 +19,17 @@ import (
 	"github.com/sacloud/phy-go/openapi"
 )
 
-// GetServices サービス一覧
+// ListServices サービス一覧
 // (GET /services/)
-func (s *Server) GetServices(c *gin.Context, params openapi.GetServicesParams) {
-
+func (s *Server) ListServices(c *gin.Context, params openapi.ListServicesParams) {
 }
 
-// GetServicesServiceId サービス 詳細
+// ReadService サービス 詳細
 // (GET /services/{service_id}/)
-func (s *Server) GetServicesServiceId(c *gin.Context, serviceId openapi.ServiceId) {
-
+func (s *Server) ReadService(c *gin.Context, serviceId openapi.ServiceId) {
 }
 
-// PatchServicesServiceId サービスの名称・説明の変更
+// UpdateService サービスの名称・説明の変更
 // (PATCH /services/{service_id}/)
-func (s *Server) PatchServicesServiceId(c *gin.Context, serviceId openapi.ServiceId, params openapi.PatchServicesServiceIdParams) {
-
+func (s *Server) UpdateService(c *gin.Context, serviceId openapi.ServiceId, params openapi.UpdateServiceParams) {
 }

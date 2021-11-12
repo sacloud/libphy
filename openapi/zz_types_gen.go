@@ -27,6 +27,27 @@ const (
 	Account_api_keyScopes = "account_api_key.Scopes"
 )
 
+// Defines values for AssignNetworkInternetType.
+const (
+	AssignNetworkInternetTypeCommonSubnet AssignNetworkInternetType = "common_subnet"
+
+	AssignNetworkInternetTypeDedicatedSubnet AssignNetworkInternetType = "dedicated_subnet"
+)
+
+// Defines values for AssignNetworkMode.
+const (
+	AssignNetworkModeAccess AssignNetworkMode = "access"
+
+	AssignNetworkModeTrunk AssignNetworkMode = "trunk"
+)
+
+// Defines values for CachedPowerStatusStatus.
+const (
+	CachedPowerStatusStatusOff CachedPowerStatusStatus = "off"
+
+	CachedPowerStatusStatusOn CachedPowerStatusStatus = "on"
+)
+
 // Defines values for DedicatedSubnetConfigStatus.
 const (
 	DedicatedSubnetConfigStatusAdministrativeLock DedicatedSubnetConfigStatus = "administrative_lock"
@@ -40,25 +61,18 @@ const (
 	DedicatedSubnetConfigStatusOperational DedicatedSubnetConfigStatus = "operational"
 )
 
-// Defines values for DedicatedSubnetIpv6SpecialUseAddressesType.
-const (
-	DedicatedSubnetIpv6SpecialUseAddressesTypeGateway DedicatedSubnetIpv6SpecialUseAddressesType = "gateway"
-
-	DedicatedSubnetIpv6SpecialUseAddressesTypeGatewayReal DedicatedSubnetIpv6SpecialUseAddressesType = "gateway_real"
-)
-
-// Defines values for InterfacePortInternetSubnetType.
-const (
-	InterfacePortInternetSubnetTypeCommonSubnet InterfacePortInternetSubnetType = "common_subnet"
-
-	InterfacePortInternetSubnetTypeDedicatedSubnet InterfacePortInternetSubnetType = "dedicated_subnet"
-)
-
 // Defines values for InterfacePortMode.
 const (
 	InterfacePortModeAccess InterfacePortMode = "access"
 
 	InterfacePortModeTrunk InterfacePortMode = "trunk"
+)
+
+// Defines values for InternetSubnetType.
+const (
+	InternetSubnetTypeCommonSubnet InternetSubnetType = "common_subnet"
+
+	InternetSubnetTypeDedicatedSubnet InternetSubnetType = "dedicated_subnet"
 )
 
 // Defines values for IpamType.
@@ -72,6 +86,13 @@ const (
 	IpamTypeServer IpamType = "server"
 
 	IpamTypeVoid IpamType = "void"
+)
+
+// Defines values for Ipv6SpecialUseAddressesType.
+const (
+	Ipv6SpecialUseAddressesTypeGateway Ipv6SpecialUseAddressesType = "gateway"
+
+	Ipv6SpecialUseAddressesTypeGatewayReal Ipv6SpecialUseAddressesType = "gateway_real"
 )
 
 // Defines values for PortChannelBondingType.
@@ -151,20 +172,6 @@ const (
 	RaidStatusPhysicalDevicesStatusOk RaidStatusPhysicalDevicesStatus = "ok"
 )
 
-// Defines values for ServerCachedPowerStatusStatus.
-const (
-	ServerCachedPowerStatusStatusOff ServerCachedPowerStatusStatus = "off"
-
-	ServerCachedPowerStatusStatusOn ServerCachedPowerStatusStatus = "on"
-)
-
-// Defines values for ServerIpv4Type.
-const (
-	ServerIpv4TypeCommonIpAddress ServerIpv4Type = "common_ip_address"
-
-	ServerIpv4TypeDedicatedIpAddress ServerIpv4Type = "dedicated_ip_address"
-)
-
 // Defines values for ServerLockStatus.
 const (
 	ServerLockStatusAdministrativeLock ServerLockStatus = "administrative_lock"
@@ -174,22 +181,11 @@ const (
 	ServerLockStatusOsInstall ServerLockStatus = "os_install"
 )
 
-// Defines values for ServerSpecStoragesBusType.
+// Defines values for ServerIpv4GlobalType.
 const (
-	ServerSpecStoragesBusTypeNvme ServerSpecStoragesBusType = "nvme"
+	ServerIpv4GlobalTypeCommonIpAddress ServerIpv4GlobalType = "common_ip_address"
 
-	ServerSpecStoragesBusTypeSas ServerSpecStoragesBusType = "sas"
-
-	ServerSpecStoragesBusTypeSata ServerSpecStoragesBusType = "sata"
-)
-
-// Defines values for ServerSpecStoragesMediaType.
-const (
-	ServerSpecStoragesMediaTypeFlashMemory ServerSpecStoragesMediaType = "flash_memory"
-
-	ServerSpecStoragesMediaTypeHdd ServerSpecStoragesMediaType = "hdd"
-
-	ServerSpecStoragesMediaTypeSsd ServerSpecStoragesMediaType = "ssd"
+	ServerIpv4GlobalTypeDedicatedIpAddress ServerIpv4GlobalType = "dedicated_ip_address"
 )
 
 // Defines values for ServerPowerStatusStatus.
@@ -235,10 +231,108 @@ const (
 	ServiceProductCategoryServer ServiceProductCategory = "server"
 )
 
+// Defines values for StorageBusType.
+const (
+	StorageBusTypeNvme StorageBusType = "nvme"
+
+	StorageBusTypeSas StorageBusType = "sas"
+
+	StorageBusTypeSata StorageBusType = "sata"
+)
+
+// Defines values for StorageMediaType.
+const (
+	StorageMediaTypeFlashMemory StorageMediaType = "flash_memory"
+
+	StorageMediaTypeHdd StorageMediaType = "hdd"
+
+	StorageMediaTypeSsd StorageMediaType = "ssd"
+)
+
 // Defines values for HeaderRequestedWith.
 const (
 	XMLHttpRequest HeaderRequestedWith = "XMLHttpRequest"
 )
+
+// ポートの接続ネットワーク指定
+//
+// `mode=access`の場合は
+//
+// * 共用グローバルネットワーク
+// * 専用グローバルネットワーク
+// * ローカルネットワーク
+//
+// のいずれか1つのみ接続可能で、
+// 複数のネットワークが指定されている場合はエラーとなる
+type AssignNetwork struct {
+	// 専用グローバルネットワークのサービスコード指定
+	// `global_network_type`が`dedicated_subnet`の場合に必須
+	DedicatedSubnetId *string `json:"dedicated_subnet_id"`
+
+	// * `null` - インターネット接続なし
+	// * `common_subnet` - 共用グローバルネットワーク利用
+	// * `dedicated_subnet` - 専用グローバルネットワーク利用
+	InternetType *AssignNetworkInternetType `json:"internet_type"`
+
+	// ポートモード
+	//
+	// * `access` - アクセスポート
+	// * `trunk` - トランクポート
+	Mode AssignNetworkMode `json:"mode"`
+
+	// 接続先ローカルネットワークの配列
+	PrivateNetworkIds *[]string `json:"private_network_ids"`
+}
+
+// * `null` - インターネット接続なし
+// * `common_subnet` - 共用グローバルネットワーク利用
+// * `dedicated_subnet` - 専用グローバルネットワーク利用
+type AssignNetworkInternetType string
+
+// ポートモード
+//
+// * `access` - アクセスポート
+// * `trunk` - トランクポート
+type AssignNetworkMode string
+
+// 割り当て済みファイアウォール(利用していない場合は`null`)
+type AttachedFirewall struct {
+	// ファイアウォールのサービスコード
+	FirewallId string `json:"firewall_id"`
+
+	// ファイアウォールの名称
+	Nickname string `json:"nickname"`
+}
+
+// 割り当て済みロードバランサー(利用していない場合は`null`)
+type AttachedLoadBalancer struct {
+	// ロードバランサーのサービスコード
+	LoadBalancerId *string `json:"load_balancer_id"`
+
+	// ロードバランサーの名称
+	Nickname string `json:"nickname"`
+}
+
+// ローカルネットワーク情報
+type AttachedPrivateNetwork struct {
+	// ローカルネットワークに設定した名称
+	Nickname string `json:"nickname"`
+
+	// ローカルネットワークID
+	PrivateNetworkId string `json:"private_network_id"`
+}
+
+// キャッシュされた電源状態(未キャッシュならば`null`)
+type CachedPowerStatus struct {
+	// 電源状態
+	Status CachedPowerStatusStatus `json:"status"`
+
+	// 電源状態キャッシュの保存時刻
+	Stored time.Time `json:"stored"`
+}
+
+// 電源状態
+type CachedPowerStatusStatus string
 
 // DedicatedSubnet defines model for dedicated_subnet.
 type DedicatedSubnet struct {
@@ -250,84 +344,25 @@ type DedicatedSubnet struct {
 	// * `configure_fw` - FWを設定中
 	// * `enable_ipv6` - IPv6設定中
 	// * `administrative_lock` - 機器交換などの作業を行っている
-	ConfigStatus *DedicatedSubnetConfigStatus `json:"config_status,omitempty"`
+	ConfigStatus DedicatedSubnetConfigStatus `json:"config_status"`
 
 	// 専用グローバルネットワークのサービスコード
-	DedicatedSubnetId *string `json:"dedicated_subnet_id,omitempty"`
+	DedicatedSubnetId string `json:"dedicated_subnet_id"`
 
 	// 割り当て済みファイアウォール(利用していない場合は`null`)
-	Firewall *struct {
-		// ファイアウォールのサービスコード
-		FirewallId *string `json:"firewall_id,omitempty"`
-
-		// ファイアウォールの名称
-		Nickname *string `json:"nickname,omitempty"`
-	} `json:"firewall"`
-	Ipv4 *struct {
-		// ブロードキャストアドレス
-		BroadcastAddress *string `json:"broadcast_address,omitempty"`
-
-		// ゲートウェイアドレス
-		GatewayAddress *string `json:"gateway_address,omitempty"`
-
-		// ネットワークアドレス
-		NetworkAddress *string `json:"network_address,omitempty"`
-
-		// ネットワーク長
-		PrefixLength *int `json:"prefix_length,omitempty"`
-
-		// 特別な用途で割り当て済みのIPアドレスのリスト
-		SpecialUseAddresses *[]Ipam `json:"special_use_addresses,omitempty"`
-	} `json:"ipv4,omitempty"`
-	Ipv6 *struct {
-		// ブロードキャストアドレス
-		BroadcastAddress *string `json:"broadcast_address,omitempty"`
-
-		// IPv6が有効になっているか
-		Enabled *bool `json:"enabled,omitempty"`
-
-		// ゲートウェイアドレス
-		GatewayAddress *string `json:"gateway_address,omitempty"`
-
-		// ネットワークIPアドレス
-		NetworkAddress *string `json:"network_address,omitempty"`
-
-		// ネットワーク長
-		PrefixLength *int `json:"prefix_length,omitempty"`
-
-		// 特別な用途で割り当て済みのIPアドレスのリスト
-		SpecialUseAddresses *[]struct {
-			IpAddress *string `json:"ip_address,omitempty"`
-
-			// 割り当て用途分類
-			//
-			// * `gateway` - ゲートウェイアドレス
-			// * `gateway_real` - ゲートウェイ機器実機
-			Type *DedicatedSubnetIpv6SpecialUseAddressesType `json:"type,omitempty"`
-		} `json:"special_use_addresses,omitempty"`
-	} `json:"ipv6,omitempty"`
+	Firewall *AttachedFirewall `json:"firewall"`
+	Ipv4     Ipv4              `json:"ipv4"`
+	Ipv6     Ipv6              `json:"ipv6"`
 
 	// 割り当て済みロードバランサー(利用していない場合は`null`)
-	LoadBalancer *struct {
-		// ロードバランサーのサービスコード
-		LoadBalancerId *string `json:"load_balancer_id"`
-
-		// ロードバランサーの名称
-		Nickname *string `json:"nickname,omitempty"`
-	} `json:"load_balancer"`
+	LoadBalancer *AttachedLoadBalancer `json:"load_balancer"`
 
 	// 割り当て済みサーバー数
-	ServerCount *int `json:"server_count,omitempty"`
+	ServerCount int `json:"server_count"`
 
 	// サービス情報
-	Service *ServiceQuiet `json:"service,omitempty"`
-	Zone    *struct {
-		// 地域名
-		Region *string `json:"region,omitempty"`
-
-		// ネットワークゾーンID
-		ZoneId *int `json:"zone_id,omitempty"`
-	} `json:"zone,omitempty"`
+	Service ServiceQuiet `json:"service"`
+	Zone    Zone         `json:"zone"`
 }
 
 // 設定変更によるロック状態
@@ -340,16 +375,36 @@ type DedicatedSubnet struct {
 // * `administrative_lock` - 機器交換などの作業を行っている
 type DedicatedSubnetConfigStatus string
 
-// 割り当て用途分類
-//
-// * `gateway` - ゲートウェイアドレス
-// * `gateway_real` - ゲートウェイ機器実機
-type DedicatedSubnetIpv6SpecialUseAddressesType string
+// DedicatedSubnets defines model for dedicated_subnets.
+type DedicatedSubnets struct {
+	DedicatedSubnets []DedicatedSubnet `json:"dedicated_subnets"`
+	Meta             PaginateMeta      `json:"meta"`
+}
+
+// HybridConnection defines model for hybrid_connection.
+type HybridConnection struct {
+	// 接続先別ハイブリッド接続のサービスコード
+	BridgeServiceId *string `json:"bridge_service_id,omitempty"`
+
+	// 接続先サービスでの一意なネットワーク識別子
+	DestinationSideId *string `json:"destination_side_id,omitempty"`
+
+	// 接続先を分類する名称
+	ServiceName *string `json:"service_name,omitempty"`
+}
+
+// HybridConnections defines model for hybrid_connections.
+type HybridConnections struct {
+	Destinations []HybridConnection `json:"destinations"`
+
+	// ハイブリッド接続のサービスコード
+	ServiceId string `json:"service_id"`
+}
 
 // ネットワークインターフェースの接続ポート情報
 type InterfacePort struct {
 	// ポート有効状態(通信が有効になっている場合 `true`)
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled bool `json:"enabled"`
 
 	// グローバル側の帯域幅(Mbps)
 	// ボンディングされている場合は合計値
@@ -357,28 +412,7 @@ type InterfacePort struct {
 
 	// グローバルネットワーク情報
 	// このポートにインターネット接続が割り当てられていない場合は`null`
-	Internet *struct {
-		// 専用グローバルネットワーク情報(共用グローバルネットワーク割り当て時は`null`)
-		DedicatedSubnet *struct {
-			// 専用グローバルネットワークのサービスコード
-			DedicatedSubnetId *string `json:"dedicated_subnet_id,omitempty"`
-
-			// 専用グローバルネットワークに設定した名称
-			Nickname *string `json:"nickname,omitempty"`
-		} `json:"dedicated_subnet"`
-
-		// ネットワークアドレス
-		NetworkAddress *string `json:"network_address,omitempty"`
-
-		// ネットワーク長
-		PrefixLength *int `json:"prefix_length,omitempty"`
-
-		// グローバルネットワーク分類
-		//
-		// * `common_subnet` - 共用グローバルネットワークのIPアドレスを割り当て
-		// * `dedicated_subnet` - 専用グローバルネットワーク割り当て
-		SubnetType *InterfacePortInternetSubnetType `json:"subnet_type,omitempty"`
-	} `json:"internet"`
+	Internet *Internet `json:"internet"`
 
 	// ローカル側の帯域幅(Mbps)
 	// ボンディングされている場合は合計値
@@ -388,30 +422,49 @@ type InterfacePort struct {
 	Mode *InterfacePortMode `json:"mode"`
 
 	// インターフェース名称
-	Nickname *string `json:"nickname,omitempty"`
+	Nickname string `json:"nickname"`
 
 	// 所属ポートチャネルID
-	PortChannelId *int `json:"port_channel_id,omitempty"`
+	PortChannelId int `json:"port_channel_id"`
 
 	// ポートID
-	PortId          *int `json:"port_id,omitempty"`
-	PrivateNetworks *[]struct {
-		// ローカルネットワークに設定した名称
-		Nickname *string `json:"nickname,omitempty"`
+	PortId          int                      `json:"port_id"`
+	PrivateNetworks []AttachedPrivateNetwork `json:"private_networks"`
+}
 
-		// ローカルネットワークID
-		PrivateNetworkId *string `json:"private_network_id,omitempty"`
-	} `json:"private_networks,omitempty"`
+// 動作モード(初期化後の未設定時は`null`)
+type InterfacePortMode string
+
+// グローバルネットワーク情報
+// このポートにインターネット接続が割り当てられていない場合は`null`
+type Internet struct {
+	// 専用グローバルネットワーク情報(共用グローバルネットワーク割り当て時は`null`)
+	DedicatedSubnet *struct {
+		// 専用グローバルネットワークのサービスコード
+		DedicatedSubnetId *string `json:"dedicated_subnet_id,omitempty"`
+
+		// 専用グローバルネットワークに設定した名称
+		Nickname *string `json:"nickname,omitempty"`
+	} `json:"dedicated_subnet"`
+
+	// ネットワークアドレス
+	NetworkAddress string `json:"network_address"`
+
+	// ネットワーク長
+	PrefixLength int `json:"prefix_length"`
+
+	// グローバルネットワーク分類
+	//
+	// * `common_subnet` - 共用グローバルネットワークのIPアドレスを割り当て
+	// * `dedicated_subnet` - 専用グローバルネットワーク割り当て
+	SubnetType InternetSubnetType `json:"subnet_type"`
 }
 
 // グローバルネットワーク分類
 //
 // * `common_subnet` - 共用グローバルネットワークのIPアドレスを割り当て
 // * `dedicated_subnet` - 専用グローバルネットワーク割り当て
-type InterfacePortInternetSubnetType string
-
-// 動作モード(初期化後の未設定時は`null`)
-type InterfacePortMode string
+type InternetSubnetType string
 
 // InvalidParameterDetail defines model for invalid_parameter_detail.
 type InvalidParameterDetail []struct {
@@ -459,10 +512,83 @@ type Ipam struct {
 // * `void` - 用途登録なし
 type IpamType string
 
+// Ipv4 defines model for ipv4.
+type Ipv4 struct {
+	// ブロードキャストアドレス
+	BroadcastAddress string `json:"broadcast_address"`
+
+	// ゲートウェイアドレス
+	GatewayAddress string `json:"gateway_address"`
+
+	// ネットワークアドレス
+	NetworkAddress string `json:"network_address"`
+
+	// ネットワーク長
+	PrefixLength int `json:"prefix_length"`
+
+	// 特別な用途で割り当て済みのIPアドレスのリスト
+	SpecialUseAddresses *[]Ipam `json:"special_use_addresses,omitempty"`
+}
+
+// Ipv6 defines model for ipv6.
+type Ipv6 struct {
+	// ブロードキャストアドレス
+	BroadcastAddress string `json:"broadcast_address"`
+
+	// IPv6が有効になっているか
+	Enabled bool `json:"enabled"`
+
+	// ゲートウェイアドレス
+	GatewayAddress string `json:"gateway_address"`
+
+	// ネットワークIPアドレス
+	NetworkAddress string `json:"network_address"`
+
+	// ネットワーク長
+	PrefixLength int `json:"prefix_length"`
+
+	// 特別な用途で割り当て済みのIPアドレスのリスト
+	SpecialUseAddresses *[]struct {
+		IpAddress *string `json:"ip_address,omitempty"`
+
+		// 割り当て用途分類
+		//
+		// * `gateway` - ゲートウェイアドレス
+		// * `gateway_real` - ゲートウェイ機器実機
+		Type *Ipv6SpecialUseAddressesType `json:"type,omitempty"`
+	} `json:"special_use_addresses,omitempty"`
+}
+
+// 割り当て用途分類
+//
+// * `gateway` - ゲートウェイアドレス
+// * `gateway_real` - ゲートウェイ機器実機
+type Ipv6SpecialUseAddressesType string
+
+// OsImage defines model for os_image.
+type OsImage struct {
+	// パーティション手動構成が可能か
+	// (パーティション構成の指定が可能な場合に `true`)
+	ManualPartition *bool `json:"manual_partition,omitempty"`
+
+	// OSの名称
+	Name *string `json:"name,omitempty"`
+
+	// インストール実行時に指定するOSイメージ名
+	OsImageId *string `json:"os_image_id,omitempty"`
+
+	// インストール時にパスワード指定が必要か
+	// (パスワード指定が必要な場合 `true`)
+	RequirePassword *bool `json:"require_password,omitempty"`
+
+	// OSインストール時に作成される管理ユーザー名
+	SuperuserName *string `json:"superuser_name,omitempty"`
+}
+
 // PaginateMeta defines model for paginate_meta.
 type PaginateMeta struct {
 	// 総件数
-	Count *int `json:"count,omitempty"`
+	Count int `json:"count"`
 }
 
 // 英数字と記号の組み合わせ
@@ -476,22 +602,22 @@ type PortChannel struct {
 	// * `lacp` - LACP
 	// * `static` - static link aggregation
 	// * `single` - ボンディングなし(単体構成)
-	BondingType *PortChannelBondingType `json:"bonding_type,omitempty"`
+	BondingType PortChannelBondingType `json:"bonding_type"`
 
 	// 提供速度分類
 	//
 	// * `1gbe` - 1GbE
 	// * `10gbe` - 10GbE
-	LinkSpeedType *PortChannelLinkSpeedType `json:"link_speed_type,omitempty"`
+	LinkSpeedType PortChannelLinkSpeedType `json:"link_speed_type"`
 
 	// 設定変更によるロック状態(ロック中の場合は `true`)
-	Locked *bool `json:"locked,omitempty"`
+	Locked bool `json:"locked"`
 
 	// ポートチャネルID
-	PortChannelId *int `json:"port_channel_id,omitempty"`
+	PortChannelId int `json:"port_channel_id"`
 
 	// ポートチャネルを構成するポートIDのリスト
-	Ports *[]int `json:"ports,omitempty"`
+	Ports []int `json:"ports"`
 }
 
 // ボンディング方式
@@ -509,21 +635,7 @@ type PortChannelLinkSpeedType string
 
 // PrivateNetwork defines model for private_network.
 type PrivateNetwork struct {
-	Hybrid *struct {
-		Destinations *[]struct {
-			// 接続先別ハイブリッド接続のサービスコード
-			BridgeServiceId *string `json:"bridge_service_id,omitempty"`
-
-			// 接続先サービスでの一意なネットワーク識別子
-			DestinationSideId *string `json:"destination_side_id,omitempty"`
-
-			// 接続先を分類する名称
-			ServiceName *string `json:"service_name,omitempty"`
-		} `json:"destinations,omitempty"`
-
-		// ハイブリッド接続のサービスコード
-		ServiceId *string `json:"service_id,omitempty"`
-	} `json:"hybrid,omitempty"`
+	Hybrid *HybridConnections `json:"hybrid,omitempty"`
 
 	// ローカルネットワークのID
 	PrivateNetworkId *string `json:"private_network_id,omitempty"`
@@ -535,14 +647,8 @@ type PrivateNetwork struct {
 	Service *ServiceQuiet `json:"service,omitempty"`
 
 	// VLAN ID
-	VlanId *int `json:"vlan_id,omitempty"`
-	Zone   *struct {
-		// 地域名
-		Region *string `json:"region,omitempty"`
-
-		// ネットワークゾーンID
-		ZoneId *int `json:"zone_id,omitempty"`
-	} `json:"zone,omitempty"`
+	VlanId *int  `json:"vlan_id,omitempty"`
+	Zone   *Zone `json:"zone,omitempty"`
 }
 
 // ProblemDetails400 defines model for problem_details_400.
@@ -748,37 +854,10 @@ type RaidStatusPhysicalDevicesStatus string
 // Server defines model for server.
 type Server struct {
 	// キャッシュされた電源状態(未キャッシュならば`null`)
-	CachedPowerStatus *struct {
-		// 電源状態
-		Status *ServerCachedPowerStatusStatus `json:"status,omitempty"`
-
-		// 電源状態キャッシュの保存時刻
-		Stored *time.Time `json:"stored,omitempty"`
-	} `json:"cached_power_status"`
+	CachedPowerStatus *CachedPowerStatus `json:"cached_power_status"`
 
 	// グローバルIPアドレス割り当て情報(未設定時は`null`)
-	Ipv4 *struct {
-		// ゲートウェイアドレス
-		GatewayAddress *string `json:"gateway_address,omitempty"`
-
-		// IPアドレス
-		IpAddress *string `json:"ip_address,omitempty"`
-
-		// DNSサーバーリスト
-		NameServers *[]string `json:"name_servers,omitempty"`
-
-		// ネットワークアドレス
-		NetworkAddress *string `json:"network_address,omitempty"`
-
-		// ネットワーク長
-		PrefixLength *int `json:"prefix_length,omitempty"`
-
-		// IPアドレスの種類
-		//
-		// * `common_ip_address` - 共用グローバルネットワークのIPアドレス
-		// * `dedicated_ip_address` - 専用グローバルネットワークのIPアドレス(割り当て設定が必要)
-		Type *ServerIpv4Type `json:"type,omitempty"`
-	} `json:"ipv4"`
+	Ipv4 *ServerIpv4Global `json:"ipv4"`
 
 	// 設定変更処理によるロック状態
 	// `null`以外がセットされている場合は
@@ -789,80 +868,17 @@ type Server struct {
 	// * `administrative_lock` - 機器交換,増設などの作業を行っている
 	// * `null` - 設定変更を行っていない(処理を完了している)
 	LockStatus   *ServerLockStatus `json:"lock_status"`
-	PortChannels *[]PortChannel    `json:"port_channels,omitempty"`
-	Ports        *[]InterfacePort  `json:"ports,omitempty"`
+	PortChannels []PortChannel     `json:"port_channels"`
+	Ports        []InterfacePort   `json:"ports"`
 
 	// サーバーのサービスコード
-	ServerId *string `json:"server_id,omitempty"`
+	ServerId string `json:"server_id"`
 
 	// サービス情報
-	Service *ServiceQuiet `json:"service,omitempty"`
-	Spec    *struct {
-		// CPUクロック数(GHz)
-		CpuClockSpeed *float32 `json:"cpu_clock_speed,omitempty"`
-
-		// 総CPUコア数
-		CpuCoreCount *int `json:"cpu_core_count,omitempty"`
-
-		// 物理CPU数
-		CpuCount *int `json:"cpu_count,omitempty"`
-
-		// CPU製品モデル名
-		CpuModelName *string `json:"cpu_model_name,omitempty"`
-
-		// 総メモリ数(GB)
-		MemorySize *int `json:"memory_size,omitempty"`
-
-		// 10GbEネットワークインターフェース ポートチャネル数
-		PortChannel10gbeCount *int `json:"port_channel_10gbe_count,omitempty"`
-
-		// 1GbEネットワークインターフェース ポートチャネル数
-		PortChannel1gbeCount *int `json:"port_channel_1gbe_count,omitempty"`
-
-		// ストレージ構成情報
-		// 同一構成(接続方式,記録方式,容量)ごとの配列
-		Storages *[]struct {
-			// ストレージ接続方式
-			//
-			// * `sata` - SATA
-			// * `sas` - SAS
-			// * `nvme` - NVMe(PCIe)
-			BusType *ServerSpecStoragesBusType `json:"bus_type,omitempty"`
-
-			// ストレージ構成物理デバイス数
-			DeviceCount *int `json:"device_count,omitempty"`
-
-			// ストレージ記録方式
-			//
-			// * `hdd` - 磁気HDD
-			// * `ssd` - SSD
-			// * `flash_memory` - Flash Memory(不揮発性メモリ)
-			MediaType *ServerSpecStoragesMediaType `json:"media_type,omitempty"`
-
-			// ストレージ1つあたりの容量(GB)
-			Size *int `json:"size,omitempty"`
-		} `json:"storages,omitempty"`
-
-		// ストレージ構成物理デバイス数の合計
-		TotalStorageDeviceCount *int `json:"total_storage_device_count,omitempty"`
-	} `json:"spec,omitempty"`
-	Zone *struct {
-		// 地域名
-		Region *string `json:"region,omitempty"`
-
-		// ネットワークゾーンID
-		ZoneId *int `json:"zone_id,omitempty"`
-	} `json:"zone,omitempty"`
+	Service ServiceQuiet `json:"service"`
+	Spec    ServerSpec   `json:"spec"`
+	Zone    Zone         `json:"zone"`
 }
-
-// 電源状態
-type ServerCachedPowerStatusStatus string
-
-// IPアドレスの種類
-//
-// * `common_ip_address` - 共用グローバルネットワークのIPアドレス
-// * `dedicated_ip_address` - 専用グローバルネットワークのIPアドレス(割り当て設定が必要)
-type ServerIpv4Type string
 
 // 設定変更処理によるロック状態
 // `null`以外がセットされている場合は
@@ -874,19 +890,35 @@ type ServerIpv4Type string
 // * `null` - 設定変更を行っていない(処理を完了している)
 type ServerLockStatus string
 
-// ストレージ接続方式
-//
-// * `sata` - SATA
-// * `sas` - SAS
-// * `nvme` - NVMe(PCIe)
-type ServerSpecStoragesBusType string
+// グローバルIPアドレス割り当て情報(未設定時は`null`)
+type ServerIpv4Global struct {
+	// ゲートウェイアドレス
+	GatewayAddress string `json:"gateway_address"`
 
-// ストレージ記録方式
+	// IPアドレス
+	IpAddress string `json:"ip_address"`
+
+	// DNSサーバーリスト
+	NameServers []string `json:"name_servers"`
+
+	// ネットワークアドレス
+	NetworkAddress string `json:"network_address"`
+
+	// ネットワーク長
+	PrefixLength int `json:"prefix_length"`
+
+	// IPアドレスの種類
+	//
+	// * `common_ip_address` - 共用グローバルネットワークのIPアドレス
+	// * `dedicated_ip_address` - 専用グローバルネットワークのIPアドレス(割り当て設定が必要)
+	Type ServerIpv4GlobalType `json:"type"`
+}
+
+// IPアドレスの種類
 //
-// * `hdd` - 磁気HDD
-// * `ssd` - SSD
-// * `flash_memory` - Flash Memory(不揮発性メモリ)
-type ServerSpecStoragesMediaType string
+// * `common_ip_address` - 共用グローバルネットワークのIPアドレス
+// * `dedicated_ip_address` - 専用グローバルネットワークのIPアドレス(割り当て設定が必要)
+type ServerIpv4GlobalType string
 
 // ServerPowerStatus defines model for server_power_status.
 type ServerPowerStatus struct {
@@ -903,16 +935,53 @@ type ServerPowerStatus struct {
 // * `off` - 停止
 type ServerPowerStatusStatus string
 
+// ServerSpec defines model for server_spec.
+type ServerSpec struct {
+	// CPUクロック数(GHz)
+	CpuClockSpeed float32 `json:"cpu_clock_speed"`
+
+	// 総CPUコア数
+	CpuCoreCount int `json:"cpu_core_count"`
+
+	// 物理CPU数
+	CpuCount int `json:"cpu_count"`
+
+	// CPU製品モデル名
+	CpuModelName string `json:"cpu_model_name"`
+
+	// 総メモリ数(GB)
+	MemorySize int `json:"memory_size"`
+
+	// 10GbEネットワークインターフェース ポートチャネル数
+	PortChannel10gbeCount int `json:"port_channel_10gbe_count"`
+
+	// 1GbEネットワークインターフェース ポートチャネル数
+	PortChannel1gbeCount int `json:"port_channel_1gbe_count"`
+
+	// ストレージ構成情報
+	// 同一構成(接続方式,記録方式,容量)ごとの配列
+	Storages []Storage `json:"storages"`
+
+	// ストレージ構成物理デバイス数の合計
+	TotalStorageDeviceCount int `json:"total_storage_device_count"`
+}
+
+// Servers defines model for servers.
+type Servers struct {
+	Meta    *PaginateMeta `json:"meta,omitempty"`
+	Servers *[]Server     `json:"servers,omitempty"`
+}
+
 // Service defines model for service.
 type Service struct {
 	// 利用開始日時
-	Activated *time.Time `json:"activated,omitempty"`
+	Activated time.Time `json:"activated"`
 
 	// メモ：サーバーやネットワークなどの説明
 	Description *string `json:"description"`
 
 	// 名称：サーバーやネットワークなどの表示名
-	Nickname    *string `json:"nickname,omitempty"`
+	Nickname    string `json:"nickname"`
 	OptionPlans *[]struct {
 		// プラン名称
 		Name *string `json:"name,omitempty"`
@@ -936,10 +1005,7 @@ type Service struct {
 	} `json:"option_plans,omitempty"`
 
 	// プラン情報(ローカルネットワークの場合は`null`)
-	Plan *struct {
-		Name   *string `json:"name,omitempty"`
-		PlanId *string `json:"plan_id,omitempty"`
-	} `json:"plan"`
+	Plan *ServicePlan `json:"plan"`
 
 	// サービスの種類
 	//
@@ -948,9 +1014,9 @@ type Service struct {
 	// * `private_network` - ローカルネットワーク
 	// * `firewall` - ファイアウォール
 	// * `load_balancer` - ロードバランサー
-	ProductCategory *ServiceProductCategory `json:"product_category,omitempty"`
-	ServiceId       *string                 `json:"service_id,omitempty"`
-	Tags            *[]Tag                  `json:"tags,omitempty"`
+	ProductCategory ServiceProductCategory `json:"product_category"`
+	ServiceId       string                 `json:"service_id"`
+	Tags            []Tag                  `json:"tags"`
 }
 
 // オプション申込区分
@@ -976,21 +1042,70 @@ type ServiceOptionPlansOptionClass string
 // * `load_balancer` - ロードバランサー
 type ServiceProductCategory string
 
+// プラン情報(ローカルネットワークの場合は`null`)
+type ServicePlan struct {
+	Name   string `json:"name"`
+	PlanId string `json:"plan_id"`
+}
+
 // サービス情報
 type ServiceQuiet struct {
 	// 利用開始日時
-	Activated *time.Time `json:"activated,omitempty"`
+	Activated time.Time `json:"activated"`
 
 	// メモ：サーバーやネットワークなどの説明
 	Description *string `json:"description"`
 
 	// 名称：サーバーやネットワークなどの表示名
-	Nickname *string `json:"nickname,omitempty"`
+	Nickname string `json:"nickname"`
 
 	// サービスコード
-	ServiceId *string `json:"service_id,omitempty"`
-	Tags      *[]Tag  `json:"tags,omitempty"`
+	ServiceId string `json:"service_id"`
+	Tags      *[]Tag `json:"tags,omitempty"`
 }
+
+// Services defines model for services.
+type Services struct {
+	Meta     PaginateMeta `json:"meta"`
+	Services []Service    `json:"services"`
+}
+
+// Storage defines model for storage.
+type Storage struct {
+	// ストレージ接続方式
+	//
+	// * `sata` - SATA
+	// * `sas` - SAS
+	// * `nvme` - NVMe(PCIe)
+	BusType StorageBusType `json:"bus_type"`
+
+	// ストレージ構成物理デバイス数
+	DeviceCount int `json:"device_count"`
+
+	// ストレージ記録方式
+	//
+	// * `hdd` - 磁気HDD
+	// * `ssd` - SSD
+	// * `flash_memory` - Flash Memory(不揮発性メモリ)
+	MediaType StorageMediaType `json:"media_type"`
+
+	// ストレージ1つあたりの容量(GB)
+	Size int `json:"size"`
+}
+
+// ストレージ接続方式
+//
+// * `sata` - SATA
+// * `sas` - SAS
+// * `nvme` - NVMe(PCIe)
+type StorageBusType string
+
+// ストレージ記録方式
+//
+// * `hdd` - 磁気HDD
+// * `ssd` - SSD
+// * `flash_memory` - Flash Memory(不揮発性メモリ)
+type StorageMediaType string
 
 // Tag defines model for tag.
 type Tag struct {
@@ -998,10 +1113,40 @@ type Tag struct {
 	Color *string `json:"color"`
 
 	// タグの名称
-	Label *string `json:"label,omitempty"`
+	Label string `json:"label"`
 
 	// タグID
-	TagId *int `json:"tag_id,omitempty"`
+	TagId int `json:"tag_id"`
+}
+
+// TrafficGraph defines model for traffic_graph.
+type TrafficGraph struct {
+	// 受信方向トラフィック
+	Receive *[]struct {
+		// 取得時刻
+		Timestamp *time.Time `json:"timestamp,omitempty"`
+
+		// 1つ前のデータからの平均トラフィック(bps)
+		Value *int `json:"value,omitempty"`
+	} `json:"receive,omitempty"`
+
+	// 送信方向トラフィック
+	Transmit *[]struct {
+		// 取得時刻
+		Timestamp *time.Time `json:"timestamp,omitempty"`
+
+		// 1つ前のデータからの平均トラフィック(bps)
+		Value *int `json:"value,omitempty"`
+	} `json:"transmit,omitempty"`
+}
+
+// Zone defines model for zone.
+type Zone struct {
+	// 地域名
+	Region string `json:"region"`
+
+	// ネットワークゾーンID
+	ZoneId int `json:"zone_id"`
 }
 
 // DedicatedSubnetId defines model for dedicated_subnet_id.
@@ -1046,8 +1191,8 @@ type Generic401 ProblemDetails401
 // Generic429 defines model for generic_429.
 type Generic429 ProblemDetails429
 
-// GetDedicatedSubnetsParams defines parameters for GetDedicatedSubnets.
-type GetDedicatedSubnetsParams struct {
+// ListDedicatedSubnetsParams defines parameters for ListDedicatedSubnets.
+type ListDedicatedSubnetsParams struct {
 	// タグで絞り込む  \
 	// このクエリーパラメーターを複数指定した場合は **すべてのタグを設定済み(AND)** のものにマッチ
 	Tag *TagFilter `json:"tag,omitempty"`
@@ -1073,20 +1218,20 @@ type GetDedicatedSubnetsParams struct {
 	//
 	// * `activated` - 利用開始日順
 	// * `nickname` - 名称順
-	Ordering *GetDedicatedSubnetsParamsOrdering `json:"ordering,omitempty"`
+	Ordering *ListDedicatedSubnetsParamsOrdering `json:"ordering,omitempty"`
 }
 
-// GetDedicatedSubnetsParamsOrdering defines parameters for GetDedicatedSubnets.
-type GetDedicatedSubnetsParamsOrdering string
+// ListDedicatedSubnetsParamsOrdering defines parameters for ListDedicatedSubnets.
+type ListDedicatedSubnetsParamsOrdering string
 
-// GetDedicatedSubnetsDedicatedSubnetIdParams defines parameters for GetDedicatedSubnetsDedicatedSubnetId.
-type GetDedicatedSubnetsDedicatedSubnetIdParams struct {
+// ReadDedicatedSubnetParams defines parameters for ReadDedicatedSubnet.
+type ReadDedicatedSubnetParams struct {
 	// IPv6有効状態の最新状態を取得する
 	Refresh *bool `json:"refresh,omitempty"`
 }
 
-// GetPrivateNetworksParams defines parameters for GetPrivateNetworks.
-type GetPrivateNetworksParams struct {
+// ListPrivateNetworksParams defines parameters for ListPrivateNetworks.
+type ListPrivateNetworksParams struct {
 	// タグで絞り込む  \
 	// このクエリーパラメーターを複数指定した場合は **すべてのタグを設定済み(AND)** のものにマッチ
 	Tag *TagFilter `json:"tag,omitempty"`
@@ -1112,16 +1257,16 @@ type GetPrivateNetworksParams struct {
 	//
 	// * `activated` - 利用開始日順
 	// * `nickname` - 名称順
-	Ordering *GetPrivateNetworksParamsOrdering `json:"ordering,omitempty"`
+	Ordering *ListPrivateNetworksParamsOrdering `json:"ordering,omitempty"`
 }
 
-// GetPrivateNetworksParamsOrdering defines parameters for GetPrivateNetworks.
-type GetPrivateNetworksParamsOrdering string
+// ListPrivateNetworksParamsOrdering defines parameters for ListPrivateNetworks.
+type ListPrivateNetworksParamsOrdering string
 
-// GetServersParams defines parameters for GetServers.
-type GetServersParams struct {
+// ListServersParams defines parameters for ListServers.
+type ListServersParams struct {
 	// キャッシュされた電源状態で絞りこむ
-	PowerStatus *GetServersParamsPowerStatus `json:"power_status,omitempty"`
+	PowerStatus *ListServersParamsPowerStatus `json:"power_status,omitempty"`
 
 	// インターネット接続状態の絞り込み
 	//
@@ -1163,17 +1308,17 @@ type GetServersParams struct {
 	// * `activated` - 利用開始日順
 	// * `nickname` - 名称順
 	// * `power_status_stored` - 電源状態更新日時順
-	Ordering *GetServersParamsOrdering `json:"ordering,omitempty"`
+	Ordering *ListServersParamsOrdering `json:"ordering,omitempty"`
 }
 
-// GetServersParamsPowerStatus defines parameters for GetServers.
-type GetServersParamsPowerStatus string
+// ListServersParamsPowerStatus defines parameters for ListServers.
+type ListServersParamsPowerStatus string
 
-// GetServersParamsOrdering defines parameters for GetServers.
-type GetServersParamsOrdering string
+// ListServersParamsOrdering defines parameters for ListServers.
+type ListServersParamsOrdering string
 
-// PostServersServerIdOsInstallJSONBody defines parameters for PostServersServerIdOsInstall.
-type PostServersServerIdOsInstallJSONBody struct {
+// OSInstallJSONBody defines parameters for OSInstall.
+type OSInstallJSONBody struct {
 	// リモートコンソールを利用し手動パーティション指定を行う
 	// (OSが対応している場合のみ)
 	ManualPartition *bool `json:"manual_partition,omitempty"`
@@ -1186,23 +1331,23 @@ type PostServersServerIdOsInstallJSONBody struct {
 	Password *PasswordInput `json:"password,omitempty"`
 }
 
-// PostServersServerIdOsInstallParams defines parameters for PostServersServerIdOsInstall.
-type PostServersServerIdOsInstallParams struct {
+// OSInstallParams defines parameters for OSInstall.
+type OSInstallParams struct {
 	// CSRF防止用ヘッダー
-	XRequestedWith PostServersServerIdOsInstallParamsXRequestedWith `json:"X-Requested-With"`
+	XRequestedWith OSInstallParamsXRequestedWith `json:"X-Requested-With"`
 }
 
-// PostServersServerIdOsInstallParamsXRequestedWith defines parameters for PostServersServerIdOsInstall.
-type PostServersServerIdOsInstallParamsXRequestedWith string
+// OSInstallParamsXRequestedWith defines parameters for OSInstall.
+type OSInstallParamsXRequestedWith string
 
-// PostServersServerIdPortChannelsPortChannelIdConfigureBondingJSONBody defines parameters for PostServersServerIdPortChannelsPortChannelIdConfigureBonding.
-type PostServersServerIdPortChannelsPortChannelIdConfigureBondingJSONBody struct {
+// SetPortChannelBondingJSONBody defines parameters for SetPortChannelBonding.
+type SetPortChannelBondingJSONBody struct {
 	// ボンディング方式指定
 	//
 	// * `lacp` - LACP
 	// * `static` - static link aggregation
 	// * `single` - ボンディングなし(単体構成)
-	BondingType PostServersServerIdPortChannelsPortChannelIdConfigureBondingJSONBodyBondingType `json:"bonding_type"`
+	BondingType SetPortChannelBondingJSONBodyBondingType `json:"bonding_type"`
 
 	// 作成するポート名称の指定
 	//
@@ -1212,86 +1357,62 @@ type PostServersServerIdPortChannelsPortChannelIdConfigureBondingJSONBody struct
 	PortNicknames *[]string `json:"port_nicknames"`
 }
 
-// PostServersServerIdPortChannelsPortChannelIdConfigureBondingParams defines parameters for PostServersServerIdPortChannelsPortChannelIdConfigureBonding.
-type PostServersServerIdPortChannelsPortChannelIdConfigureBondingParams struct {
+// SetPortChannelBondingParams defines parameters for SetPortChannelBonding.
+type SetPortChannelBondingParams struct {
 	// CSRF防止用ヘッダー
-	XRequestedWith PostServersServerIdPortChannelsPortChannelIdConfigureBondingParamsXRequestedWith `json:"X-Requested-With"`
+	XRequestedWith SetPortChannelBondingParamsXRequestedWith `json:"X-Requested-With"`
 }
 
-// PostServersServerIdPortChannelsPortChannelIdConfigureBondingParamsXRequestedWith defines parameters for PostServersServerIdPortChannelsPortChannelIdConfigureBonding.
-type PostServersServerIdPortChannelsPortChannelIdConfigureBondingParamsXRequestedWith string
+// SetPortChannelBondingParamsXRequestedWith defines parameters for SetPortChannelBonding.
+type SetPortChannelBondingParamsXRequestedWith string
 
-// PostServersServerIdPortChannelsPortChannelIdConfigureBondingJSONBodyBondingType defines parameters for PostServersServerIdPortChannelsPortChannelIdConfigureBonding.
-type PostServersServerIdPortChannelsPortChannelIdConfigureBondingJSONBodyBondingType string
+// SetPortChannelBondingJSONBodyBondingType defines parameters for SetPortChannelBonding.
+type SetPortChannelBondingJSONBodyBondingType string
 
-// PatchServersServerIdPortsPortIdJSONBody defines parameters for PatchServersServerIdPortsPortId.
-type PatchServersServerIdPortsPortIdJSONBody struct {
+// UpdateServerPortJSONBody defines parameters for UpdateServerPort.
+type UpdateServerPortJSONBody struct {
 	// ポート名称
 	Nickname string `json:"nickname"`
 }
 
-// PatchServersServerIdPortsPortIdParams defines parameters for PatchServersServerIdPortsPortId.
-type PatchServersServerIdPortsPortIdParams struct {
+// UpdateServerPortParams defines parameters for UpdateServerPort.
+type UpdateServerPortParams struct {
 	// CSRF防止用ヘッダー
-	XRequestedWith PatchServersServerIdPortsPortIdParamsXRequestedWith `json:"X-Requested-With"`
+	XRequestedWith UpdateServerPortParamsXRequestedWith `json:"X-Requested-With"`
 }
 
-// PatchServersServerIdPortsPortIdParamsXRequestedWith defines parameters for PatchServersServerIdPortsPortId.
-type PatchServersServerIdPortsPortIdParamsXRequestedWith string
+// UpdateServerPortParamsXRequestedWith defines parameters for UpdateServerPort.
+type UpdateServerPortParamsXRequestedWith string
 
-// PostServersServerIdPortsPortIdAssignNetworkJSONBody defines parameters for PostServersServerIdPortsPortIdAssignNetwork.
-type PostServersServerIdPortsPortIdAssignNetworkJSONBody struct {
-	// 専用グローバルネットワークのサービスコード指定
-	// `global_network_type`が`dedicated_subnet`の場合に必須
-	DedicatedSubnetId *string `json:"dedicated_subnet_id"`
+// SetServerPortNetworkConnectionJSONBody defines parameters for SetServerPortNetworkConnection.
+type SetServerPortNetworkConnectionJSONBody AssignNetwork
 
-	// * `null` - インターネット接続なし
-	// * `common_subnet` - 共用グローバルネットワーク利用
-	// * `dedicated_subnet` - 専用グローバルネットワーク利用
-	InternetType *PostServersServerIdPortsPortIdAssignNetworkJSONBodyInternetType `json:"internet_type"`
-
-	// ポートモード
-	//
-	// * `access` - アクセスポート
-	// * `trunk` - トランクポート
-	Mode PostServersServerIdPortsPortIdAssignNetworkJSONBodyMode `json:"mode"`
-
-	// 接続先ローカルネットワークの配列
-	PrivateNetworkIds *[]string `json:"private_network_ids"`
-}
-
-// PostServersServerIdPortsPortIdAssignNetworkParams defines parameters for PostServersServerIdPortsPortIdAssignNetwork.
-type PostServersServerIdPortsPortIdAssignNetworkParams struct {
+// SetServerPortNetworkConnectionParams defines parameters for SetServerPortNetworkConnection.
+type SetServerPortNetworkConnectionParams struct {
 	// CSRF防止用ヘッダー
-	XRequestedWith PostServersServerIdPortsPortIdAssignNetworkParamsXRequestedWith `json:"X-Requested-With"`
+	XRequestedWith SetServerPortNetworkConnectionParamsXRequestedWith `json:"X-Requested-With"`
 }
 
-// PostServersServerIdPortsPortIdAssignNetworkParamsXRequestedWith defines parameters for PostServersServerIdPortsPortIdAssignNetwork.
-type PostServersServerIdPortsPortIdAssignNetworkParamsXRequestedWith string
+// SetServerPortNetworkConnectionParamsXRequestedWith defines parameters for SetServerPortNetworkConnection.
+type SetServerPortNetworkConnectionParamsXRequestedWith string
 
-// PostServersServerIdPortsPortIdAssignNetworkJSONBodyInternetType defines parameters for PostServersServerIdPortsPortIdAssignNetwork.
-type PostServersServerIdPortsPortIdAssignNetworkJSONBodyInternetType string
-
-// PostServersServerIdPortsPortIdAssignNetworkJSONBodyMode defines parameters for PostServersServerIdPortsPortIdAssignNetwork.
-type PostServersServerIdPortsPortIdAssignNetworkJSONBodyMode string
-
-// PostServersServerIdPortsPortIdEnableJSONBody defines parameters for PostServersServerIdPortsPortIdEnable.
-type PostServersServerIdPortsPortIdEnableJSONBody struct {
+// SetServerPortEnabledJSONBody defines parameters for SetServerPortEnabled.
+type SetServerPortEnabledJSONBody struct {
 	// 通信を有効にする場合に `true`
 	Enable bool `json:"enable"`
 }
 
-// PostServersServerIdPortsPortIdEnableParams defines parameters for PostServersServerIdPortsPortIdEnable.
-type PostServersServerIdPortsPortIdEnableParams struct {
+// SetServerPortEnabledParams defines parameters for SetServerPortEnabled.
+type SetServerPortEnabledParams struct {
 	// CSRF防止用ヘッダー
-	XRequestedWith PostServersServerIdPortsPortIdEnableParamsXRequestedWith `json:"X-Requested-With"`
+	XRequestedWith SetServerPortEnabledParamsXRequestedWith `json:"X-Requested-With"`
 }
 
-// PostServersServerIdPortsPortIdEnableParamsXRequestedWith defines parameters for PostServersServerIdPortsPortIdEnable.
-type PostServersServerIdPortsPortIdEnableParamsXRequestedWith string
+// SetServerPortEnabledParamsXRequestedWith defines parameters for SetServerPortEnabled.
+type SetServerPortEnabledParamsXRequestedWith string
 
-// GetServersServerIdPortsPortIdTrafficGraphParams defines parameters for GetServersServerIdPortsPortIdTrafficGraph.
-type GetServersServerIdPortsPortIdTrafficGraphParams struct {
+// ReadServerTrafficByPortParams defines parameters for ReadServerTrafficByPort.
+type ReadServerTrafficByPortParams struct {
 	// 取得範囲始点(過去31日前まで,未指定時は7日前)
 	Since *time.Time `json:"since,omitempty"`
 
@@ -1299,45 +1420,45 @@ type GetServersServerIdPortsPortIdTrafficGraphParams struct {
 	Until *time.Time `json:"until,omitempty"`
 
 	// データポイント間隔(秒)
-	Step *GetServersServerIdPortsPortIdTrafficGraphParamsStep `json:"step,omitempty"`
+	Step *ReadServerTrafficByPortParamsStep `json:"step,omitempty"`
 }
 
-// GetServersServerIdPortsPortIdTrafficGraphParamsStep defines parameters for GetServersServerIdPortsPortIdTrafficGraph.
-type GetServersServerIdPortsPortIdTrafficGraphParamsStep int
+// ReadServerTrafficByPortParamsStep defines parameters for ReadServerTrafficByPort.
+type ReadServerTrafficByPortParamsStep int
 
-// PostServersServerIdPowerControlJSONBody defines parameters for PostServersServerIdPowerControl.
-type PostServersServerIdPowerControlJSONBody struct {
+// SetServerPowerStatusJSONBody defines parameters for SetServerPowerStatus.
+type SetServerPowerStatusJSONBody struct {
 	// 操作内容
 	//
 	// * `on` - 電源ON
 	// * `soft` - ACPIシャットダウン(OSでの電源シャットダウン)
 	// * `reset` - ハードウェア電源リセット(電源OFF+電源ON)
 	// * `off` - ハードウェア電源OFF
-	Operation PostServersServerIdPowerControlJSONBodyOperation `json:"operation"`
+	Operation SetServerPowerStatusJSONBodyOperation `json:"operation"`
 }
 
-// PostServersServerIdPowerControlParams defines parameters for PostServersServerIdPowerControl.
-type PostServersServerIdPowerControlParams struct {
+// SetServerPowerStatusParams defines parameters for SetServerPowerStatus.
+type SetServerPowerStatusParams struct {
 	// CSRF防止用ヘッダー
-	XRequestedWith PostServersServerIdPowerControlParamsXRequestedWith `json:"X-Requested-With"`
+	XRequestedWith SetServerPowerStatusParamsXRequestedWith `json:"X-Requested-With"`
 }
 
-// PostServersServerIdPowerControlParamsXRequestedWith defines parameters for PostServersServerIdPowerControl.
-type PostServersServerIdPowerControlParamsXRequestedWith string
+// SetServerPowerStatusParamsXRequestedWith defines parameters for SetServerPowerStatus.
+type SetServerPowerStatusParamsXRequestedWith string
 
-// PostServersServerIdPowerControlJSONBodyOperation defines parameters for PostServersServerIdPowerControl.
-type PostServersServerIdPowerControlJSONBodyOperation string
+// SetServerPowerStatusJSONBodyOperation defines parameters for SetServerPowerStatus.
+type SetServerPowerStatusJSONBodyOperation string
 
-// GetServersServerIdRaidStatusParams defines parameters for GetServersServerIdRaidStatus.
-type GetServersServerIdRaidStatusParams struct {
+// ReadRAIDStatusParams defines parameters for ReadRAIDStatus.
+type ReadRAIDStatusParams struct {
 	// 実機の最新状態を取得
 	Refresh *bool `json:"refresh,omitempty"`
 }
 
-// GetServicesParams defines parameters for GetServices.
-type GetServicesParams struct {
+// ListServicesParams defines parameters for ListServices.
+type ListServicesParams struct {
 	// サービスの種類で絞りこむ
-	ProductCategory *GetServicesParamsProductCategory `json:"product_category,omitempty"`
+	ProductCategory *ListServicesParamsProductCategory `json:"product_category,omitempty"`
 
 	// タグで絞り込む  \
 	// このクエリーパラメーターを複数指定した場合は **すべてのタグを設定済み(AND)** のものにマッチ
@@ -1364,17 +1485,17 @@ type GetServicesParams struct {
 	//
 	// * `activated` - 利用開始日順
 	// * `nickname` - 名称順
-	Ordering *GetServicesParamsOrdering `json:"ordering,omitempty"`
+	Ordering *ListServicesParamsOrdering `json:"ordering,omitempty"`
 }
 
-// GetServicesParamsProductCategory defines parameters for GetServices.
-type GetServicesParamsProductCategory string
+// ListServicesParamsProductCategory defines parameters for ListServices.
+type ListServicesParamsProductCategory string
 
-// GetServicesParamsOrdering defines parameters for GetServices.
-type GetServicesParamsOrdering string
+// ListServicesParamsOrdering defines parameters for ListServices.
+type ListServicesParamsOrdering string
 
-// PatchServicesServiceIdJSONBody defines parameters for PatchServicesServiceId.
-type PatchServicesServiceIdJSONBody struct {
+// UpdateServiceJSONBody defines parameters for UpdateService.
+type UpdateServiceJSONBody struct {
 	// メモ：サーバーやネットワークなどの説明
 	Description *string `json:"description"`
 
@@ -1382,35 +1503,35 @@ type PatchServicesServiceIdJSONBody struct {
 	Nickname *string `json:"nickname,omitempty"`
 }
 
-// PatchServicesServiceIdParams defines parameters for PatchServicesServiceId.
-type PatchServicesServiceIdParams struct {
+// UpdateServiceParams defines parameters for UpdateService.
+type UpdateServiceParams struct {
 	// CSRF防止用ヘッダー
-	XRequestedWith PatchServicesServiceIdParamsXRequestedWith `json:"X-Requested-With"`
+	XRequestedWith UpdateServiceParamsXRequestedWith `json:"X-Requested-With"`
 }
 
-// PatchServicesServiceIdParamsXRequestedWith defines parameters for PatchServicesServiceId.
-type PatchServicesServiceIdParamsXRequestedWith string
+// UpdateServiceParamsXRequestedWith defines parameters for UpdateService.
+type UpdateServiceParamsXRequestedWith string
 
-// PostServersServerIdOsInstallJSONRequestBody defines body for PostServersServerIdOsInstall for application/json ContentType.
-type PostServersServerIdOsInstallJSONRequestBody PostServersServerIdOsInstallJSONBody
+// OSInstallJSONRequestBody defines body for OSInstall for application/json ContentType.
+type OSInstallJSONRequestBody OSInstallJSONBody
 
-// PostServersServerIdPortChannelsPortChannelIdConfigureBondingJSONRequestBody defines body for PostServersServerIdPortChannelsPortChannelIdConfigureBonding for application/json ContentType.
-type PostServersServerIdPortChannelsPortChannelIdConfigureBondingJSONRequestBody PostServersServerIdPortChannelsPortChannelIdConfigureBondingJSONBody
+// SetPortChannelBondingJSONRequestBody defines body for SetPortChannelBonding for application/json ContentType.
+type SetPortChannelBondingJSONRequestBody SetPortChannelBondingJSONBody
 
-// PatchServersServerIdPortsPortIdJSONRequestBody defines body for PatchServersServerIdPortsPortId for application/json ContentType.
-type PatchServersServerIdPortsPortIdJSONRequestBody PatchServersServerIdPortsPortIdJSONBody
+// UpdateServerPortJSONRequestBody defines body for UpdateServerPort for application/json ContentType.
+type UpdateServerPortJSONRequestBody UpdateServerPortJSONBody
 
-// PostServersServerIdPortsPortIdAssignNetworkJSONRequestBody defines body for PostServersServerIdPortsPortIdAssignNetwork for application/json ContentType.
-type PostServersServerIdPortsPortIdAssignNetworkJSONRequestBody PostServersServerIdPortsPortIdAssignNetworkJSONBody
+// SetServerPortNetworkConnectionJSONRequestBody defines body for SetServerPortNetworkConnection for application/json ContentType.
+type SetServerPortNetworkConnectionJSONRequestBody SetServerPortNetworkConnectionJSONBody
 
-// PostServersServerIdPortsPortIdEnableJSONRequestBody defines body for PostServersServerIdPortsPortIdEnable for application/json ContentType.
-type PostServersServerIdPortsPortIdEnableJSONRequestBody PostServersServerIdPortsPortIdEnableJSONBody
+// SetServerPortEnabledJSONRequestBody defines body for SetServerPortEnabled for application/json ContentType.
+type SetServerPortEnabledJSONRequestBody SetServerPortEnabledJSONBody
 
-// PostServersServerIdPowerControlJSONRequestBody defines body for PostServersServerIdPowerControl for application/json ContentType.
-type PostServersServerIdPowerControlJSONRequestBody PostServersServerIdPowerControlJSONBody
+// SetServerPowerStatusJSONRequestBody defines body for SetServerPowerStatus for application/json ContentType.
+type SetServerPowerStatusJSONRequestBody SetServerPowerStatusJSONBody
 
-// PatchServicesServiceIdJSONRequestBody defines body for PatchServicesServiceId for application/json ContentType.
-type PatchServicesServiceIdJSONRequestBody PatchServicesServiceIdJSONBody
+// UpdateServiceJSONRequestBody defines body for UpdateService for application/json ContentType.
+type UpdateServiceJSONRequestBody UpdateServiceJSONBody
 
 // Getter for additional properties for ProblemDetails400_InvalidParameters. Returns the specified
 // element and whether it was found
