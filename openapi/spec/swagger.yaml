@@ -1063,14 +1063,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  meta:
-                    $ref: '#/components/schemas/paginate_meta'
-                  private_networks:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/private_network'
+                $ref: '#/components/schemas/private_networks'
         '400':
           $ref: '#/components/responses/generic_400'
         '401':
@@ -2106,6 +2099,19 @@ components:
           description: 逆引きDNSを設定しているか否か(設定済みの場合 `true`)
 
     # private networks
+    private_networks:
+      type: object
+      properties:
+        meta:
+          $ref: '#/components/schemas/paginate_meta'
+        private_networks:
+          type: array
+          items:
+            $ref: '#/components/schemas/private_network'
+      required:
+        - meta
+        - private_networks
+
     private_network:
       type: object
       properties:
