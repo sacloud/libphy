@@ -19,14 +19,14 @@ import (
 	"github.com/sacloud/phy-go/openapi"
 )
 
-// GetDedicatedSubnets 専用グローバルネットワーク 一覧
+// ListDedicatedSubnets 専用グローバルネットワーク 一覧
 // (GET /dedicated_subnets/)
-func (s *Server) GetDedicatedSubnets(c *gin.Context, params openapi.GetDedicatedSubnetsParams) {
+func (s *Server) ListDedicatedSubnets(c *gin.Context, params openapi.ListDedicatedSubnetsParams) {
 
 }
 
-// GetDedicatedSubnetsDedicatedSubnetId 専用グローバルネットワーク
+// ReadDedicatedSubnet 専用グローバルネットワーク
 // (GET /dedicated_subnets/{dedicated_subnet_id}/)
-func (s *Server) GetDedicatedSubnetsDedicatedSubnetId(c *gin.Context, dedicatedSubnetId openapi.DedicatedSubnetId, params openapi.GetDedicatedSubnetsDedicatedSubnetIdParams) {
+func (s *Server) ReadDedicatedSubnet(c *gin.Context, dedicatedSubnetId openapi.DedicatedSubnetId, params openapi.ReadDedicatedSubnetParams) {
 
 }

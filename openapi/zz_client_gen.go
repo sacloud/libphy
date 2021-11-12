@@ -27,7 +27,6 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
 
 	"github.com/deepmap/oapi-codegen/pkg/runtime"
 )
@@ -105,86 +104,86 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
-	// GetDedicatedSubnets request
-	GetDedicatedSubnets(ctx context.Context, params *GetDedicatedSubnetsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ListDedicatedSubnets request
+	ListDedicatedSubnets(ctx context.Context, params *ListDedicatedSubnetsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetDedicatedSubnetsDedicatedSubnetId request
-	GetDedicatedSubnetsDedicatedSubnetId(ctx context.Context, dedicatedSubnetId DedicatedSubnetId, params *GetDedicatedSubnetsDedicatedSubnetIdParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ReadDedicatedSubnet request
+	ReadDedicatedSubnet(ctx context.Context, dedicatedSubnetId DedicatedSubnetId, params *ReadDedicatedSubnetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetPrivateNetworks request
-	GetPrivateNetworks(ctx context.Context, params *GetPrivateNetworksParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ListPrivateNetworks request
+	ListPrivateNetworks(ctx context.Context, params *ListPrivateNetworksParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetPrivateNetworksPrivateNetworkId request
-	GetPrivateNetworksPrivateNetworkId(ctx context.Context, privateNetworkId PrivateNetworkId, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ReadPrivateNetwork request
+	ReadPrivateNetwork(ctx context.Context, privateNetworkId PrivateNetworkId, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetServers request
-	GetServers(ctx context.Context, params *GetServersParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ListServers request
+	ListServers(ctx context.Context, params *ListServersParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetServersServerId request
-	GetServersServerId(ctx context.Context, serverId ServerId, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ReadServer request
+	ReadServer(ctx context.Context, serverId ServerId, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetServersServerIdOsImages request
-	GetServersServerIdOsImages(ctx context.Context, serverId ServerId, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ListOSImages request
+	ListOSImages(ctx context.Context, serverId ServerId, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// PostServersServerIdOsInstall request with any body
-	PostServersServerIdOsInstallWithBody(ctx context.Context, serverId ServerId, params *PostServersServerIdOsInstallParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// OSInstall request with any body
+	OSInstallWithBody(ctx context.Context, serverId ServerId, params *OSInstallParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	PostServersServerIdOsInstall(ctx context.Context, serverId ServerId, params *PostServersServerIdOsInstallParams, body PostServersServerIdOsInstallJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	OSInstall(ctx context.Context, serverId ServerId, params *OSInstallParams, body OSInstallJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetServersServerIdPortChannelsPortChannelId request
-	GetServersServerIdPortChannelsPortChannelId(ctx context.Context, serverId ServerId, portChannelId PortChannelId, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ReadServerPortChannel request
+	ReadServerPortChannel(ctx context.Context, serverId ServerId, portChannelId PortChannelId, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// PostServersServerIdPortChannelsPortChannelIdConfigureBonding request with any body
-	PostServersServerIdPortChannelsPortChannelIdConfigureBondingWithBody(ctx context.Context, serverId ServerId, portChannelId PortChannelId, params *PostServersServerIdPortChannelsPortChannelIdConfigureBondingParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// SetPortChannelBonding request with any body
+	SetPortChannelBondingWithBody(ctx context.Context, serverId ServerId, portChannelId PortChannelId, params *SetPortChannelBondingParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	PostServersServerIdPortChannelsPortChannelIdConfigureBonding(ctx context.Context, serverId ServerId, portChannelId PortChannelId, params *PostServersServerIdPortChannelsPortChannelIdConfigureBondingParams, body PostServersServerIdPortChannelsPortChannelIdConfigureBondingJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	SetPortChannelBonding(ctx context.Context, serverId ServerId, portChannelId PortChannelId, params *SetPortChannelBondingParams, body SetPortChannelBondingJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetServersServerIdPortsPortId request
-	GetServersServerIdPortsPortId(ctx context.Context, serverId ServerId, portId PortId, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ReadServerPort request
+	ReadServerPort(ctx context.Context, serverId ServerId, portId PortId, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// PatchServersServerIdPortsPortId request with any body
-	PatchServersServerIdPortsPortIdWithBody(ctx context.Context, serverId ServerId, portId PortId, params *PatchServersServerIdPortsPortIdParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// UpdateServerPort request with any body
+	UpdateServerPortWithBody(ctx context.Context, serverId ServerId, portId PortId, params *UpdateServerPortParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	PatchServersServerIdPortsPortId(ctx context.Context, serverId ServerId, portId PortId, params *PatchServersServerIdPortsPortIdParams, body PatchServersServerIdPortsPortIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	UpdateServerPort(ctx context.Context, serverId ServerId, portId PortId, params *UpdateServerPortParams, body UpdateServerPortJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// PostServersServerIdPortsPortIdAssignNetwork request with any body
-	PostServersServerIdPortsPortIdAssignNetworkWithBody(ctx context.Context, serverId ServerId, portId PortId, params *PostServersServerIdPortsPortIdAssignNetworkParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// SetServerPortNetworkConnection request with any body
+	SetServerPortNetworkConnectionWithBody(ctx context.Context, serverId ServerId, portId PortId, params *SetServerPortNetworkConnectionParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	PostServersServerIdPortsPortIdAssignNetwork(ctx context.Context, serverId ServerId, portId PortId, params *PostServersServerIdPortsPortIdAssignNetworkParams, body PostServersServerIdPortsPortIdAssignNetworkJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	SetServerPortNetworkConnection(ctx context.Context, serverId ServerId, portId PortId, params *SetServerPortNetworkConnectionParams, body SetServerPortNetworkConnectionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// PostServersServerIdPortsPortIdEnable request with any body
-	PostServersServerIdPortsPortIdEnableWithBody(ctx context.Context, serverId ServerId, portId PortId, params *PostServersServerIdPortsPortIdEnableParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// SetServerPortEnabled request with any body
+	SetServerPortEnabledWithBody(ctx context.Context, serverId ServerId, portId PortId, params *SetServerPortEnabledParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	PostServersServerIdPortsPortIdEnable(ctx context.Context, serverId ServerId, portId PortId, params *PostServersServerIdPortsPortIdEnableParams, body PostServersServerIdPortsPortIdEnableJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	SetServerPortEnabled(ctx context.Context, serverId ServerId, portId PortId, params *SetServerPortEnabledParams, body SetServerPortEnabledJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetServersServerIdPortsPortIdTrafficGraph request
-	GetServersServerIdPortsPortIdTrafficGraph(ctx context.Context, serverId ServerId, portId PortId, params *GetServersServerIdPortsPortIdTrafficGraphParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ReadServerTrafficByPort request
+	ReadServerTrafficByPort(ctx context.Context, serverId ServerId, portId PortId, params *ReadServerTrafficByPortParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// PostServersServerIdPowerControl request with any body
-	PostServersServerIdPowerControlWithBody(ctx context.Context, serverId ServerId, params *PostServersServerIdPowerControlParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// SetServerPowerStatus request with any body
+	SetServerPowerStatusWithBody(ctx context.Context, serverId ServerId, params *SetServerPowerStatusParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	PostServersServerIdPowerControl(ctx context.Context, serverId ServerId, params *PostServersServerIdPowerControlParams, body PostServersServerIdPowerControlJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	SetServerPowerStatus(ctx context.Context, serverId ServerId, params *SetServerPowerStatusParams, body SetServerPowerStatusJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetServersServerIdPowerStatus request
-	GetServersServerIdPowerStatus(ctx context.Context, serverId ServerId, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ReadServerPowerStatus request
+	ReadServerPowerStatus(ctx context.Context, serverId ServerId, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetServersServerIdRaidStatus request
-	GetServersServerIdRaidStatus(ctx context.Context, serverId ServerId, params *GetServersServerIdRaidStatusParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ReadRAIDStatus request
+	ReadRAIDStatus(ctx context.Context, serverId ServerId, params *ReadRAIDStatusParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetServices request
-	GetServices(ctx context.Context, params *GetServicesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ListServices request
+	ListServices(ctx context.Context, params *ListServicesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// GetServicesServiceId request
-	GetServicesServiceId(ctx context.Context, serviceId ServiceId, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ReadService request
+	ReadService(ctx context.Context, serviceId ServiceId, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// PatchServicesServiceId request with any body
-	PatchServicesServiceIdWithBody(ctx context.Context, serviceId ServiceId, params *PatchServicesServiceIdParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// UpdateService request with any body
+	UpdateServiceWithBody(ctx context.Context, serviceId ServiceId, params *UpdateServiceParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	PatchServicesServiceId(ctx context.Context, serviceId ServiceId, params *PatchServicesServiceIdParams, body PatchServicesServiceIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	UpdateService(ctx context.Context, serviceId ServiceId, params *UpdateServiceParams, body UpdateServiceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 }
 
-func (c *Client) GetDedicatedSubnets(ctx context.Context, params *GetDedicatedSubnetsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetDedicatedSubnetsRequest(c.Server, params)
+func (c *Client) ListDedicatedSubnets(ctx context.Context, params *ListDedicatedSubnetsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListDedicatedSubnetsRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -195,8 +194,8 @@ func (c *Client) GetDedicatedSubnets(ctx context.Context, params *GetDedicatedSu
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetDedicatedSubnetsDedicatedSubnetId(ctx context.Context, dedicatedSubnetId DedicatedSubnetId, params *GetDedicatedSubnetsDedicatedSubnetIdParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetDedicatedSubnetsDedicatedSubnetIdRequest(c.Server, dedicatedSubnetId, params)
+func (c *Client) ReadDedicatedSubnet(ctx context.Context, dedicatedSubnetId DedicatedSubnetId, params *ReadDedicatedSubnetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewReadDedicatedSubnetRequest(c.Server, dedicatedSubnetId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -207,8 +206,8 @@ func (c *Client) GetDedicatedSubnetsDedicatedSubnetId(ctx context.Context, dedic
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetPrivateNetworks(ctx context.Context, params *GetPrivateNetworksParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetPrivateNetworksRequest(c.Server, params)
+func (c *Client) ListPrivateNetworks(ctx context.Context, params *ListPrivateNetworksParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListPrivateNetworksRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -219,8 +218,8 @@ func (c *Client) GetPrivateNetworks(ctx context.Context, params *GetPrivateNetwo
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetPrivateNetworksPrivateNetworkId(ctx context.Context, privateNetworkId PrivateNetworkId, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetPrivateNetworksPrivateNetworkIdRequest(c.Server, privateNetworkId)
+func (c *Client) ReadPrivateNetwork(ctx context.Context, privateNetworkId PrivateNetworkId, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewReadPrivateNetworkRequest(c.Server, privateNetworkId)
 	if err != nil {
 		return nil, err
 	}
@@ -231,8 +230,8 @@ func (c *Client) GetPrivateNetworksPrivateNetworkId(ctx context.Context, private
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetServers(ctx context.Context, params *GetServersParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetServersRequest(c.Server, params)
+func (c *Client) ListServers(ctx context.Context, params *ListServersParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListServersRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -243,8 +242,8 @@ func (c *Client) GetServers(ctx context.Context, params *GetServersParams, reqEd
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetServersServerId(ctx context.Context, serverId ServerId, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetServersServerIdRequest(c.Server, serverId)
+func (c *Client) ReadServer(ctx context.Context, serverId ServerId, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewReadServerRequest(c.Server, serverId)
 	if err != nil {
 		return nil, err
 	}
@@ -255,8 +254,8 @@ func (c *Client) GetServersServerId(ctx context.Context, serverId ServerId, reqE
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetServersServerIdOsImages(ctx context.Context, serverId ServerId, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetServersServerIdOsImagesRequest(c.Server, serverId)
+func (c *Client) ListOSImages(ctx context.Context, serverId ServerId, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListOSImagesRequest(c.Server, serverId)
 	if err != nil {
 		return nil, err
 	}
@@ -267,8 +266,8 @@ func (c *Client) GetServersServerIdOsImages(ctx context.Context, serverId Server
 	return c.Client.Do(req)
 }
 
-func (c *Client) PostServersServerIdOsInstallWithBody(ctx context.Context, serverId ServerId, params *PostServersServerIdOsInstallParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostServersServerIdOsInstallRequestWithBody(c.Server, serverId, params, contentType, body)
+func (c *Client) OSInstallWithBody(ctx context.Context, serverId ServerId, params *OSInstallParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewOSInstallRequestWithBody(c.Server, serverId, params, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -279,8 +278,8 @@ func (c *Client) PostServersServerIdOsInstallWithBody(ctx context.Context, serve
 	return c.Client.Do(req)
 }
 
-func (c *Client) PostServersServerIdOsInstall(ctx context.Context, serverId ServerId, params *PostServersServerIdOsInstallParams, body PostServersServerIdOsInstallJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostServersServerIdOsInstallRequest(c.Server, serverId, params, body)
+func (c *Client) OSInstall(ctx context.Context, serverId ServerId, params *OSInstallParams, body OSInstallJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewOSInstallRequest(c.Server, serverId, params, body)
 	if err != nil {
 		return nil, err
 	}
@@ -291,8 +290,8 @@ func (c *Client) PostServersServerIdOsInstall(ctx context.Context, serverId Serv
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetServersServerIdPortChannelsPortChannelId(ctx context.Context, serverId ServerId, portChannelId PortChannelId, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetServersServerIdPortChannelsPortChannelIdRequest(c.Server, serverId, portChannelId)
+func (c *Client) ReadServerPortChannel(ctx context.Context, serverId ServerId, portChannelId PortChannelId, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewReadServerPortChannelRequest(c.Server, serverId, portChannelId)
 	if err != nil {
 		return nil, err
 	}
@@ -303,8 +302,8 @@ func (c *Client) GetServersServerIdPortChannelsPortChannelId(ctx context.Context
 	return c.Client.Do(req)
 }
 
-func (c *Client) PostServersServerIdPortChannelsPortChannelIdConfigureBondingWithBody(ctx context.Context, serverId ServerId, portChannelId PortChannelId, params *PostServersServerIdPortChannelsPortChannelIdConfigureBondingParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostServersServerIdPortChannelsPortChannelIdConfigureBondingRequestWithBody(c.Server, serverId, portChannelId, params, contentType, body)
+func (c *Client) SetPortChannelBondingWithBody(ctx context.Context, serverId ServerId, portChannelId PortChannelId, params *SetPortChannelBondingParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSetPortChannelBondingRequestWithBody(c.Server, serverId, portChannelId, params, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -315,8 +314,8 @@ func (c *Client) PostServersServerIdPortChannelsPortChannelIdConfigureBondingWit
 	return c.Client.Do(req)
 }
 
-func (c *Client) PostServersServerIdPortChannelsPortChannelIdConfigureBonding(ctx context.Context, serverId ServerId, portChannelId PortChannelId, params *PostServersServerIdPortChannelsPortChannelIdConfigureBondingParams, body PostServersServerIdPortChannelsPortChannelIdConfigureBondingJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostServersServerIdPortChannelsPortChannelIdConfigureBondingRequest(c.Server, serverId, portChannelId, params, body)
+func (c *Client) SetPortChannelBonding(ctx context.Context, serverId ServerId, portChannelId PortChannelId, params *SetPortChannelBondingParams, body SetPortChannelBondingJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSetPortChannelBondingRequest(c.Server, serverId, portChannelId, params, body)
 	if err != nil {
 		return nil, err
 	}
@@ -327,8 +326,8 @@ func (c *Client) PostServersServerIdPortChannelsPortChannelIdConfigureBonding(ct
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetServersServerIdPortsPortId(ctx context.Context, serverId ServerId, portId PortId, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetServersServerIdPortsPortIdRequest(c.Server, serverId, portId)
+func (c *Client) ReadServerPort(ctx context.Context, serverId ServerId, portId PortId, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewReadServerPortRequest(c.Server, serverId, portId)
 	if err != nil {
 		return nil, err
 	}
@@ -339,8 +338,8 @@ func (c *Client) GetServersServerIdPortsPortId(ctx context.Context, serverId Ser
 	return c.Client.Do(req)
 }
 
-func (c *Client) PatchServersServerIdPortsPortIdWithBody(ctx context.Context, serverId ServerId, portId PortId, params *PatchServersServerIdPortsPortIdParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPatchServersServerIdPortsPortIdRequestWithBody(c.Server, serverId, portId, params, contentType, body)
+func (c *Client) UpdateServerPortWithBody(ctx context.Context, serverId ServerId, portId PortId, params *UpdateServerPortParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateServerPortRequestWithBody(c.Server, serverId, portId, params, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -351,8 +350,8 @@ func (c *Client) PatchServersServerIdPortsPortIdWithBody(ctx context.Context, se
 	return c.Client.Do(req)
 }
 
-func (c *Client) PatchServersServerIdPortsPortId(ctx context.Context, serverId ServerId, portId PortId, params *PatchServersServerIdPortsPortIdParams, body PatchServersServerIdPortsPortIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPatchServersServerIdPortsPortIdRequest(c.Server, serverId, portId, params, body)
+func (c *Client) UpdateServerPort(ctx context.Context, serverId ServerId, portId PortId, params *UpdateServerPortParams, body UpdateServerPortJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateServerPortRequest(c.Server, serverId, portId, params, body)
 	if err != nil {
 		return nil, err
 	}
@@ -363,8 +362,8 @@ func (c *Client) PatchServersServerIdPortsPortId(ctx context.Context, serverId S
 	return c.Client.Do(req)
 }
 
-func (c *Client) PostServersServerIdPortsPortIdAssignNetworkWithBody(ctx context.Context, serverId ServerId, portId PortId, params *PostServersServerIdPortsPortIdAssignNetworkParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostServersServerIdPortsPortIdAssignNetworkRequestWithBody(c.Server, serverId, portId, params, contentType, body)
+func (c *Client) SetServerPortNetworkConnectionWithBody(ctx context.Context, serverId ServerId, portId PortId, params *SetServerPortNetworkConnectionParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSetServerPortNetworkConnectionRequestWithBody(c.Server, serverId, portId, params, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -375,8 +374,8 @@ func (c *Client) PostServersServerIdPortsPortIdAssignNetworkWithBody(ctx context
 	return c.Client.Do(req)
 }
 
-func (c *Client) PostServersServerIdPortsPortIdAssignNetwork(ctx context.Context, serverId ServerId, portId PortId, params *PostServersServerIdPortsPortIdAssignNetworkParams, body PostServersServerIdPortsPortIdAssignNetworkJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostServersServerIdPortsPortIdAssignNetworkRequest(c.Server, serverId, portId, params, body)
+func (c *Client) SetServerPortNetworkConnection(ctx context.Context, serverId ServerId, portId PortId, params *SetServerPortNetworkConnectionParams, body SetServerPortNetworkConnectionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSetServerPortNetworkConnectionRequest(c.Server, serverId, portId, params, body)
 	if err != nil {
 		return nil, err
 	}
@@ -387,8 +386,8 @@ func (c *Client) PostServersServerIdPortsPortIdAssignNetwork(ctx context.Context
 	return c.Client.Do(req)
 }
 
-func (c *Client) PostServersServerIdPortsPortIdEnableWithBody(ctx context.Context, serverId ServerId, portId PortId, params *PostServersServerIdPortsPortIdEnableParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostServersServerIdPortsPortIdEnableRequestWithBody(c.Server, serverId, portId, params, contentType, body)
+func (c *Client) SetServerPortEnabledWithBody(ctx context.Context, serverId ServerId, portId PortId, params *SetServerPortEnabledParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSetServerPortEnabledRequestWithBody(c.Server, serverId, portId, params, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -399,8 +398,8 @@ func (c *Client) PostServersServerIdPortsPortIdEnableWithBody(ctx context.Contex
 	return c.Client.Do(req)
 }
 
-func (c *Client) PostServersServerIdPortsPortIdEnable(ctx context.Context, serverId ServerId, portId PortId, params *PostServersServerIdPortsPortIdEnableParams, body PostServersServerIdPortsPortIdEnableJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostServersServerIdPortsPortIdEnableRequest(c.Server, serverId, portId, params, body)
+func (c *Client) SetServerPortEnabled(ctx context.Context, serverId ServerId, portId PortId, params *SetServerPortEnabledParams, body SetServerPortEnabledJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSetServerPortEnabledRequest(c.Server, serverId, portId, params, body)
 	if err != nil {
 		return nil, err
 	}
@@ -411,8 +410,8 @@ func (c *Client) PostServersServerIdPortsPortIdEnable(ctx context.Context, serve
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetServersServerIdPortsPortIdTrafficGraph(ctx context.Context, serverId ServerId, portId PortId, params *GetServersServerIdPortsPortIdTrafficGraphParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetServersServerIdPortsPortIdTrafficGraphRequest(c.Server, serverId, portId, params)
+func (c *Client) ReadServerTrafficByPort(ctx context.Context, serverId ServerId, portId PortId, params *ReadServerTrafficByPortParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewReadServerTrafficByPortRequest(c.Server, serverId, portId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -423,8 +422,8 @@ func (c *Client) GetServersServerIdPortsPortIdTrafficGraph(ctx context.Context, 
 	return c.Client.Do(req)
 }
 
-func (c *Client) PostServersServerIdPowerControlWithBody(ctx context.Context, serverId ServerId, params *PostServersServerIdPowerControlParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostServersServerIdPowerControlRequestWithBody(c.Server, serverId, params, contentType, body)
+func (c *Client) SetServerPowerStatusWithBody(ctx context.Context, serverId ServerId, params *SetServerPowerStatusParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSetServerPowerStatusRequestWithBody(c.Server, serverId, params, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -435,8 +434,8 @@ func (c *Client) PostServersServerIdPowerControlWithBody(ctx context.Context, se
 	return c.Client.Do(req)
 }
 
-func (c *Client) PostServersServerIdPowerControl(ctx context.Context, serverId ServerId, params *PostServersServerIdPowerControlParams, body PostServersServerIdPowerControlJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPostServersServerIdPowerControlRequest(c.Server, serverId, params, body)
+func (c *Client) SetServerPowerStatus(ctx context.Context, serverId ServerId, params *SetServerPowerStatusParams, body SetServerPowerStatusJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSetServerPowerStatusRequest(c.Server, serverId, params, body)
 	if err != nil {
 		return nil, err
 	}
@@ -447,8 +446,8 @@ func (c *Client) PostServersServerIdPowerControl(ctx context.Context, serverId S
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetServersServerIdPowerStatus(ctx context.Context, serverId ServerId, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetServersServerIdPowerStatusRequest(c.Server, serverId)
+func (c *Client) ReadServerPowerStatus(ctx context.Context, serverId ServerId, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewReadServerPowerStatusRequest(c.Server, serverId)
 	if err != nil {
 		return nil, err
 	}
@@ -459,8 +458,8 @@ func (c *Client) GetServersServerIdPowerStatus(ctx context.Context, serverId Ser
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetServersServerIdRaidStatus(ctx context.Context, serverId ServerId, params *GetServersServerIdRaidStatusParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetServersServerIdRaidStatusRequest(c.Server, serverId, params)
+func (c *Client) ReadRAIDStatus(ctx context.Context, serverId ServerId, params *ReadRAIDStatusParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewReadRAIDStatusRequest(c.Server, serverId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -471,8 +470,8 @@ func (c *Client) GetServersServerIdRaidStatus(ctx context.Context, serverId Serv
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetServices(ctx context.Context, params *GetServicesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetServicesRequest(c.Server, params)
+func (c *Client) ListServices(ctx context.Context, params *ListServicesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewListServicesRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -483,8 +482,8 @@ func (c *Client) GetServices(ctx context.Context, params *GetServicesParams, req
 	return c.Client.Do(req)
 }
 
-func (c *Client) GetServicesServiceId(ctx context.Context, serviceId ServiceId, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewGetServicesServiceIdRequest(c.Server, serviceId)
+func (c *Client) ReadService(ctx context.Context, serviceId ServiceId, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewReadServiceRequest(c.Server, serviceId)
 	if err != nil {
 		return nil, err
 	}
@@ -495,8 +494,8 @@ func (c *Client) GetServicesServiceId(ctx context.Context, serviceId ServiceId, 
 	return c.Client.Do(req)
 }
 
-func (c *Client) PatchServicesServiceIdWithBody(ctx context.Context, serviceId ServiceId, params *PatchServicesServiceIdParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPatchServicesServiceIdRequestWithBody(c.Server, serviceId, params, contentType, body)
+func (c *Client) UpdateServiceWithBody(ctx context.Context, serviceId ServiceId, params *UpdateServiceParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateServiceRequestWithBody(c.Server, serviceId, params, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -507,8 +506,8 @@ func (c *Client) PatchServicesServiceIdWithBody(ctx context.Context, serviceId S
 	return c.Client.Do(req)
 }
 
-func (c *Client) PatchServicesServiceId(ctx context.Context, serviceId ServiceId, params *PatchServicesServiceIdParams, body PatchServicesServiceIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewPatchServicesServiceIdRequest(c.Server, serviceId, params, body)
+func (c *Client) UpdateService(ctx context.Context, serviceId ServiceId, params *UpdateServiceParams, body UpdateServiceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewUpdateServiceRequest(c.Server, serviceId, params, body)
 	if err != nil {
 		return nil, err
 	}
@@ -519,8 +518,8 @@ func (c *Client) PatchServicesServiceId(ctx context.Context, serviceId ServiceId
 	return c.Client.Do(req)
 }
 
-// NewGetDedicatedSubnetsRequest generates requests for GetDedicatedSubnets
-func NewGetDedicatedSubnetsRequest(server string, params *GetDedicatedSubnetsParams) (*http.Request, error) {
+// NewListDedicatedSubnetsRequest generates requests for ListDedicatedSubnets
+func NewListDedicatedSubnetsRequest(server string, params *ListDedicatedSubnetsParams) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -630,8 +629,8 @@ func NewGetDedicatedSubnetsRequest(server string, params *GetDedicatedSubnetsPar
 	return req, nil
 }
 
-// NewGetDedicatedSubnetsDedicatedSubnetIdRequest generates requests for GetDedicatedSubnetsDedicatedSubnetId
-func NewGetDedicatedSubnetsDedicatedSubnetIdRequest(server string, dedicatedSubnetId DedicatedSubnetId, params *GetDedicatedSubnetsDedicatedSubnetIdParams) (*http.Request, error) {
+// NewReadDedicatedSubnetRequest generates requests for ReadDedicatedSubnet
+func NewReadDedicatedSubnetRequest(server string, dedicatedSubnetId DedicatedSubnetId, params *ReadDedicatedSubnetParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -684,8 +683,8 @@ func NewGetDedicatedSubnetsDedicatedSubnetIdRequest(server string, dedicatedSubn
 	return req, nil
 }
 
-// NewGetPrivateNetworksRequest generates requests for GetPrivateNetworks
-func NewGetPrivateNetworksRequest(server string, params *GetPrivateNetworksParams) (*http.Request, error) {
+// NewListPrivateNetworksRequest generates requests for ListPrivateNetworks
+func NewListPrivateNetworksRequest(server string, params *ListPrivateNetworksParams) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -795,8 +794,8 @@ func NewGetPrivateNetworksRequest(server string, params *GetPrivateNetworksParam
 	return req, nil
 }
 
-// NewGetPrivateNetworksPrivateNetworkIdRequest generates requests for GetPrivateNetworksPrivateNetworkId
-func NewGetPrivateNetworksPrivateNetworkIdRequest(server string, privateNetworkId PrivateNetworkId) (*http.Request, error) {
+// NewReadPrivateNetworkRequest generates requests for ReadPrivateNetwork
+func NewReadPrivateNetworkRequest(server string, privateNetworkId PrivateNetworkId) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -829,8 +828,8 @@ func NewGetPrivateNetworksPrivateNetworkIdRequest(server string, privateNetworkI
 	return req, nil
 }
 
-// NewGetServersRequest generates requests for GetServers
-func NewGetServersRequest(server string, params *GetServersParams) (*http.Request, error) {
+// NewListServersRequest generates requests for ListServers
+func NewListServersRequest(server string, params *ListServersParams) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -988,8 +987,8 @@ func NewGetServersRequest(server string, params *GetServersParams) (*http.Reques
 	return req, nil
 }
 
-// NewGetServersServerIdRequest generates requests for GetServersServerId
-func NewGetServersServerIdRequest(server string, serverId ServerId) (*http.Request, error) {
+// NewReadServerRequest generates requests for ReadServer
+func NewReadServerRequest(server string, serverId ServerId) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1022,8 +1021,8 @@ func NewGetServersServerIdRequest(server string, serverId ServerId) (*http.Reque
 	return req, nil
 }
 
-// NewGetServersServerIdOsImagesRequest generates requests for GetServersServerIdOsImages
-func NewGetServersServerIdOsImagesRequest(server string, serverId ServerId) (*http.Request, error) {
+// NewListOSImagesRequest generates requests for ListOSImages
+func NewListOSImagesRequest(server string, serverId ServerId) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1056,19 +1055,19 @@ func NewGetServersServerIdOsImagesRequest(server string, serverId ServerId) (*ht
 	return req, nil
 }
 
-// NewPostServersServerIdOsInstallRequest calls the generic PostServersServerIdOsInstall builder with application/json body
-func NewPostServersServerIdOsInstallRequest(server string, serverId ServerId, params *PostServersServerIdOsInstallParams, body PostServersServerIdOsInstallJSONRequestBody) (*http.Request, error) {
+// NewOSInstallRequest calls the generic OSInstall builder with application/json body
+func NewOSInstallRequest(server string, serverId ServerId, params *OSInstallParams, body OSInstallJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewPostServersServerIdOsInstallRequestWithBody(server, serverId, params, "application/json", bodyReader)
+	return NewOSInstallRequestWithBody(server, serverId, params, "application/json", bodyReader)
 }
 
-// NewPostServersServerIdOsInstallRequestWithBody generates requests for PostServersServerIdOsInstall with any type of body
-func NewPostServersServerIdOsInstallRequestWithBody(server string, serverId ServerId, params *PostServersServerIdOsInstallParams, contentType string, body io.Reader) (*http.Request, error) {
+// NewOSInstallRequestWithBody generates requests for OSInstall with any type of body
+func NewOSInstallRequestWithBody(server string, serverId ServerId, params *OSInstallParams, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1112,8 +1111,8 @@ func NewPostServersServerIdOsInstallRequestWithBody(server string, serverId Serv
 	return req, nil
 }
 
-// NewGetServersServerIdPortChannelsPortChannelIdRequest generates requests for GetServersServerIdPortChannelsPortChannelId
-func NewGetServersServerIdPortChannelsPortChannelIdRequest(server string, serverId ServerId, portChannelId PortChannelId) (*http.Request, error) {
+// NewReadServerPortChannelRequest generates requests for ReadServerPortChannel
+func NewReadServerPortChannelRequest(server string, serverId ServerId, portChannelId PortChannelId) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1153,19 +1152,19 @@ func NewGetServersServerIdPortChannelsPortChannelIdRequest(server string, server
 	return req, nil
 }
 
-// NewPostServersServerIdPortChannelsPortChannelIdConfigureBondingRequest calls the generic PostServersServerIdPortChannelsPortChannelIdConfigureBonding builder with application/json body
-func NewPostServersServerIdPortChannelsPortChannelIdConfigureBondingRequest(server string, serverId ServerId, portChannelId PortChannelId, params *PostServersServerIdPortChannelsPortChannelIdConfigureBondingParams, body PostServersServerIdPortChannelsPortChannelIdConfigureBondingJSONRequestBody) (*http.Request, error) {
+// NewSetPortChannelBondingRequest calls the generic SetPortChannelBonding builder with application/json body
+func NewSetPortChannelBondingRequest(server string, serverId ServerId, portChannelId PortChannelId, params *SetPortChannelBondingParams, body SetPortChannelBondingJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewPostServersServerIdPortChannelsPortChannelIdConfigureBondingRequestWithBody(server, serverId, portChannelId, params, "application/json", bodyReader)
+	return NewSetPortChannelBondingRequestWithBody(server, serverId, portChannelId, params, "application/json", bodyReader)
 }
 
-// NewPostServersServerIdPortChannelsPortChannelIdConfigureBondingRequestWithBody generates requests for PostServersServerIdPortChannelsPortChannelIdConfigureBonding with any type of body
-func NewPostServersServerIdPortChannelsPortChannelIdConfigureBondingRequestWithBody(server string, serverId ServerId, portChannelId PortChannelId, params *PostServersServerIdPortChannelsPortChannelIdConfigureBondingParams, contentType string, body io.Reader) (*http.Request, error) {
+// NewSetPortChannelBondingRequestWithBody generates requests for SetPortChannelBonding with any type of body
+func NewSetPortChannelBondingRequestWithBody(server string, serverId ServerId, portChannelId PortChannelId, params *SetPortChannelBondingParams, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1216,8 +1215,8 @@ func NewPostServersServerIdPortChannelsPortChannelIdConfigureBondingRequestWithB
 	return req, nil
 }
 
-// NewGetServersServerIdPortsPortIdRequest generates requests for GetServersServerIdPortsPortId
-func NewGetServersServerIdPortsPortIdRequest(server string, serverId ServerId, portId PortId) (*http.Request, error) {
+// NewReadServerPortRequest generates requests for ReadServerPort
+func NewReadServerPortRequest(server string, serverId ServerId, portId PortId) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1257,19 +1256,19 @@ func NewGetServersServerIdPortsPortIdRequest(server string, serverId ServerId, p
 	return req, nil
 }
 
-// NewPatchServersServerIdPortsPortIdRequest calls the generic PatchServersServerIdPortsPortId builder with application/json body
-func NewPatchServersServerIdPortsPortIdRequest(server string, serverId ServerId, portId PortId, params *PatchServersServerIdPortsPortIdParams, body PatchServersServerIdPortsPortIdJSONRequestBody) (*http.Request, error) {
+// NewUpdateServerPortRequest calls the generic UpdateServerPort builder with application/json body
+func NewUpdateServerPortRequest(server string, serverId ServerId, portId PortId, params *UpdateServerPortParams, body UpdateServerPortJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewPatchServersServerIdPortsPortIdRequestWithBody(server, serverId, portId, params, "application/json", bodyReader)
+	return NewUpdateServerPortRequestWithBody(server, serverId, portId, params, "application/json", bodyReader)
 }
 
-// NewPatchServersServerIdPortsPortIdRequestWithBody generates requests for PatchServersServerIdPortsPortId with any type of body
-func NewPatchServersServerIdPortsPortIdRequestWithBody(server string, serverId ServerId, portId PortId, params *PatchServersServerIdPortsPortIdParams, contentType string, body io.Reader) (*http.Request, error) {
+// NewUpdateServerPortRequestWithBody generates requests for UpdateServerPort with any type of body
+func NewUpdateServerPortRequestWithBody(server string, serverId ServerId, portId PortId, params *UpdateServerPortParams, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1320,19 +1319,19 @@ func NewPatchServersServerIdPortsPortIdRequestWithBody(server string, serverId S
 	return req, nil
 }
 
-// NewPostServersServerIdPortsPortIdAssignNetworkRequest calls the generic PostServersServerIdPortsPortIdAssignNetwork builder with application/json body
-func NewPostServersServerIdPortsPortIdAssignNetworkRequest(server string, serverId ServerId, portId PortId, params *PostServersServerIdPortsPortIdAssignNetworkParams, body PostServersServerIdPortsPortIdAssignNetworkJSONRequestBody) (*http.Request, error) {
+// NewSetServerPortNetworkConnectionRequest calls the generic SetServerPortNetworkConnection builder with application/json body
+func NewSetServerPortNetworkConnectionRequest(server string, serverId ServerId, portId PortId, params *SetServerPortNetworkConnectionParams, body SetServerPortNetworkConnectionJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewPostServersServerIdPortsPortIdAssignNetworkRequestWithBody(server, serverId, portId, params, "application/json", bodyReader)
+	return NewSetServerPortNetworkConnectionRequestWithBody(server, serverId, portId, params, "application/json", bodyReader)
 }
 
-// NewPostServersServerIdPortsPortIdAssignNetworkRequestWithBody generates requests for PostServersServerIdPortsPortIdAssignNetwork with any type of body
-func NewPostServersServerIdPortsPortIdAssignNetworkRequestWithBody(server string, serverId ServerId, portId PortId, params *PostServersServerIdPortsPortIdAssignNetworkParams, contentType string, body io.Reader) (*http.Request, error) {
+// NewSetServerPortNetworkConnectionRequestWithBody generates requests for SetServerPortNetworkConnection with any type of body
+func NewSetServerPortNetworkConnectionRequestWithBody(server string, serverId ServerId, portId PortId, params *SetServerPortNetworkConnectionParams, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1383,19 +1382,19 @@ func NewPostServersServerIdPortsPortIdAssignNetworkRequestWithBody(server string
 	return req, nil
 }
 
-// NewPostServersServerIdPortsPortIdEnableRequest calls the generic PostServersServerIdPortsPortIdEnable builder with application/json body
-func NewPostServersServerIdPortsPortIdEnableRequest(server string, serverId ServerId, portId PortId, params *PostServersServerIdPortsPortIdEnableParams, body PostServersServerIdPortsPortIdEnableJSONRequestBody) (*http.Request, error) {
+// NewSetServerPortEnabledRequest calls the generic SetServerPortEnabled builder with application/json body
+func NewSetServerPortEnabledRequest(server string, serverId ServerId, portId PortId, params *SetServerPortEnabledParams, body SetServerPortEnabledJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewPostServersServerIdPortsPortIdEnableRequestWithBody(server, serverId, portId, params, "application/json", bodyReader)
+	return NewSetServerPortEnabledRequestWithBody(server, serverId, portId, params, "application/json", bodyReader)
 }
 
-// NewPostServersServerIdPortsPortIdEnableRequestWithBody generates requests for PostServersServerIdPortsPortIdEnable with any type of body
-func NewPostServersServerIdPortsPortIdEnableRequestWithBody(server string, serverId ServerId, portId PortId, params *PostServersServerIdPortsPortIdEnableParams, contentType string, body io.Reader) (*http.Request, error) {
+// NewSetServerPortEnabledRequestWithBody generates requests for SetServerPortEnabled with any type of body
+func NewSetServerPortEnabledRequestWithBody(server string, serverId ServerId, portId PortId, params *SetServerPortEnabledParams, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1446,8 +1445,8 @@ func NewPostServersServerIdPortsPortIdEnableRequestWithBody(server string, serve
 	return req, nil
 }
 
-// NewGetServersServerIdPortsPortIdTrafficGraphRequest generates requests for GetServersServerIdPortsPortIdTrafficGraph
-func NewGetServersServerIdPortsPortIdTrafficGraphRequest(server string, serverId ServerId, portId PortId, params *GetServersServerIdPortsPortIdTrafficGraphParams) (*http.Request, error) {
+// NewReadServerTrafficByPortRequest generates requests for ReadServerTrafficByPort
+func NewReadServerTrafficByPortRequest(server string, serverId ServerId, portId PortId, params *ReadServerTrafficByPortParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1539,19 +1538,19 @@ func NewGetServersServerIdPortsPortIdTrafficGraphRequest(server string, serverId
 	return req, nil
 }
 
-// NewPostServersServerIdPowerControlRequest calls the generic PostServersServerIdPowerControl builder with application/json body
-func NewPostServersServerIdPowerControlRequest(server string, serverId ServerId, params *PostServersServerIdPowerControlParams, body PostServersServerIdPowerControlJSONRequestBody) (*http.Request, error) {
+// NewSetServerPowerStatusRequest calls the generic SetServerPowerStatus builder with application/json body
+func NewSetServerPowerStatusRequest(server string, serverId ServerId, params *SetServerPowerStatusParams, body SetServerPowerStatusJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewPostServersServerIdPowerControlRequestWithBody(server, serverId, params, "application/json", bodyReader)
+	return NewSetServerPowerStatusRequestWithBody(server, serverId, params, "application/json", bodyReader)
 }
 
-// NewPostServersServerIdPowerControlRequestWithBody generates requests for PostServersServerIdPowerControl with any type of body
-func NewPostServersServerIdPowerControlRequestWithBody(server string, serverId ServerId, params *PostServersServerIdPowerControlParams, contentType string, body io.Reader) (*http.Request, error) {
+// NewSetServerPowerStatusRequestWithBody generates requests for SetServerPowerStatus with any type of body
+func NewSetServerPowerStatusRequestWithBody(server string, serverId ServerId, params *SetServerPowerStatusParams, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1595,8 +1594,8 @@ func NewPostServersServerIdPowerControlRequestWithBody(server string, serverId S
 	return req, nil
 }
 
-// NewGetServersServerIdPowerStatusRequest generates requests for GetServersServerIdPowerStatus
-func NewGetServersServerIdPowerStatusRequest(server string, serverId ServerId) (*http.Request, error) {
+// NewReadServerPowerStatusRequest generates requests for ReadServerPowerStatus
+func NewReadServerPowerStatusRequest(server string, serverId ServerId) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1629,8 +1628,8 @@ func NewGetServersServerIdPowerStatusRequest(server string, serverId ServerId) (
 	return req, nil
 }
 
-// NewGetServersServerIdRaidStatusRequest generates requests for GetServersServerIdRaidStatus
-func NewGetServersServerIdRaidStatusRequest(server string, serverId ServerId, params *GetServersServerIdRaidStatusParams) (*http.Request, error) {
+// NewReadRAIDStatusRequest generates requests for ReadRAIDStatus
+func NewReadRAIDStatusRequest(server string, serverId ServerId, params *ReadRAIDStatusParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1683,8 +1682,8 @@ func NewGetServersServerIdRaidStatusRequest(server string, serverId ServerId, pa
 	return req, nil
 }
 
-// NewGetServicesRequest generates requests for GetServices
-func NewGetServicesRequest(server string, params *GetServicesParams) (*http.Request, error) {
+// NewListServicesRequest generates requests for ListServices
+func NewListServicesRequest(server string, params *ListServicesParams) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -1810,8 +1809,8 @@ func NewGetServicesRequest(server string, params *GetServicesParams) (*http.Requ
 	return req, nil
 }
 
-// NewGetServicesServiceIdRequest generates requests for GetServicesServiceId
-func NewGetServicesServiceIdRequest(server string, serviceId ServiceId) (*http.Request, error) {
+// NewReadServiceRequest generates requests for ReadService
+func NewReadServiceRequest(server string, serviceId ServiceId) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1844,19 +1843,19 @@ func NewGetServicesServiceIdRequest(server string, serviceId ServiceId) (*http.R
 	return req, nil
 }
 
-// NewPatchServicesServiceIdRequest calls the generic PatchServicesServiceId builder with application/json body
-func NewPatchServicesServiceIdRequest(server string, serviceId ServiceId, params *PatchServicesServiceIdParams, body PatchServicesServiceIdJSONRequestBody) (*http.Request, error) {
+// NewUpdateServiceRequest calls the generic UpdateService builder with application/json body
+func NewUpdateServiceRequest(server string, serviceId ServiceId, params *UpdateServiceParams, body UpdateServiceJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewPatchServicesServiceIdRequestWithBody(server, serviceId, params, "application/json", bodyReader)
+	return NewUpdateServiceRequestWithBody(server, serviceId, params, "application/json", bodyReader)
 }
 
-// NewPatchServicesServiceIdRequestWithBody generates requests for PatchServicesServiceId with any type of body
-func NewPatchServicesServiceIdRequestWithBody(server string, serviceId ServiceId, params *PatchServicesServiceIdParams, contentType string, body io.Reader) (*http.Request, error) {
+// NewUpdateServiceRequestWithBody generates requests for UpdateService with any type of body
+func NewUpdateServiceRequestWithBody(server string, serviceId ServiceId, params *UpdateServiceParams, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1943,98 +1942,95 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
-	// GetDedicatedSubnets request
-	GetDedicatedSubnetsWithResponse(ctx context.Context, params *GetDedicatedSubnetsParams, reqEditors ...RequestEditorFn) (*GetDedicatedSubnetsResponse, error)
+	// ListDedicatedSubnets request
+	ListDedicatedSubnetsWithResponse(ctx context.Context, params *ListDedicatedSubnetsParams, reqEditors ...RequestEditorFn) (*ListDedicatedSubnetsResponse, error)
 
-	// GetDedicatedSubnetsDedicatedSubnetId request
-	GetDedicatedSubnetsDedicatedSubnetIdWithResponse(ctx context.Context, dedicatedSubnetId DedicatedSubnetId, params *GetDedicatedSubnetsDedicatedSubnetIdParams, reqEditors ...RequestEditorFn) (*GetDedicatedSubnetsDedicatedSubnetIdResponse, error)
+	// ReadDedicatedSubnet request
+	ReadDedicatedSubnetWithResponse(ctx context.Context, dedicatedSubnetId DedicatedSubnetId, params *ReadDedicatedSubnetParams, reqEditors ...RequestEditorFn) (*ReadDedicatedSubnetResponse, error)
 
-	// GetPrivateNetworks request
-	GetPrivateNetworksWithResponse(ctx context.Context, params *GetPrivateNetworksParams, reqEditors ...RequestEditorFn) (*GetPrivateNetworksResponse, error)
+	// ListPrivateNetworks request
+	ListPrivateNetworksWithResponse(ctx context.Context, params *ListPrivateNetworksParams, reqEditors ...RequestEditorFn) (*ListPrivateNetworksResponse, error)
 
-	// GetPrivateNetworksPrivateNetworkId request
-	GetPrivateNetworksPrivateNetworkIdWithResponse(ctx context.Context, privateNetworkId PrivateNetworkId, reqEditors ...RequestEditorFn) (*GetPrivateNetworksPrivateNetworkIdResponse, error)
+	// ReadPrivateNetwork request
+	ReadPrivateNetworkWithResponse(ctx context.Context, privateNetworkId PrivateNetworkId, reqEditors ...RequestEditorFn) (*ReadPrivateNetworkResponse, error)
 
-	// GetServers request
-	GetServersWithResponse(ctx context.Context, params *GetServersParams, reqEditors ...RequestEditorFn) (*GetServersResponse, error)
+	// ListServers request
+	ListServersWithResponse(ctx context.Context, params *ListServersParams, reqEditors ...RequestEditorFn) (*ListServersResponse, error)
 
-	// GetServersServerId request
-	GetServersServerIdWithResponse(ctx context.Context, serverId ServerId, reqEditors ...RequestEditorFn) (*GetServersServerIdResponse, error)
+	// ReadServer request
+	ReadServerWithResponse(ctx context.Context, serverId ServerId, reqEditors ...RequestEditorFn) (*ReadServerResponse, error)
 
-	// GetServersServerIdOsImages request
-	GetServersServerIdOsImagesWithResponse(ctx context.Context, serverId ServerId, reqEditors ...RequestEditorFn) (*GetServersServerIdOsImagesResponse, error)
+	// ListOSImages request
+	ListOSImagesWithResponse(ctx context.Context, serverId ServerId, reqEditors ...RequestEditorFn) (*ListOSImagesResponse, error)
 
-	// PostServersServerIdOsInstall request with any body
-	PostServersServerIdOsInstallWithBodyWithResponse(ctx context.Context, serverId ServerId, params *PostServersServerIdOsInstallParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostServersServerIdOsInstallResponse, error)
+	// OSInstall request with any body
+	OSInstallWithBodyWithResponse(ctx context.Context, serverId ServerId, params *OSInstallParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*OSInstallResponse, error)
 
-	PostServersServerIdOsInstallWithResponse(ctx context.Context, serverId ServerId, params *PostServersServerIdOsInstallParams, body PostServersServerIdOsInstallJSONRequestBody, reqEditors ...RequestEditorFn) (*PostServersServerIdOsInstallResponse, error)
+	OSInstallWithResponse(ctx context.Context, serverId ServerId, params *OSInstallParams, body OSInstallJSONRequestBody, reqEditors ...RequestEditorFn) (*OSInstallResponse, error)
 
-	// GetServersServerIdPortChannelsPortChannelId request
-	GetServersServerIdPortChannelsPortChannelIdWithResponse(ctx context.Context, serverId ServerId, portChannelId PortChannelId, reqEditors ...RequestEditorFn) (*GetServersServerIdPortChannelsPortChannelIdResponse, error)
+	// ReadServerPortChannel request
+	ReadServerPortChannelWithResponse(ctx context.Context, serverId ServerId, portChannelId PortChannelId, reqEditors ...RequestEditorFn) (*ReadServerPortChannelResponse, error)
 
-	// PostServersServerIdPortChannelsPortChannelIdConfigureBonding request with any body
-	PostServersServerIdPortChannelsPortChannelIdConfigureBondingWithBodyWithResponse(ctx context.Context, serverId ServerId, portChannelId PortChannelId, params *PostServersServerIdPortChannelsPortChannelIdConfigureBondingParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostServersServerIdPortChannelsPortChannelIdConfigureBondingResponse, error)
+	// SetPortChannelBonding request with any body
+	SetPortChannelBondingWithBodyWithResponse(ctx context.Context, serverId ServerId, portChannelId PortChannelId, params *SetPortChannelBondingParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SetPortChannelBondingResponse, error)
 
-	PostServersServerIdPortChannelsPortChannelIdConfigureBondingWithResponse(ctx context.Context, serverId ServerId, portChannelId PortChannelId, params *PostServersServerIdPortChannelsPortChannelIdConfigureBondingParams, body PostServersServerIdPortChannelsPortChannelIdConfigureBondingJSONRequestBody, reqEditors ...RequestEditorFn) (*PostServersServerIdPortChannelsPortChannelIdConfigureBondingResponse, error)
+	SetPortChannelBondingWithResponse(ctx context.Context, serverId ServerId, portChannelId PortChannelId, params *SetPortChannelBondingParams, body SetPortChannelBondingJSONRequestBody, reqEditors ...RequestEditorFn) (*SetPortChannelBondingResponse, error)
 
-	// GetServersServerIdPortsPortId request
-	GetServersServerIdPortsPortIdWithResponse(ctx context.Context, serverId ServerId, portId PortId, reqEditors ...RequestEditorFn) (*GetServersServerIdPortsPortIdResponse, error)
+	// ReadServerPort request
+	ReadServerPortWithResponse(ctx context.Context, serverId ServerId, portId PortId, reqEditors ...RequestEditorFn) (*ReadServerPortResponse, error)
 
-	// PatchServersServerIdPortsPortId request with any body
-	PatchServersServerIdPortsPortIdWithBodyWithResponse(ctx context.Context, serverId ServerId, portId PortId, params *PatchServersServerIdPortsPortIdParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PatchServersServerIdPortsPortIdResponse, error)
+	// UpdateServerPort request with any body
+	UpdateServerPortWithBodyWithResponse(ctx context.Context, serverId ServerId, portId PortId, params *UpdateServerPortParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateServerPortResponse, error)
 
-	PatchServersServerIdPortsPortIdWithResponse(ctx context.Context, serverId ServerId, portId PortId, params *PatchServersServerIdPortsPortIdParams, body PatchServersServerIdPortsPortIdJSONRequestBody, reqEditors ...RequestEditorFn) (*PatchServersServerIdPortsPortIdResponse, error)
+	UpdateServerPortWithResponse(ctx context.Context, serverId ServerId, portId PortId, params *UpdateServerPortParams, body UpdateServerPortJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateServerPortResponse, error)
 
-	// PostServersServerIdPortsPortIdAssignNetwork request with any body
-	PostServersServerIdPortsPortIdAssignNetworkWithBodyWithResponse(ctx context.Context, serverId ServerId, portId PortId, params *PostServersServerIdPortsPortIdAssignNetworkParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostServersServerIdPortsPortIdAssignNetworkResponse, error)
+	// SetServerPortNetworkConnection request with any body
+	SetServerPortNetworkConnectionWithBodyWithResponse(ctx context.Context, serverId ServerId, portId PortId, params *SetServerPortNetworkConnectionParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SetServerPortNetworkConnectionResponse, error)
 
-	PostServersServerIdPortsPortIdAssignNetworkWithResponse(ctx context.Context, serverId ServerId, portId PortId, params *PostServersServerIdPortsPortIdAssignNetworkParams, body PostServersServerIdPortsPortIdAssignNetworkJSONRequestBody, reqEditors ...RequestEditorFn) (*PostServersServerIdPortsPortIdAssignNetworkResponse, error)
+	SetServerPortNetworkConnectionWithResponse(ctx context.Context, serverId ServerId, portId PortId, params *SetServerPortNetworkConnectionParams, body SetServerPortNetworkConnectionJSONRequestBody, reqEditors ...RequestEditorFn) (*SetServerPortNetworkConnectionResponse, error)
 
-	// PostServersServerIdPortsPortIdEnable request with any body
-	PostServersServerIdPortsPortIdEnableWithBodyWithResponse(ctx context.Context, serverId ServerId, portId PortId, params *PostServersServerIdPortsPortIdEnableParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostServersServerIdPortsPortIdEnableResponse, error)
+	// SetServerPortEnabled request with any body
+	SetServerPortEnabledWithBodyWithResponse(ctx context.Context, serverId ServerId, portId PortId, params *SetServerPortEnabledParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SetServerPortEnabledResponse, error)
 
-	PostServersServerIdPortsPortIdEnableWithResponse(ctx context.Context, serverId ServerId, portId PortId, params *PostServersServerIdPortsPortIdEnableParams, body PostServersServerIdPortsPortIdEnableJSONRequestBody, reqEditors ...RequestEditorFn) (*PostServersServerIdPortsPortIdEnableResponse, error)
+	SetServerPortEnabledWithResponse(ctx context.Context, serverId ServerId, portId PortId, params *SetServerPortEnabledParams, body SetServerPortEnabledJSONRequestBody, reqEditors ...RequestEditorFn) (*SetServerPortEnabledResponse, error)
 
-	// GetServersServerIdPortsPortIdTrafficGraph request
-	GetServersServerIdPortsPortIdTrafficGraphWithResponse(ctx context.Context, serverId ServerId, portId PortId, params *GetServersServerIdPortsPortIdTrafficGraphParams, reqEditors ...RequestEditorFn) (*GetServersServerIdPortsPortIdTrafficGraphResponse, error)
+	// ReadServerTrafficByPort request
+	ReadServerTrafficByPortWithResponse(ctx context.Context, serverId ServerId, portId PortId, params *ReadServerTrafficByPortParams, reqEditors ...RequestEditorFn) (*ReadServerTrafficByPortResponse, error)
 
-	// PostServersServerIdPowerControl request with any body
-	PostServersServerIdPowerControlWithBodyWithResponse(ctx context.Context, serverId ServerId, params *PostServersServerIdPowerControlParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostServersServerIdPowerControlResponse, error)
+	// SetServerPowerStatus request with any body
+	SetServerPowerStatusWithBodyWithResponse(ctx context.Context, serverId ServerId, params *SetServerPowerStatusParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SetServerPowerStatusResponse, error)
 
-	PostServersServerIdPowerControlWithResponse(ctx context.Context, serverId ServerId, params *PostServersServerIdPowerControlParams, body PostServersServerIdPowerControlJSONRequestBody, reqEditors ...RequestEditorFn) (*PostServersServerIdPowerControlResponse, error)
+	SetServerPowerStatusWithResponse(ctx context.Context, serverId ServerId, params *SetServerPowerStatusParams, body SetServerPowerStatusJSONRequestBody, reqEditors ...RequestEditorFn) (*SetServerPowerStatusResponse, error)
 
-	// GetServersServerIdPowerStatus request
-	GetServersServerIdPowerStatusWithResponse(ctx context.Context, serverId ServerId, reqEditors ...RequestEditorFn) (*GetServersServerIdPowerStatusResponse, error)
+	// ReadServerPowerStatus request
+	ReadServerPowerStatusWithResponse(ctx context.Context, serverId ServerId, reqEditors ...RequestEditorFn) (*ReadServerPowerStatusResponse, error)
 
-	// GetServersServerIdRaidStatus request
-	GetServersServerIdRaidStatusWithResponse(ctx context.Context, serverId ServerId, params *GetServersServerIdRaidStatusParams, reqEditors ...RequestEditorFn) (*GetServersServerIdRaidStatusResponse, error)
+	// ReadRAIDStatus request
+	ReadRAIDStatusWithResponse(ctx context.Context, serverId ServerId, params *ReadRAIDStatusParams, reqEditors ...RequestEditorFn) (*ReadRAIDStatusResponse, error)
 
-	// GetServices request
-	GetServicesWithResponse(ctx context.Context, params *GetServicesParams, reqEditors ...RequestEditorFn) (*GetServicesResponse, error)
+	// ListServices request
+	ListServicesWithResponse(ctx context.Context, params *ListServicesParams, reqEditors ...RequestEditorFn) (*ListServicesResponse, error)
 
-	// GetServicesServiceId request
-	GetServicesServiceIdWithResponse(ctx context.Context, serviceId ServiceId, reqEditors ...RequestEditorFn) (*GetServicesServiceIdResponse, error)
+	// ReadService request
+	ReadServiceWithResponse(ctx context.Context, serviceId ServiceId, reqEditors ...RequestEditorFn) (*ReadServiceResponse, error)
 
-	// PatchServicesServiceId request with any body
-	PatchServicesServiceIdWithBodyWithResponse(ctx context.Context, serviceId ServiceId, params *PatchServicesServiceIdParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PatchServicesServiceIdResponse, error)
+	// UpdateService request with any body
+	UpdateServiceWithBodyWithResponse(ctx context.Context, serviceId ServiceId, params *UpdateServiceParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateServiceResponse, error)
 
-	PatchServicesServiceIdWithResponse(ctx context.Context, serviceId ServiceId, params *PatchServicesServiceIdParams, body PatchServicesServiceIdJSONRequestBody, reqEditors ...RequestEditorFn) (*PatchServicesServiceIdResponse, error)
+	UpdateServiceWithResponse(ctx context.Context, serviceId ServiceId, params *UpdateServiceParams, body UpdateServiceJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateServiceResponse, error)
 }
 
-type GetDedicatedSubnetsResponse struct {
+type ListDedicatedSubnetsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *struct {
-		DedicatedSubnets *[]DedicatedSubnet `json:"dedicated_subnets,omitempty"`
-		Meta             *PaginateMeta      `json:"meta,omitempty"`
-	}
-	JSON400 *ProblemDetails400
-	JSON401 *ProblemDetails401
-	JSON429 *ProblemDetails429
+	JSON200      *DedicatedSubnets
+	JSON400      *ProblemDetails400
+	JSON401      *ProblemDetails401
+	JSON429      *ProblemDetails429
 }
 
 // Status returns HTTPResponse.Status
-func (r GetDedicatedSubnetsResponse) Status() string {
+func (r ListDedicatedSubnetsResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2042,14 +2038,14 @@ func (r GetDedicatedSubnetsResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetDedicatedSubnetsResponse) StatusCode() int {
+func (r ListDedicatedSubnetsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetDedicatedSubnetsDedicatedSubnetIdResponse struct {
+type ReadDedicatedSubnetResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
@@ -2062,7 +2058,7 @@ type GetDedicatedSubnetsDedicatedSubnetIdResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetDedicatedSubnetsDedicatedSubnetIdResponse) Status() string {
+func (r ReadDedicatedSubnetResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2070,14 +2066,14 @@ func (r GetDedicatedSubnetsDedicatedSubnetIdResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetDedicatedSubnetsDedicatedSubnetIdResponse) StatusCode() int {
+func (r ReadDedicatedSubnetResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetPrivateNetworksResponse struct {
+type ListPrivateNetworksResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
@@ -2090,7 +2086,7 @@ type GetPrivateNetworksResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetPrivateNetworksResponse) Status() string {
+func (r ListPrivateNetworksResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2098,14 +2094,14 @@ func (r GetPrivateNetworksResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetPrivateNetworksResponse) StatusCode() int {
+func (r ListPrivateNetworksResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetPrivateNetworksPrivateNetworkIdResponse struct {
+type ReadPrivateNetworkResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
@@ -2117,7 +2113,7 @@ type GetPrivateNetworksPrivateNetworkIdResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetPrivateNetworksPrivateNetworkIdResponse) Status() string {
+func (r ReadPrivateNetworkResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2125,28 +2121,25 @@ func (r GetPrivateNetworksPrivateNetworkIdResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetPrivateNetworksPrivateNetworkIdResponse) StatusCode() int {
+func (r ReadPrivateNetworkResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetServersResponse struct {
+type ListServersResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *struct {
-		Meta    *PaginateMeta `json:"meta,omitempty"`
-		Servers *[]Server     `json:"servers,omitempty"`
-	}
-	JSON400 *ProblemDetails400
-	JSON401 *ProblemDetails401
-	JSON404 *ProblemDetails404
-	JSON429 *ProblemDetails429
+	JSON200      *Servers
+	JSON400      *ProblemDetails400
+	JSON401      *ProblemDetails401
+	JSON404      *ProblemDetails404
+	JSON429      *ProblemDetails429
 }
 
 // Status returns HTTPResponse.Status
-func (r GetServersResponse) Status() string {
+func (r ListServersResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2154,14 +2147,14 @@ func (r GetServersResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetServersResponse) StatusCode() int {
+func (r ListServersResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetServersServerIdResponse struct {
+type ReadServerResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
@@ -2173,7 +2166,7 @@ type GetServersServerIdResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetServersServerIdResponse) Status() string {
+func (r ReadServerResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2181,35 +2174,18 @@ func (r GetServersServerIdResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetServersServerIdResponse) StatusCode() int {
+func (r ReadServerResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetServersServerIdOsImagesResponse struct {
+type ListOSImagesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		OsImages *[]struct {
-			// パーティション手動構成が可能か
-			// (パーティション構成の指定が可能な場合に `true`)
-			ManualPartition *bool `json:"manual_partition,omitempty"`
-
-			// OSの名称
-			Name *string `json:"name,omitempty"`
-
-			// インストール実行時に指定するOSイメージ名
-			OsImageId *string `json:"os_image_id,omitempty"`
-
-			// インストール時にパスワード指定が必要か
-			// (パスワード指定が必要な場合 `true`)
-			RequirePassword *bool `json:"require_password,omitempty"`
-
-			// OSインストール時に作成される管理ユーザー名
-			SuperuserName *string `json:"superuser_name,omitempty"`
-		} `json:"os_images,omitempty"`
+		OsImages *[]OsImage `json:"os_images,omitempty"`
 	}
 	JSON401 *ProblemDetails401
 	JSON404 *ProblemDetails404
@@ -2217,7 +2193,7 @@ type GetServersServerIdOsImagesResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetServersServerIdOsImagesResponse) Status() string {
+func (r ListOSImagesResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2225,14 +2201,14 @@ func (r GetServersServerIdOsImagesResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetServersServerIdOsImagesResponse) StatusCode() int {
+func (r ListOSImagesResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type PostServersServerIdOsInstallResponse struct {
+type OSInstallResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON400      *ProblemDetails400
@@ -2243,7 +2219,7 @@ type PostServersServerIdOsInstallResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r PostServersServerIdOsInstallResponse) Status() string {
+func (r OSInstallResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2251,14 +2227,14 @@ func (r PostServersServerIdOsInstallResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r PostServersServerIdOsInstallResponse) StatusCode() int {
+func (r OSInstallResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetServersServerIdPortChannelsPortChannelIdResponse struct {
+type ReadServerPortChannelResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
@@ -2273,7 +2249,7 @@ type GetServersServerIdPortChannelsPortChannelIdResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetServersServerIdPortChannelsPortChannelIdResponse) Status() string {
+func (r ReadServerPortChannelResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2281,14 +2257,14 @@ func (r GetServersServerIdPortChannelsPortChannelIdResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetServersServerIdPortChannelsPortChannelIdResponse) StatusCode() int {
+func (r ReadServerPortChannelResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type PostServersServerIdPortChannelsPortChannelIdConfigureBondingResponse struct {
+type SetPortChannelBondingResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
@@ -2306,7 +2282,7 @@ type PostServersServerIdPortChannelsPortChannelIdConfigureBondingResponse struct
 }
 
 // Status returns HTTPResponse.Status
-func (r PostServersServerIdPortChannelsPortChannelIdConfigureBondingResponse) Status() string {
+func (r SetPortChannelBondingResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2314,14 +2290,14 @@ func (r PostServersServerIdPortChannelsPortChannelIdConfigureBondingResponse) St
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r PostServersServerIdPortChannelsPortChannelIdConfigureBondingResponse) StatusCode() int {
+func (r SetPortChannelBondingResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetServersServerIdPortsPortIdResponse struct {
+type ReadServerPortResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
@@ -2335,7 +2311,7 @@ type GetServersServerIdPortsPortIdResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetServersServerIdPortsPortIdResponse) Status() string {
+func (r ReadServerPortResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2343,14 +2319,14 @@ func (r GetServersServerIdPortsPortIdResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetServersServerIdPortsPortIdResponse) StatusCode() int {
+func (r ReadServerPortResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type PatchServersServerIdPortsPortIdResponse struct {
+type UpdateServerPortResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
@@ -2363,7 +2339,7 @@ type PatchServersServerIdPortsPortIdResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r PatchServersServerIdPortsPortIdResponse) Status() string {
+func (r UpdateServerPortResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2371,14 +2347,14 @@ func (r PatchServersServerIdPortsPortIdResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r PatchServersServerIdPortsPortIdResponse) StatusCode() int {
+func (r UpdateServerPortResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type PostServersServerIdPortsPortIdAssignNetworkResponse struct {
+type SetServerPortNetworkConnectionResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
@@ -2397,7 +2373,7 @@ type PostServersServerIdPortsPortIdAssignNetworkResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r PostServersServerIdPortsPortIdAssignNetworkResponse) Status() string {
+func (r SetServerPortNetworkConnectionResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2405,14 +2381,14 @@ func (r PostServersServerIdPortsPortIdAssignNetworkResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r PostServersServerIdPortsPortIdAssignNetworkResponse) StatusCode() int {
+func (r SetServerPortNetworkConnectionResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type PostServersServerIdPortsPortIdEnableResponse struct {
+type SetServerPortEnabledResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
@@ -2427,7 +2403,7 @@ type PostServersServerIdPortsPortIdEnableResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r PostServersServerIdPortsPortIdEnableResponse) Status() string {
+func (r SetServerPortEnabledResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2435,44 +2411,24 @@ func (r PostServersServerIdPortsPortIdEnableResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r PostServersServerIdPortsPortIdEnableResponse) StatusCode() int {
+func (r SetServerPortEnabledResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetServersServerIdPortsPortIdTrafficGraphResponse struct {
+type ReadServerTrafficByPortResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *struct {
-		TrafficGraph *struct {
-			// 受信方向トラフィック
-			Receive *[]struct {
-				// 取得時刻
-				Timestamp *time.Time `json:"timestamp,omitempty"`
-
-				// 1つ前のデータからの平均トラフィック(bps)
-				Value *int `json:"value,omitempty"`
-			} `json:"receive,omitempty"`
-
-			// 送信方向トラフィック
-			Transmit *[]struct {
-				// 取得時刻
-				Timestamp *time.Time `json:"timestamp,omitempty"`
-
-				// 1つ前のデータからの平均トラフィック(bps)
-				Value *int `json:"value,omitempty"`
-			} `json:"transmit,omitempty"`
-		} `json:"traffic_graph,omitempty"`
-	}
-	JSON401 *ProblemDetails401
-	JSON404 *ProblemDetails404
-	JSON429 *ProblemDetails429
+	JSON200      *TrafficGraph
+	JSON401      *ProblemDetails401
+	JSON404      *ProblemDetails404
+	JSON429      *ProblemDetails429
 }
 
 // Status returns HTTPResponse.Status
-func (r GetServersServerIdPortsPortIdTrafficGraphResponse) Status() string {
+func (r ReadServerTrafficByPortResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2480,14 +2436,14 @@ func (r GetServersServerIdPortsPortIdTrafficGraphResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetServersServerIdPortsPortIdTrafficGraphResponse) StatusCode() int {
+func (r ReadServerTrafficByPortResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type PostServersServerIdPowerControlResponse struct {
+type SetServerPowerStatusResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON400      *ProblemDetails400
@@ -2498,7 +2454,7 @@ type PostServersServerIdPowerControlResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r PostServersServerIdPowerControlResponse) Status() string {
+func (r SetServerPowerStatusResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2506,14 +2462,14 @@ func (r PostServersServerIdPowerControlResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r PostServersServerIdPowerControlResponse) StatusCode() int {
+func (r SetServerPowerStatusResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetServersServerIdPowerStatusResponse struct {
+type ReadServerPowerStatusResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
@@ -2526,7 +2482,7 @@ type GetServersServerIdPowerStatusResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetServersServerIdPowerStatusResponse) Status() string {
+func (r ReadServerPowerStatusResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2534,14 +2490,14 @@ func (r GetServersServerIdPowerStatusResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetServersServerIdPowerStatusResponse) StatusCode() int {
+func (r ReadServerPowerStatusResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetServersServerIdRaidStatusResponse struct {
+type ReadRAIDStatusResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
@@ -2554,7 +2510,7 @@ type GetServersServerIdRaidStatusResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetServersServerIdRaidStatusResponse) Status() string {
+func (r ReadRAIDStatusResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2562,26 +2518,23 @@ func (r GetServersServerIdRaidStatusResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetServersServerIdRaidStatusResponse) StatusCode() int {
+func (r ReadRAIDStatusResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetServicesResponse struct {
+type ListServicesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *struct {
-		Meta     *PaginateMeta `json:"meta,omitempty"`
-		Services *[]Service    `json:"services,omitempty"`
-	}
-	JSON401 *ProblemDetails401
-	JSON429 *ProblemDetails429
+	JSON200      *Services
+	JSON401      *ProblemDetails401
+	JSON429      *ProblemDetails429
 }
 
 // Status returns HTTPResponse.Status
-func (r GetServicesResponse) Status() string {
+func (r ListServicesResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2589,14 +2542,14 @@ func (r GetServicesResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetServicesResponse) StatusCode() int {
+func (r ListServicesResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type GetServicesServiceIdResponse struct {
+type ReadServiceResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
@@ -2608,7 +2561,7 @@ type GetServicesServiceIdResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r GetServicesServiceIdResponse) Status() string {
+func (r ReadServiceResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2616,14 +2569,14 @@ func (r GetServicesServiceIdResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r GetServicesServiceIdResponse) StatusCode() int {
+func (r ReadServiceResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type PatchServicesServiceIdResponse struct {
+type UpdateServiceResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
@@ -2636,7 +2589,7 @@ type PatchServicesServiceIdResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r PatchServicesServiceIdResponse) Status() string {
+func (r UpdateServiceResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2644,277 +2597,274 @@ func (r PatchServicesServiceIdResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r PatchServicesServiceIdResponse) StatusCode() int {
+func (r UpdateServiceResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-// GetDedicatedSubnetsWithResponse request returning *GetDedicatedSubnetsResponse
-func (c *ClientWithResponses) GetDedicatedSubnetsWithResponse(ctx context.Context, params *GetDedicatedSubnetsParams, reqEditors ...RequestEditorFn) (*GetDedicatedSubnetsResponse, error) {
-	rsp, err := c.GetDedicatedSubnets(ctx, params, reqEditors...)
+// ListDedicatedSubnetsWithResponse request returning *ListDedicatedSubnetsResponse
+func (c *ClientWithResponses) ListDedicatedSubnetsWithResponse(ctx context.Context, params *ListDedicatedSubnetsParams, reqEditors ...RequestEditorFn) (*ListDedicatedSubnetsResponse, error) {
+	rsp, err := c.ListDedicatedSubnets(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetDedicatedSubnetsResponse(rsp)
+	return ParseListDedicatedSubnetsResponse(rsp)
 }
 
-// GetDedicatedSubnetsDedicatedSubnetIdWithResponse request returning *GetDedicatedSubnetsDedicatedSubnetIdResponse
-func (c *ClientWithResponses) GetDedicatedSubnetsDedicatedSubnetIdWithResponse(ctx context.Context, dedicatedSubnetId DedicatedSubnetId, params *GetDedicatedSubnetsDedicatedSubnetIdParams, reqEditors ...RequestEditorFn) (*GetDedicatedSubnetsDedicatedSubnetIdResponse, error) {
-	rsp, err := c.GetDedicatedSubnetsDedicatedSubnetId(ctx, dedicatedSubnetId, params, reqEditors...)
+// ReadDedicatedSubnetWithResponse request returning *ReadDedicatedSubnetResponse
+func (c *ClientWithResponses) ReadDedicatedSubnetWithResponse(ctx context.Context, dedicatedSubnetId DedicatedSubnetId, params *ReadDedicatedSubnetParams, reqEditors ...RequestEditorFn) (*ReadDedicatedSubnetResponse, error) {
+	rsp, err := c.ReadDedicatedSubnet(ctx, dedicatedSubnetId, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetDedicatedSubnetsDedicatedSubnetIdResponse(rsp)
+	return ParseReadDedicatedSubnetResponse(rsp)
 }
 
-// GetPrivateNetworksWithResponse request returning *GetPrivateNetworksResponse
-func (c *ClientWithResponses) GetPrivateNetworksWithResponse(ctx context.Context, params *GetPrivateNetworksParams, reqEditors ...RequestEditorFn) (*GetPrivateNetworksResponse, error) {
-	rsp, err := c.GetPrivateNetworks(ctx, params, reqEditors...)
+// ListPrivateNetworksWithResponse request returning *ListPrivateNetworksResponse
+func (c *ClientWithResponses) ListPrivateNetworksWithResponse(ctx context.Context, params *ListPrivateNetworksParams, reqEditors ...RequestEditorFn) (*ListPrivateNetworksResponse, error) {
+	rsp, err := c.ListPrivateNetworks(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetPrivateNetworksResponse(rsp)
+	return ParseListPrivateNetworksResponse(rsp)
 }
 
-// GetPrivateNetworksPrivateNetworkIdWithResponse request returning *GetPrivateNetworksPrivateNetworkIdResponse
-func (c *ClientWithResponses) GetPrivateNetworksPrivateNetworkIdWithResponse(ctx context.Context, privateNetworkId PrivateNetworkId, reqEditors ...RequestEditorFn) (*GetPrivateNetworksPrivateNetworkIdResponse, error) {
-	rsp, err := c.GetPrivateNetworksPrivateNetworkId(ctx, privateNetworkId, reqEditors...)
+// ReadPrivateNetworkWithResponse request returning *ReadPrivateNetworkResponse
+func (c *ClientWithResponses) ReadPrivateNetworkWithResponse(ctx context.Context, privateNetworkId PrivateNetworkId, reqEditors ...RequestEditorFn) (*ReadPrivateNetworkResponse, error) {
+	rsp, err := c.ReadPrivateNetwork(ctx, privateNetworkId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetPrivateNetworksPrivateNetworkIdResponse(rsp)
+	return ParseReadPrivateNetworkResponse(rsp)
 }
 
-// GetServersWithResponse request returning *GetServersResponse
-func (c *ClientWithResponses) GetServersWithResponse(ctx context.Context, params *GetServersParams, reqEditors ...RequestEditorFn) (*GetServersResponse, error) {
-	rsp, err := c.GetServers(ctx, params, reqEditors...)
+// ListServersWithResponse request returning *ListServersResponse
+func (c *ClientWithResponses) ListServersWithResponse(ctx context.Context, params *ListServersParams, reqEditors ...RequestEditorFn) (*ListServersResponse, error) {
+	rsp, err := c.ListServers(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetServersResponse(rsp)
+	return ParseListServersResponse(rsp)
 }
 
-// GetServersServerIdWithResponse request returning *GetServersServerIdResponse
-func (c *ClientWithResponses) GetServersServerIdWithResponse(ctx context.Context, serverId ServerId, reqEditors ...RequestEditorFn) (*GetServersServerIdResponse, error) {
-	rsp, err := c.GetServersServerId(ctx, serverId, reqEditors...)
+// ReadServerWithResponse request returning *ReadServerResponse
+func (c *ClientWithResponses) ReadServerWithResponse(ctx context.Context, serverId ServerId, reqEditors ...RequestEditorFn) (*ReadServerResponse, error) {
+	rsp, err := c.ReadServer(ctx, serverId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetServersServerIdResponse(rsp)
+	return ParseReadServerResponse(rsp)
 }
 
-// GetServersServerIdOsImagesWithResponse request returning *GetServersServerIdOsImagesResponse
-func (c *ClientWithResponses) GetServersServerIdOsImagesWithResponse(ctx context.Context, serverId ServerId, reqEditors ...RequestEditorFn) (*GetServersServerIdOsImagesResponse, error) {
-	rsp, err := c.GetServersServerIdOsImages(ctx, serverId, reqEditors...)
+// ListOSImagesWithResponse request returning *ListOSImagesResponse
+func (c *ClientWithResponses) ListOSImagesWithResponse(ctx context.Context, serverId ServerId, reqEditors ...RequestEditorFn) (*ListOSImagesResponse, error) {
+	rsp, err := c.ListOSImages(ctx, serverId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetServersServerIdOsImagesResponse(rsp)
+	return ParseListOSImagesResponse(rsp)
 }
 
-// PostServersServerIdOsInstallWithBodyWithResponse request with arbitrary body returning *PostServersServerIdOsInstallResponse
-func (c *ClientWithResponses) PostServersServerIdOsInstallWithBodyWithResponse(ctx context.Context, serverId ServerId, params *PostServersServerIdOsInstallParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostServersServerIdOsInstallResponse, error) {
-	rsp, err := c.PostServersServerIdOsInstallWithBody(ctx, serverId, params, contentType, body, reqEditors...)
+// OSInstallWithBodyWithResponse request with arbitrary body returning *OSInstallResponse
+func (c *ClientWithResponses) OSInstallWithBodyWithResponse(ctx context.Context, serverId ServerId, params *OSInstallParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*OSInstallResponse, error) {
+	rsp, err := c.OSInstallWithBody(ctx, serverId, params, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePostServersServerIdOsInstallResponse(rsp)
+	return ParseOSInstallResponse(rsp)
 }
 
-func (c *ClientWithResponses) PostServersServerIdOsInstallWithResponse(ctx context.Context, serverId ServerId, params *PostServersServerIdOsInstallParams, body PostServersServerIdOsInstallJSONRequestBody, reqEditors ...RequestEditorFn) (*PostServersServerIdOsInstallResponse, error) {
-	rsp, err := c.PostServersServerIdOsInstall(ctx, serverId, params, body, reqEditors...)
+func (c *ClientWithResponses) OSInstallWithResponse(ctx context.Context, serverId ServerId, params *OSInstallParams, body OSInstallJSONRequestBody, reqEditors ...RequestEditorFn) (*OSInstallResponse, error) {
+	rsp, err := c.OSInstall(ctx, serverId, params, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePostServersServerIdOsInstallResponse(rsp)
+	return ParseOSInstallResponse(rsp)
 }
 
-// GetServersServerIdPortChannelsPortChannelIdWithResponse request returning *GetServersServerIdPortChannelsPortChannelIdResponse
-func (c *ClientWithResponses) GetServersServerIdPortChannelsPortChannelIdWithResponse(ctx context.Context, serverId ServerId, portChannelId PortChannelId, reqEditors ...RequestEditorFn) (*GetServersServerIdPortChannelsPortChannelIdResponse, error) {
-	rsp, err := c.GetServersServerIdPortChannelsPortChannelId(ctx, serverId, portChannelId, reqEditors...)
+// ReadServerPortChannelWithResponse request returning *ReadServerPortChannelResponse
+func (c *ClientWithResponses) ReadServerPortChannelWithResponse(ctx context.Context, serverId ServerId, portChannelId PortChannelId, reqEditors ...RequestEditorFn) (*ReadServerPortChannelResponse, error) {
+	rsp, err := c.ReadServerPortChannel(ctx, serverId, portChannelId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetServersServerIdPortChannelsPortChannelIdResponse(rsp)
+	return ParseReadServerPortChannelResponse(rsp)
 }
 
-// PostServersServerIdPortChannelsPortChannelIdConfigureBondingWithBodyWithResponse request with arbitrary body returning *PostServersServerIdPortChannelsPortChannelIdConfigureBondingResponse
-func (c *ClientWithResponses) PostServersServerIdPortChannelsPortChannelIdConfigureBondingWithBodyWithResponse(ctx context.Context, serverId ServerId, portChannelId PortChannelId, params *PostServersServerIdPortChannelsPortChannelIdConfigureBondingParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostServersServerIdPortChannelsPortChannelIdConfigureBondingResponse, error) {
-	rsp, err := c.PostServersServerIdPortChannelsPortChannelIdConfigureBondingWithBody(ctx, serverId, portChannelId, params, contentType, body, reqEditors...)
+// SetPortChannelBondingWithBodyWithResponse request with arbitrary body returning *SetPortChannelBondingResponse
+func (c *ClientWithResponses) SetPortChannelBondingWithBodyWithResponse(ctx context.Context, serverId ServerId, portChannelId PortChannelId, params *SetPortChannelBondingParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SetPortChannelBondingResponse, error) {
+	rsp, err := c.SetPortChannelBondingWithBody(ctx, serverId, portChannelId, params, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePostServersServerIdPortChannelsPortChannelIdConfigureBondingResponse(rsp)
+	return ParseSetPortChannelBondingResponse(rsp)
 }
 
-func (c *ClientWithResponses) PostServersServerIdPortChannelsPortChannelIdConfigureBondingWithResponse(ctx context.Context, serverId ServerId, portChannelId PortChannelId, params *PostServersServerIdPortChannelsPortChannelIdConfigureBondingParams, body PostServersServerIdPortChannelsPortChannelIdConfigureBondingJSONRequestBody, reqEditors ...RequestEditorFn) (*PostServersServerIdPortChannelsPortChannelIdConfigureBondingResponse, error) {
-	rsp, err := c.PostServersServerIdPortChannelsPortChannelIdConfigureBonding(ctx, serverId, portChannelId, params, body, reqEditors...)
+func (c *ClientWithResponses) SetPortChannelBondingWithResponse(ctx context.Context, serverId ServerId, portChannelId PortChannelId, params *SetPortChannelBondingParams, body SetPortChannelBondingJSONRequestBody, reqEditors ...RequestEditorFn) (*SetPortChannelBondingResponse, error) {
+	rsp, err := c.SetPortChannelBonding(ctx, serverId, portChannelId, params, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePostServersServerIdPortChannelsPortChannelIdConfigureBondingResponse(rsp)
+	return ParseSetPortChannelBondingResponse(rsp)
 }
 
-// GetServersServerIdPortsPortIdWithResponse request returning *GetServersServerIdPortsPortIdResponse
-func (c *ClientWithResponses) GetServersServerIdPortsPortIdWithResponse(ctx context.Context, serverId ServerId, portId PortId, reqEditors ...RequestEditorFn) (*GetServersServerIdPortsPortIdResponse, error) {
-	rsp, err := c.GetServersServerIdPortsPortId(ctx, serverId, portId, reqEditors...)
+// ReadServerPortWithResponse request returning *ReadServerPortResponse
+func (c *ClientWithResponses) ReadServerPortWithResponse(ctx context.Context, serverId ServerId, portId PortId, reqEditors ...RequestEditorFn) (*ReadServerPortResponse, error) {
+	rsp, err := c.ReadServerPort(ctx, serverId, portId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetServersServerIdPortsPortIdResponse(rsp)
+	return ParseReadServerPortResponse(rsp)
 }
 
-// PatchServersServerIdPortsPortIdWithBodyWithResponse request with arbitrary body returning *PatchServersServerIdPortsPortIdResponse
-func (c *ClientWithResponses) PatchServersServerIdPortsPortIdWithBodyWithResponse(ctx context.Context, serverId ServerId, portId PortId, params *PatchServersServerIdPortsPortIdParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PatchServersServerIdPortsPortIdResponse, error) {
-	rsp, err := c.PatchServersServerIdPortsPortIdWithBody(ctx, serverId, portId, params, contentType, body, reqEditors...)
+// UpdateServerPortWithBodyWithResponse request with arbitrary body returning *UpdateServerPortResponse
+func (c *ClientWithResponses) UpdateServerPortWithBodyWithResponse(ctx context.Context, serverId ServerId, portId PortId, params *UpdateServerPortParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateServerPortResponse, error) {
+	rsp, err := c.UpdateServerPortWithBody(ctx, serverId, portId, params, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePatchServersServerIdPortsPortIdResponse(rsp)
+	return ParseUpdateServerPortResponse(rsp)
 }
 
-func (c *ClientWithResponses) PatchServersServerIdPortsPortIdWithResponse(ctx context.Context, serverId ServerId, portId PortId, params *PatchServersServerIdPortsPortIdParams, body PatchServersServerIdPortsPortIdJSONRequestBody, reqEditors ...RequestEditorFn) (*PatchServersServerIdPortsPortIdResponse, error) {
-	rsp, err := c.PatchServersServerIdPortsPortId(ctx, serverId, portId, params, body, reqEditors...)
+func (c *ClientWithResponses) UpdateServerPortWithResponse(ctx context.Context, serverId ServerId, portId PortId, params *UpdateServerPortParams, body UpdateServerPortJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateServerPortResponse, error) {
+	rsp, err := c.UpdateServerPort(ctx, serverId, portId, params, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePatchServersServerIdPortsPortIdResponse(rsp)
+	return ParseUpdateServerPortResponse(rsp)
 }
 
-// PostServersServerIdPortsPortIdAssignNetworkWithBodyWithResponse request with arbitrary body returning *PostServersServerIdPortsPortIdAssignNetworkResponse
-func (c *ClientWithResponses) PostServersServerIdPortsPortIdAssignNetworkWithBodyWithResponse(ctx context.Context, serverId ServerId, portId PortId, params *PostServersServerIdPortsPortIdAssignNetworkParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostServersServerIdPortsPortIdAssignNetworkResponse, error) {
-	rsp, err := c.PostServersServerIdPortsPortIdAssignNetworkWithBody(ctx, serverId, portId, params, contentType, body, reqEditors...)
+// SetServerPortNetworkConnectionWithBodyWithResponse request with arbitrary body returning *SetServerPortNetworkConnectionResponse
+func (c *ClientWithResponses) SetServerPortNetworkConnectionWithBodyWithResponse(ctx context.Context, serverId ServerId, portId PortId, params *SetServerPortNetworkConnectionParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SetServerPortNetworkConnectionResponse, error) {
+	rsp, err := c.SetServerPortNetworkConnectionWithBody(ctx, serverId, portId, params, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePostServersServerIdPortsPortIdAssignNetworkResponse(rsp)
+	return ParseSetServerPortNetworkConnectionResponse(rsp)
 }
 
-func (c *ClientWithResponses) PostServersServerIdPortsPortIdAssignNetworkWithResponse(ctx context.Context, serverId ServerId, portId PortId, params *PostServersServerIdPortsPortIdAssignNetworkParams, body PostServersServerIdPortsPortIdAssignNetworkJSONRequestBody, reqEditors ...RequestEditorFn) (*PostServersServerIdPortsPortIdAssignNetworkResponse, error) {
-	rsp, err := c.PostServersServerIdPortsPortIdAssignNetwork(ctx, serverId, portId, params, body, reqEditors...)
+func (c *ClientWithResponses) SetServerPortNetworkConnectionWithResponse(ctx context.Context, serverId ServerId, portId PortId, params *SetServerPortNetworkConnectionParams, body SetServerPortNetworkConnectionJSONRequestBody, reqEditors ...RequestEditorFn) (*SetServerPortNetworkConnectionResponse, error) {
+	rsp, err := c.SetServerPortNetworkConnection(ctx, serverId, portId, params, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePostServersServerIdPortsPortIdAssignNetworkResponse(rsp)
+	return ParseSetServerPortNetworkConnectionResponse(rsp)
 }
 
-// PostServersServerIdPortsPortIdEnableWithBodyWithResponse request with arbitrary body returning *PostServersServerIdPortsPortIdEnableResponse
-func (c *ClientWithResponses) PostServersServerIdPortsPortIdEnableWithBodyWithResponse(ctx context.Context, serverId ServerId, portId PortId, params *PostServersServerIdPortsPortIdEnableParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostServersServerIdPortsPortIdEnableResponse, error) {
-	rsp, err := c.PostServersServerIdPortsPortIdEnableWithBody(ctx, serverId, portId, params, contentType, body, reqEditors...)
+// SetServerPortEnabledWithBodyWithResponse request with arbitrary body returning *SetServerPortEnabledResponse
+func (c *ClientWithResponses) SetServerPortEnabledWithBodyWithResponse(ctx context.Context, serverId ServerId, portId PortId, params *SetServerPortEnabledParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SetServerPortEnabledResponse, error) {
+	rsp, err := c.SetServerPortEnabledWithBody(ctx, serverId, portId, params, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePostServersServerIdPortsPortIdEnableResponse(rsp)
+	return ParseSetServerPortEnabledResponse(rsp)
 }
 
-func (c *ClientWithResponses) PostServersServerIdPortsPortIdEnableWithResponse(ctx context.Context, serverId ServerId, portId PortId, params *PostServersServerIdPortsPortIdEnableParams, body PostServersServerIdPortsPortIdEnableJSONRequestBody, reqEditors ...RequestEditorFn) (*PostServersServerIdPortsPortIdEnableResponse, error) {
-	rsp, err := c.PostServersServerIdPortsPortIdEnable(ctx, serverId, portId, params, body, reqEditors...)
+func (c *ClientWithResponses) SetServerPortEnabledWithResponse(ctx context.Context, serverId ServerId, portId PortId, params *SetServerPortEnabledParams, body SetServerPortEnabledJSONRequestBody, reqEditors ...RequestEditorFn) (*SetServerPortEnabledResponse, error) {
+	rsp, err := c.SetServerPortEnabled(ctx, serverId, portId, params, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePostServersServerIdPortsPortIdEnableResponse(rsp)
+	return ParseSetServerPortEnabledResponse(rsp)
 }
 
-// GetServersServerIdPortsPortIdTrafficGraphWithResponse request returning *GetServersServerIdPortsPortIdTrafficGraphResponse
-func (c *ClientWithResponses) GetServersServerIdPortsPortIdTrafficGraphWithResponse(ctx context.Context, serverId ServerId, portId PortId, params *GetServersServerIdPortsPortIdTrafficGraphParams, reqEditors ...RequestEditorFn) (*GetServersServerIdPortsPortIdTrafficGraphResponse, error) {
-	rsp, err := c.GetServersServerIdPortsPortIdTrafficGraph(ctx, serverId, portId, params, reqEditors...)
+// ReadServerTrafficByPortWithResponse request returning *ReadServerTrafficByPortResponse
+func (c *ClientWithResponses) ReadServerTrafficByPortWithResponse(ctx context.Context, serverId ServerId, portId PortId, params *ReadServerTrafficByPortParams, reqEditors ...RequestEditorFn) (*ReadServerTrafficByPortResponse, error) {
+	rsp, err := c.ReadServerTrafficByPort(ctx, serverId, portId, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetServersServerIdPortsPortIdTrafficGraphResponse(rsp)
+	return ParseReadServerTrafficByPortResponse(rsp)
 }
 
-// PostServersServerIdPowerControlWithBodyWithResponse request with arbitrary body returning *PostServersServerIdPowerControlResponse
-func (c *ClientWithResponses) PostServersServerIdPowerControlWithBodyWithResponse(ctx context.Context, serverId ServerId, params *PostServersServerIdPowerControlParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostServersServerIdPowerControlResponse, error) {
-	rsp, err := c.PostServersServerIdPowerControlWithBody(ctx, serverId, params, contentType, body, reqEditors...)
+// SetServerPowerStatusWithBodyWithResponse request with arbitrary body returning *SetServerPowerStatusResponse
+func (c *ClientWithResponses) SetServerPowerStatusWithBodyWithResponse(ctx context.Context, serverId ServerId, params *SetServerPowerStatusParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SetServerPowerStatusResponse, error) {
+	rsp, err := c.SetServerPowerStatusWithBody(ctx, serverId, params, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePostServersServerIdPowerControlResponse(rsp)
+	return ParseSetServerPowerStatusResponse(rsp)
 }
 
-func (c *ClientWithResponses) PostServersServerIdPowerControlWithResponse(ctx context.Context, serverId ServerId, params *PostServersServerIdPowerControlParams, body PostServersServerIdPowerControlJSONRequestBody, reqEditors ...RequestEditorFn) (*PostServersServerIdPowerControlResponse, error) {
-	rsp, err := c.PostServersServerIdPowerControl(ctx, serverId, params, body, reqEditors...)
+func (c *ClientWithResponses) SetServerPowerStatusWithResponse(ctx context.Context, serverId ServerId, params *SetServerPowerStatusParams, body SetServerPowerStatusJSONRequestBody, reqEditors ...RequestEditorFn) (*SetServerPowerStatusResponse, error) {
+	rsp, err := c.SetServerPowerStatus(ctx, serverId, params, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePostServersServerIdPowerControlResponse(rsp)
+	return ParseSetServerPowerStatusResponse(rsp)
 }
 
-// GetServersServerIdPowerStatusWithResponse request returning *GetServersServerIdPowerStatusResponse
-func (c *ClientWithResponses) GetServersServerIdPowerStatusWithResponse(ctx context.Context, serverId ServerId, reqEditors ...RequestEditorFn) (*GetServersServerIdPowerStatusResponse, error) {
-	rsp, err := c.GetServersServerIdPowerStatus(ctx, serverId, reqEditors...)
+// ReadServerPowerStatusWithResponse request returning *ReadServerPowerStatusResponse
+func (c *ClientWithResponses) ReadServerPowerStatusWithResponse(ctx context.Context, serverId ServerId, reqEditors ...RequestEditorFn) (*ReadServerPowerStatusResponse, error) {
+	rsp, err := c.ReadServerPowerStatus(ctx, serverId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetServersServerIdPowerStatusResponse(rsp)
+	return ParseReadServerPowerStatusResponse(rsp)
 }
 
-// GetServersServerIdRaidStatusWithResponse request returning *GetServersServerIdRaidStatusResponse
-func (c *ClientWithResponses) GetServersServerIdRaidStatusWithResponse(ctx context.Context, serverId ServerId, params *GetServersServerIdRaidStatusParams, reqEditors ...RequestEditorFn) (*GetServersServerIdRaidStatusResponse, error) {
-	rsp, err := c.GetServersServerIdRaidStatus(ctx, serverId, params, reqEditors...)
+// ReadRAIDStatusWithResponse request returning *ReadRAIDStatusResponse
+func (c *ClientWithResponses) ReadRAIDStatusWithResponse(ctx context.Context, serverId ServerId, params *ReadRAIDStatusParams, reqEditors ...RequestEditorFn) (*ReadRAIDStatusResponse, error) {
+	rsp, err := c.ReadRAIDStatus(ctx, serverId, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetServersServerIdRaidStatusResponse(rsp)
+	return ParseReadRAIDStatusResponse(rsp)
 }
 
-// GetServicesWithResponse request returning *GetServicesResponse
-func (c *ClientWithResponses) GetServicesWithResponse(ctx context.Context, params *GetServicesParams, reqEditors ...RequestEditorFn) (*GetServicesResponse, error) {
-	rsp, err := c.GetServices(ctx, params, reqEditors...)
+// ListServicesWithResponse request returning *ListServicesResponse
+func (c *ClientWithResponses) ListServicesWithResponse(ctx context.Context, params *ListServicesParams, reqEditors ...RequestEditorFn) (*ListServicesResponse, error) {
+	rsp, err := c.ListServices(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetServicesResponse(rsp)
+	return ParseListServicesResponse(rsp)
 }
 
-// GetServicesServiceIdWithResponse request returning *GetServicesServiceIdResponse
-func (c *ClientWithResponses) GetServicesServiceIdWithResponse(ctx context.Context, serviceId ServiceId, reqEditors ...RequestEditorFn) (*GetServicesServiceIdResponse, error) {
-	rsp, err := c.GetServicesServiceId(ctx, serviceId, reqEditors...)
+// ReadServiceWithResponse request returning *ReadServiceResponse
+func (c *ClientWithResponses) ReadServiceWithResponse(ctx context.Context, serviceId ServiceId, reqEditors ...RequestEditorFn) (*ReadServiceResponse, error) {
+	rsp, err := c.ReadService(ctx, serviceId, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseGetServicesServiceIdResponse(rsp)
+	return ParseReadServiceResponse(rsp)
 }
 
-// PatchServicesServiceIdWithBodyWithResponse request with arbitrary body returning *PatchServicesServiceIdResponse
-func (c *ClientWithResponses) PatchServicesServiceIdWithBodyWithResponse(ctx context.Context, serviceId ServiceId, params *PatchServicesServiceIdParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PatchServicesServiceIdResponse, error) {
-	rsp, err := c.PatchServicesServiceIdWithBody(ctx, serviceId, params, contentType, body, reqEditors...)
+// UpdateServiceWithBodyWithResponse request with arbitrary body returning *UpdateServiceResponse
+func (c *ClientWithResponses) UpdateServiceWithBodyWithResponse(ctx context.Context, serviceId ServiceId, params *UpdateServiceParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*UpdateServiceResponse, error) {
+	rsp, err := c.UpdateServiceWithBody(ctx, serviceId, params, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePatchServicesServiceIdResponse(rsp)
+	return ParseUpdateServiceResponse(rsp)
 }
 
-func (c *ClientWithResponses) PatchServicesServiceIdWithResponse(ctx context.Context, serviceId ServiceId, params *PatchServicesServiceIdParams, body PatchServicesServiceIdJSONRequestBody, reqEditors ...RequestEditorFn) (*PatchServicesServiceIdResponse, error) {
-	rsp, err := c.PatchServicesServiceId(ctx, serviceId, params, body, reqEditors...)
+func (c *ClientWithResponses) UpdateServiceWithResponse(ctx context.Context, serviceId ServiceId, params *UpdateServiceParams, body UpdateServiceJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateServiceResponse, error) {
+	rsp, err := c.UpdateService(ctx, serviceId, params, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParsePatchServicesServiceIdResponse(rsp)
+	return ParseUpdateServiceResponse(rsp)
 }
 
-// ParseGetDedicatedSubnetsResponse parses an HTTP response from a GetDedicatedSubnetsWithResponse call
-func ParseGetDedicatedSubnetsResponse(rsp *http.Response) (*GetDedicatedSubnetsResponse, error) {
+// ParseListDedicatedSubnetsResponse parses an HTTP response from a ListDedicatedSubnetsWithResponse call
+func ParseListDedicatedSubnetsResponse(rsp *http.Response) (*ListDedicatedSubnetsResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetDedicatedSubnetsResponse{
+	response := &ListDedicatedSubnetsResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest struct {
-			DedicatedSubnets *[]DedicatedSubnet `json:"dedicated_subnets,omitempty"`
-			Meta             *PaginateMeta      `json:"meta,omitempty"`
-		}
+		var dest DedicatedSubnets
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -2946,15 +2896,15 @@ func ParseGetDedicatedSubnetsResponse(rsp *http.Response) (*GetDedicatedSubnetsR
 	return response, nil
 }
 
-// ParseGetDedicatedSubnetsDedicatedSubnetIdResponse parses an HTTP response from a GetDedicatedSubnetsDedicatedSubnetIdWithResponse call
-func ParseGetDedicatedSubnetsDedicatedSubnetIdResponse(rsp *http.Response) (*GetDedicatedSubnetsDedicatedSubnetIdResponse, error) {
+// ParseReadDedicatedSubnetResponse parses an HTTP response from a ReadDedicatedSubnetWithResponse call
+func ParseReadDedicatedSubnetResponse(rsp *http.Response) (*ReadDedicatedSubnetResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetDedicatedSubnetsDedicatedSubnetIdResponse{
+	response := &ReadDedicatedSubnetResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -3002,15 +2952,15 @@ func ParseGetDedicatedSubnetsDedicatedSubnetIdResponse(rsp *http.Response) (*Get
 	return response, nil
 }
 
-// ParseGetPrivateNetworksResponse parses an HTTP response from a GetPrivateNetworksWithResponse call
-func ParseGetPrivateNetworksResponse(rsp *http.Response) (*GetPrivateNetworksResponse, error) {
+// ParseListPrivateNetworksResponse parses an HTTP response from a ListPrivateNetworksWithResponse call
+func ParseListPrivateNetworksResponse(rsp *http.Response) (*ListPrivateNetworksResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetPrivateNetworksResponse{
+	response := &ListPrivateNetworksResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -3052,15 +3002,15 @@ func ParseGetPrivateNetworksResponse(rsp *http.Response) (*GetPrivateNetworksRes
 	return response, nil
 }
 
-// ParseGetPrivateNetworksPrivateNetworkIdResponse parses an HTTP response from a GetPrivateNetworksPrivateNetworkIdWithResponse call
-func ParseGetPrivateNetworksPrivateNetworkIdResponse(rsp *http.Response) (*GetPrivateNetworksPrivateNetworkIdResponse, error) {
+// ParseReadPrivateNetworkResponse parses an HTTP response from a ReadPrivateNetworkWithResponse call
+func ParseReadPrivateNetworkResponse(rsp *http.Response) (*ReadPrivateNetworkResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetPrivateNetworksPrivateNetworkIdResponse{
+	response := &ReadPrivateNetworkResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -3101,25 +3051,22 @@ func ParseGetPrivateNetworksPrivateNetworkIdResponse(rsp *http.Response) (*GetPr
 	return response, nil
 }
 
-// ParseGetServersResponse parses an HTTP response from a GetServersWithResponse call
-func ParseGetServersResponse(rsp *http.Response) (*GetServersResponse, error) {
+// ParseListServersResponse parses an HTTP response from a ListServersWithResponse call
+func ParseListServersResponse(rsp *http.Response) (*ListServersResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetServersResponse{
+	response := &ListServersResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest struct {
-			Meta    *PaginateMeta `json:"meta,omitempty"`
-			Servers *[]Server     `json:"servers,omitempty"`
-		}
+		var dest Servers
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -3158,15 +3105,15 @@ func ParseGetServersResponse(rsp *http.Response) (*GetServersResponse, error) {
 	return response, nil
 }
 
-// ParseGetServersServerIdResponse parses an HTTP response from a GetServersServerIdWithResponse call
-func ParseGetServersServerIdResponse(rsp *http.Response) (*GetServersServerIdResponse, error) {
+// ParseReadServerResponse parses an HTTP response from a ReadServerWithResponse call
+func ParseReadServerResponse(rsp *http.Response) (*ReadServerResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetServersServerIdResponse{
+	response := &ReadServerResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -3207,15 +3154,15 @@ func ParseGetServersServerIdResponse(rsp *http.Response) (*GetServersServerIdRes
 	return response, nil
 }
 
-// ParseGetServersServerIdOsImagesResponse parses an HTTP response from a GetServersServerIdOsImagesWithResponse call
-func ParseGetServersServerIdOsImagesResponse(rsp *http.Response) (*GetServersServerIdOsImagesResponse, error) {
+// ParseListOSImagesResponse parses an HTTP response from a ListOSImagesWithResponse call
+func ParseListOSImagesResponse(rsp *http.Response) (*ListOSImagesResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetServersServerIdOsImagesResponse{
+	response := &ListOSImagesResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -3223,24 +3170,7 @@ func ParseGetServersServerIdOsImagesResponse(rsp *http.Response) (*GetServersSer
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			OsImages *[]struct {
-				// パーティション手動構成が可能か
-				// (パーティション構成の指定が可能な場合に `true`)
-				ManualPartition *bool `json:"manual_partition,omitempty"`
-
-				// OSの名称
-				Name *string `json:"name,omitempty"`
-
-				// インストール実行時に指定するOSイメージ名
-				OsImageId *string `json:"os_image_id,omitempty"`
-
-				// インストール時にパスワード指定が必要か
-				// (パスワード指定が必要な場合 `true`)
-				RequirePassword *bool `json:"require_password,omitempty"`
-
-				// OSインストール時に作成される管理ユーザー名
-				SuperuserName *string `json:"superuser_name,omitempty"`
-			} `json:"os_images,omitempty"`
+			OsImages *[]OsImage `json:"os_images,omitempty"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
@@ -3273,15 +3203,15 @@ func ParseGetServersServerIdOsImagesResponse(rsp *http.Response) (*GetServersSer
 	return response, nil
 }
 
-// ParsePostServersServerIdOsInstallResponse parses an HTTP response from a PostServersServerIdOsInstallWithResponse call
-func ParsePostServersServerIdOsInstallResponse(rsp *http.Response) (*PostServersServerIdOsInstallResponse, error) {
+// ParseOSInstallResponse parses an HTTP response from a OSInstallWithResponse call
+func ParseOSInstallResponse(rsp *http.Response) (*OSInstallResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &PostServersServerIdOsInstallResponse{
+	response := &OSInstallResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -3327,15 +3257,15 @@ func ParsePostServersServerIdOsInstallResponse(rsp *http.Response) (*PostServers
 	return response, nil
 }
 
-// ParseGetServersServerIdPortChannelsPortChannelIdResponse parses an HTTP response from a GetServersServerIdPortChannelsPortChannelIdWithResponse call
-func ParseGetServersServerIdPortChannelsPortChannelIdResponse(rsp *http.Response) (*GetServersServerIdPortChannelsPortChannelIdResponse, error) {
+// ParseReadServerPortChannelResponse parses an HTTP response from a ReadServerPortChannelWithResponse call
+func ParseReadServerPortChannelResponse(rsp *http.Response) (*ReadServerPortChannelResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetServersServerIdPortChannelsPortChannelIdResponse{
+	response := &ReadServerPortChannelResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -3391,15 +3321,15 @@ func ParseGetServersServerIdPortChannelsPortChannelIdResponse(rsp *http.Response
 	return response, nil
 }
 
-// ParsePostServersServerIdPortChannelsPortChannelIdConfigureBondingResponse parses an HTTP response from a PostServersServerIdPortChannelsPortChannelIdConfigureBondingWithResponse call
-func ParsePostServersServerIdPortChannelsPortChannelIdConfigureBondingResponse(rsp *http.Response) (*PostServersServerIdPortChannelsPortChannelIdConfigureBondingResponse, error) {
+// ParseSetPortChannelBondingResponse parses an HTTP response from a SetPortChannelBondingWithResponse call
+func ParseSetPortChannelBondingResponse(rsp *http.Response) (*SetPortChannelBondingResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &PostServersServerIdPortChannelsPortChannelIdConfigureBondingResponse{
+	response := &SetPortChannelBondingResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -3458,15 +3388,15 @@ func ParsePostServersServerIdPortChannelsPortChannelIdConfigureBondingResponse(r
 	return response, nil
 }
 
-// ParseGetServersServerIdPortsPortIdResponse parses an HTTP response from a GetServersServerIdPortsPortIdWithResponse call
-func ParseGetServersServerIdPortsPortIdResponse(rsp *http.Response) (*GetServersServerIdPortsPortIdResponse, error) {
+// ParseReadServerPortResponse parses an HTTP response from a ReadServerPortWithResponse call
+func ParseReadServerPortResponse(rsp *http.Response) (*ReadServerPortResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetServersServerIdPortsPortIdResponse{
+	response := &ReadServerPortResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -3515,15 +3445,15 @@ func ParseGetServersServerIdPortsPortIdResponse(rsp *http.Response) (*GetServers
 	return response, nil
 }
 
-// ParsePatchServersServerIdPortsPortIdResponse parses an HTTP response from a PatchServersServerIdPortsPortIdWithResponse call
-func ParsePatchServersServerIdPortsPortIdResponse(rsp *http.Response) (*PatchServersServerIdPortsPortIdResponse, error) {
+// ParseUpdateServerPortResponse parses an HTTP response from a UpdateServerPortWithResponse call
+func ParseUpdateServerPortResponse(rsp *http.Response) (*UpdateServerPortResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &PatchServersServerIdPortsPortIdResponse{
+	response := &UpdateServerPortResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -3571,15 +3501,15 @@ func ParsePatchServersServerIdPortsPortIdResponse(rsp *http.Response) (*PatchSer
 	return response, nil
 }
 
-// ParsePostServersServerIdPortsPortIdAssignNetworkResponse parses an HTTP response from a PostServersServerIdPortsPortIdAssignNetworkWithResponse call
-func ParsePostServersServerIdPortsPortIdAssignNetworkResponse(rsp *http.Response) (*PostServersServerIdPortsPortIdAssignNetworkResponse, error) {
+// ParseSetServerPortNetworkConnectionResponse parses an HTTP response from a SetServerPortNetworkConnectionWithResponse call
+func ParseSetServerPortNetworkConnectionResponse(rsp *http.Response) (*SetServerPortNetworkConnectionResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &PostServersServerIdPortsPortIdAssignNetworkResponse{
+	response := &SetServerPortNetworkConnectionResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -3639,15 +3569,15 @@ func ParsePostServersServerIdPortsPortIdAssignNetworkResponse(rsp *http.Response
 	return response, nil
 }
 
-// ParsePostServersServerIdPortsPortIdEnableResponse parses an HTTP response from a PostServersServerIdPortsPortIdEnableWithResponse call
-func ParsePostServersServerIdPortsPortIdEnableResponse(rsp *http.Response) (*PostServersServerIdPortsPortIdEnableResponse, error) {
+// ParseSetServerPortEnabledResponse parses an HTTP response from a SetServerPortEnabledWithResponse call
+func ParseSetServerPortEnabledResponse(rsp *http.Response) (*SetServerPortEnabledResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &PostServersServerIdPortsPortIdEnableResponse{
+	response := &SetServerPortEnabledResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -3703,42 +3633,22 @@ func ParsePostServersServerIdPortsPortIdEnableResponse(rsp *http.Response) (*Pos
 	return response, nil
 }
 
-// ParseGetServersServerIdPortsPortIdTrafficGraphResponse parses an HTTP response from a GetServersServerIdPortsPortIdTrafficGraphWithResponse call
-func ParseGetServersServerIdPortsPortIdTrafficGraphResponse(rsp *http.Response) (*GetServersServerIdPortsPortIdTrafficGraphResponse, error) {
+// ParseReadServerTrafficByPortResponse parses an HTTP response from a ReadServerTrafficByPortWithResponse call
+func ParseReadServerTrafficByPortResponse(rsp *http.Response) (*ReadServerTrafficByPortResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetServersServerIdPortsPortIdTrafficGraphResponse{
+	response := &ReadServerTrafficByPortResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest struct {
-			TrafficGraph *struct {
-				// 受信方向トラフィック
-				Receive *[]struct {
-					// 取得時刻
-					Timestamp *time.Time `json:"timestamp,omitempty"`
-
-					// 1つ前のデータからの平均トラフィック(bps)
-					Value *int `json:"value,omitempty"`
-				} `json:"receive,omitempty"`
-
-				// 送信方向トラフィック
-				Transmit *[]struct {
-					// 取得時刻
-					Timestamp *time.Time `json:"timestamp,omitempty"`
-
-					// 1つ前のデータからの平均トラフィック(bps)
-					Value *int `json:"value,omitempty"`
-				} `json:"transmit,omitempty"`
-			} `json:"traffic_graph,omitempty"`
-		}
+		var dest TrafficGraph
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -3770,15 +3680,15 @@ func ParseGetServersServerIdPortsPortIdTrafficGraphResponse(rsp *http.Response) 
 	return response, nil
 }
 
-// ParsePostServersServerIdPowerControlResponse parses an HTTP response from a PostServersServerIdPowerControlWithResponse call
-func ParsePostServersServerIdPowerControlResponse(rsp *http.Response) (*PostServersServerIdPowerControlResponse, error) {
+// ParseSetServerPowerStatusResponse parses an HTTP response from a SetServerPowerStatusWithResponse call
+func ParseSetServerPowerStatusResponse(rsp *http.Response) (*SetServerPowerStatusResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &PostServersServerIdPowerControlResponse{
+	response := &SetServerPowerStatusResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -3824,15 +3734,15 @@ func ParsePostServersServerIdPowerControlResponse(rsp *http.Response) (*PostServ
 	return response, nil
 }
 
-// ParseGetServersServerIdPowerStatusResponse parses an HTTP response from a GetServersServerIdPowerStatusWithResponse call
-func ParseGetServersServerIdPowerStatusResponse(rsp *http.Response) (*GetServersServerIdPowerStatusResponse, error) {
+// ParseReadServerPowerStatusResponse parses an HTTP response from a ReadServerPowerStatusWithResponse call
+func ParseReadServerPowerStatusResponse(rsp *http.Response) (*ReadServerPowerStatusResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetServersServerIdPowerStatusResponse{
+	response := &ReadServerPowerStatusResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -3880,15 +3790,15 @@ func ParseGetServersServerIdPowerStatusResponse(rsp *http.Response) (*GetServers
 	return response, nil
 }
 
-// ParseGetServersServerIdRaidStatusResponse parses an HTTP response from a GetServersServerIdRaidStatusWithResponse call
-func ParseGetServersServerIdRaidStatusResponse(rsp *http.Response) (*GetServersServerIdRaidStatusResponse, error) {
+// ParseReadRAIDStatusResponse parses an HTTP response from a ReadRAIDStatusWithResponse call
+func ParseReadRAIDStatusResponse(rsp *http.Response) (*ReadRAIDStatusResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetServersServerIdRaidStatusResponse{
+	response := &ReadRAIDStatusResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -3936,25 +3846,22 @@ func ParseGetServersServerIdRaidStatusResponse(rsp *http.Response) (*GetServersS
 	return response, nil
 }
 
-// ParseGetServicesResponse parses an HTTP response from a GetServicesWithResponse call
-func ParseGetServicesResponse(rsp *http.Response) (*GetServicesResponse, error) {
+// ParseListServicesResponse parses an HTTP response from a ListServicesWithResponse call
+func ParseListServicesResponse(rsp *http.Response) (*ListServicesResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetServicesResponse{
+	response := &ListServicesResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest struct {
-			Meta     *PaginateMeta `json:"meta,omitempty"`
-			Services *[]Service    `json:"services,omitempty"`
-		}
+		var dest Services
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -3979,15 +3886,15 @@ func ParseGetServicesResponse(rsp *http.Response) (*GetServicesResponse, error) 
 	return response, nil
 }
 
-// ParseGetServicesServiceIdResponse parses an HTTP response from a GetServicesServiceIdWithResponse call
-func ParseGetServicesServiceIdResponse(rsp *http.Response) (*GetServicesServiceIdResponse, error) {
+// ParseReadServiceResponse parses an HTTP response from a ReadServiceWithResponse call
+func ParseReadServiceResponse(rsp *http.Response) (*ReadServiceResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &GetServicesServiceIdResponse{
+	response := &ReadServiceResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -4028,15 +3935,15 @@ func ParseGetServicesServiceIdResponse(rsp *http.Response) (*GetServicesServiceI
 	return response, nil
 }
 
-// ParsePatchServicesServiceIdResponse parses an HTTP response from a PatchServicesServiceIdWithResponse call
-func ParsePatchServicesServiceIdResponse(rsp *http.Response) (*PatchServicesServiceIdResponse, error) {
+// ParseUpdateServiceResponse parses an HTTP response from a UpdateServiceWithResponse call
+func ParseUpdateServiceResponse(rsp *http.Response) (*UpdateServiceResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &PatchServicesServiceIdResponse{
+	response := &UpdateServiceResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}

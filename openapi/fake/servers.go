@@ -19,85 +19,72 @@ import (
 	"github.com/sacloud/phy-go/openapi"
 )
 
-// GetServers サーバー一覧
+// ListServers サーバー一覧
 // (GET /servers/)
-func (s *Server) GetServers(c *gin.Context, params openapi.GetServersParams) {
+func (s *Server) ListServers(c *gin.Context, params openapi.ListServersParams) {
 }
 
-// GetServersServerId サーバー
+// ReadServer サーバー
 // (GET /servers/{server_id}/)
-func (s *Server) GetServersServerId(c *gin.Context, serverId openapi.ServerId) {
-
+func (s *Server) ReadServer(c *gin.Context, serverId openapi.ServerId) {
 }
 
-// GetServersServerIdOsImages インストール可能OS一覧
+// ListOSImages インストール可能OS一覧
 // (GET /servers/{server_id}/os_images/)
-func (s *Server) GetServersServerIdOsImages(c *gin.Context, serverId openapi.ServerId) {
-
+func (s *Server) ListOSImages(c *gin.Context, serverId openapi.ServerId) {
 }
 
-// PostServersServerIdOsInstall OSインストールの実行
+// OSInstall OSインストールの実行
 // (POST /servers/{server_id}/os_install/)
-func (s *Server) PostServersServerIdOsInstall(c *gin.Context, serverId openapi.ServerId, params openapi.PostServersServerIdOsInstallParams) {
-
+func (s *Server) OSInstall(c *gin.Context, serverId openapi.ServerId, params openapi.OSInstallParams) {
 }
 
-// GetServersServerIdPortChannelsPortChannelId ポートチャネル状態取得
+// ReadServerPortChannel ポートチャネル状態取得
 // (GET /servers/{server_id}/port_channels/{port_channel_id}/)
-func (s *Server) GetServersServerIdPortChannelsPortChannelId(c *gin.Context, serverId openapi.ServerId, portChannelId openapi.PortChannelId) {
-
+func (s *Server) ReadServerPortChannel(c *gin.Context, serverId openapi.ServerId, portChannelId openapi.PortChannelId) {
 }
 
-// PostServersServerIdPortChannelsPortChannelIdConfigureBonding ポートチャネル ボンディング設定
+// SetPortChannelBonding ポートチャネル ボンディング設定
 // (POST /servers/{server_id}/port_channels/{port_channel_id}/configure_bonding/)
-func (s *Server) PostServersServerIdPortChannelsPortChannelIdConfigureBonding(c *gin.Context, serverId openapi.ServerId, portChannelId openapi.PortChannelId, params openapi.PostServersServerIdPortChannelsPortChannelIdConfigureBondingParams) {
-
+func (s *Server) SetPortChannelBonding(c *gin.Context, serverId openapi.ServerId, portChannelId openapi.PortChannelId, params openapi.SetPortChannelBondingParams) {
 }
 
-// GetServersServerIdPortsPortId ポート情報取得
+// ReadServerPort ポート情報取得
 // (GET /servers/{server_id}/ports/{port_id}/)
-func (s *Server) GetServersServerIdPortsPortId(c *gin.Context, serverId openapi.ServerId, portId openapi.PortId) {
-
+func (s *Server) ReadServerPort(c *gin.Context, serverId openapi.ServerId, portId openapi.PortId) {
 }
 
-// PatchServersServerIdPortsPortId ポート名称設定
+// UpdateServerPort ポート名称設定
 // (PATCH /servers/{server_id}/ports/{port_id}/)
-func (s *Server) PatchServersServerIdPortsPortId(c *gin.Context, serverId openapi.ServerId, portId openapi.PortId, params openapi.PatchServersServerIdPortsPortIdParams) {
-
+func (s *Server) UpdateServerPort(c *gin.Context, serverId openapi.ServerId, portId openapi.PortId, params openapi.UpdateServerPortParams) {
 }
 
-// PostServersServerIdPortsPortIdAssignNetwork ネットワーク接続設定の変更
+// SetServerPortNetworkConnection ネットワーク接続設定の変更
 // (POST /servers/{server_id}/ports/{port_id}/assign_network/)
-func (s *Server) PostServersServerIdPortsPortIdAssignNetwork(c *gin.Context, serverId openapi.ServerId, portId openapi.PortId, params openapi.PostServersServerIdPortsPortIdAssignNetworkParams) {
-
+func (s *Server) SetServerPortNetworkConnection(c *gin.Context, serverId openapi.ServerId, portId openapi.PortId, params openapi.SetServerPortNetworkConnectionParams) {
 }
 
-// PostServersServerIdPortsPortIdEnable ポート有効/無効設定
+// SetServerPortEnabled ポート有効/無効設定
 // (POST /servers/{server_id}/ports/{port_id}/enable/)
-func (s *Server) PostServersServerIdPortsPortIdEnable(c *gin.Context, serverId openapi.ServerId, portId openapi.PortId, params openapi.PostServersServerIdPortsPortIdEnableParams) {
-
+func (s *Server) SetServerPortEnabled(c *gin.Context, serverId openapi.ServerId, portId openapi.PortId, params openapi.SetServerPortEnabledParams) {
 }
 
-// GetServersServerIdPortsPortIdTrafficGraph トラフィックデータ取得
+// ReadServerTrafficByPort トラフィックデータ取得
 // (GET /servers/{server_id}/ports/{port_id}/traffic_graph/)
-func (s *Server) GetServersServerIdPortsPortIdTrafficGraph(c *gin.Context, serverId openapi.ServerId, portId openapi.PortId, params openapi.GetServersServerIdPortsPortIdTrafficGraphParams) {
-
+func (s *Server) ReadServerTrafficByPort(c *gin.Context, serverId openapi.ServerId, portId openapi.PortId, params openapi.ReadServerTrafficByPortParams) {
 }
 
-// PostServersServerIdPowerControl サーバーの電源操作
+// SetServerPowerStatus サーバーの電源操作
 // (POST /servers/{server_id}/power_control/)
-func (s *Server) PostServersServerIdPowerControl(c *gin.Context, serverId openapi.ServerId, params openapi.PostServersServerIdPowerControlParams) {
-
+func (s *Server) SetServerPowerStatus(c *gin.Context, serverId openapi.ServerId, params openapi.SetServerPowerStatusParams) {
 }
 
-// GetServersServerIdPowerStatus サーバーの電源情報を取得する
+// ReadServerPowerStatus サーバーの電源情報を取得する
 // (GET /servers/{server_id}/power_status/)
-func (s *Server) GetServersServerIdPowerStatus(c *gin.Context, serverId openapi.ServerId) {
-
+func (s *Server) ReadServerPowerStatus(c *gin.Context, serverId openapi.ServerId) {
 }
 
-// GetServersServerIdRaidStatus サーバーのRAID状態を取得
+// ReadRAIDStatus サーバーのRAID状態を取得
 // (GET /servers/{server_id}/raid_status/)
-func (s *Server) GetServersServerIdRaidStatus(c *gin.Context, serverId openapi.ServerId, params openapi.GetServersServerIdRaidStatusParams) {
-
+func (s *Server) ReadRAIDStatus(c *gin.Context, serverId openapi.ServerId, params openapi.ReadRAIDStatusParams) {
 }

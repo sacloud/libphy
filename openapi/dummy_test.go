@@ -46,7 +46,7 @@ func TestDummy(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	servers, err := client.GetServersWithResponse(context.Background(), &GetServersParams{})
+	servers, err := client.ListServersWithResponse(context.Background(), &ListServersParams{})
 	if err != nil {
 		t.Fatal(err)
 	}
