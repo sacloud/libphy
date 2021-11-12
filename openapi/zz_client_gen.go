@@ -2076,13 +2076,10 @@ func (r ReadDedicatedSubnetResponse) StatusCode() int {
 type ListPrivateNetworksResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *struct {
-		Meta            *PaginateMeta     `json:"meta,omitempty"`
-		PrivateNetworks *[]PrivateNetwork `json:"private_networks,omitempty"`
-	}
-	JSON400 *ProblemDetails400
-	JSON401 *ProblemDetails401
-	JSON429 *ProblemDetails429
+	JSON200      *PrivateNetworks
+	JSON400      *ProblemDetails400
+	JSON401      *ProblemDetails401
+	JSON429      *ProblemDetails429
 }
 
 // Status returns HTTPResponse.Status
@@ -2967,10 +2964,7 @@ func ParseListPrivateNetworksResponse(rsp *http.Response) (*ListPrivateNetworksR
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest struct {
-			Meta            *PaginateMeta     `json:"meta,omitempty"`
-			PrivateNetworks *[]PrivateNetwork `json:"private_networks,omitempty"`
-		}
+		var dest PrivateNetworks
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}

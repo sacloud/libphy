@@ -651,6 +651,12 @@ type PrivateNetwork struct {
 	Zone   *Zone `json:"zone,omitempty"`
 }
 
+// PrivateNetworks defines model for private_networks.
+type PrivateNetworks struct {
+	Meta            PaginateMeta     `json:"meta"`
+	PrivateNetworks []PrivateNetwork `json:"private_networks"`
+}
+
 // ProblemDetails400 defines model for problem_details_400.
 type ProblemDetails400 struct {
 	// 人間のためのエラーメッセージ
