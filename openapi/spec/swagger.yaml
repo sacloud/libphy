@@ -1775,6 +1775,8 @@ components:
 
             * `on` - 起動
             * `off` - 停止
+      required:
+        - status
     raid_status:
       type: object
       properties:
@@ -1804,51 +1806,69 @@ components:
           type: array
           description: 作成済みRAID論理ボリュームのリスト
           items:
-            type: object
-            properties:
-              volume_id:
-                type: string
-                description: このサーバーのRAID論理ボリュームの一意な識別子
-              status:
-                type: string
-                enum:
-                  - ok
-                  - rebuilding
-                  - degraded
-                  - failed
-                description: このRAID論理ボリュームの状態
-              raid_level:
-                type: string
-                description: RAIDレベル
-              physical_device_ids:
-                type: array
-                items:
-                  type: string
-                  description: この論理ボリューム内の認識済みデバイスの識別子
-                  example: '1'
+            $ref: '#/components/schemas/raid_logical_volume'
         physical_devices:
           description: 認識済み物理ストレージデバイスのリスト
           type: array
           items:
-            type: object
-            properties:
-              device_id:
-                type: string
-                description: サーバーの物理ストレージデバイスの一意な識別子
-                example: '1'
-              slot:
-                type: integer
-                description: 接続スロット番号
-              status:
-                type: string
-                enum:
-                  - ok
-                  - failed
-                description: |-
-                  この物理ストレージデバイスの状態
+            $ref: '#/components/schemas/raid_physical_device'
+      required:
+        - overall_status
+        - monitored
+        - logical_volumes
+        - physical_devices
+    raid_logical_volume:
+      type: object
+      properties:
+        volume_id:
+          type: string
+          description: このサーバーのRAID論理ボリュームの一意な識別子
+        status:
+          type: string
+          enum:
+            - ok
+            - rebuilding
+            - degraded
+            - failed
+          description: このRAID論理ボリュームの状態
+        raid_level:
+          type: string
+          description: RAIDレベル
+        physical_device_ids:
+          type: array
+          items:
+            type: string
+            description: この論理ボリューム内の認識済みデバイスの識別子
+            example: '1'
+      required:
+        - volume_id
+        - status
+        - raid_level
+        - physical_device_ids
+    raid_physical_device:
+      type: object
+      properties:
+        device_id:
+          type: string
+          description: サーバーの物理ストレージデバイスの一意な識別子
+          example: '1'
+        slot:
+          type: integer
+          description: 接続スロット番号
+        status:
+          type: string
+          enum:
+            - ok
+            - failed
+          description: |-
+            この物理ストレージデバイスの状態
 
-                  * `ok` - 正常
-                  * `failed` - 異常を検知
+            * `ok` - 正常
+            * `failed` - 異常を検知
+      required:
+        - device_id
+        - slot
+        - status
     os_image:
       type: object
       properties:
@@ -1874,6 +1894,12 @@ components:
           type: string
           description: OSインストール時に作成される管理ユーザー名
           example: root
+      required:
+        - os_image_id
+        - name
+        - require_password
+        - manual_partition
+        - superuser_name
     traffic_graph:
       type: object
       properties:
@@ -1881,28 +1907,28 @@ components:
           type: array
           description: 送信方向トラフィック
           items:
-            type: object
-            properties:
-              timestamp:
-                type: string
-                format: date-time
-                description: 取得時刻
-              value:
-                type: integer
-                description: 1つ前のデータからの平均トラフィック(bps)
+            $ref: '#/components/schemas/traffic_graph_data'
         receive:
           type: array
           description: 受信方向トラフィック
           items:
-            type: object
-            properties:
-              timestamp:
-                type: string
-                format: date-time
-                description: 取得時刻
-              value:
-                type: integer
-                description: 1つ前のデータからの平均トラフィック(bps)
+            $ref: '#/components/schemas/traffic_graph_data'
+      required:
+        - transmit
+        - receive
+    traffic_graph_data:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          description: 取得時刻
+        value:
+          type: integer
+          description: 1つ前のデータからの平均トラフィック(bps)
+      required:
+        - timestamp
+        - value
     assign_network:
       type: object
       description: |-
@@ -1918,6 +1944,9 @@ components:
         複数のネットワークが指定されている場合はエラーとなる
       required:
         - mode
+        - internet_type
+        - dedicated_subnet_id
+        - private_network_ids
       properties:
         mode:
           type: string

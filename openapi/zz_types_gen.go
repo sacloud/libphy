@@ -143,15 +143,22 @@ const (
 	ProblemDetails503TitleTemporaryUnavailable ProblemDetails503Title = "temporary_unavailable"
 )
 
-// Defines values for RaidStatusLogicalVolumesStatus.
+// Defines values for RaidLogicalVolumeStatus.
 const (
-	RaidStatusLogicalVolumesStatusDegraded RaidStatusLogicalVolumesStatus = "degraded"
+	RaidLogicalVolumeStatusDegraded RaidLogicalVolumeStatus = "degraded"
 
-	RaidStatusLogicalVolumesStatusFailed RaidStatusLogicalVolumesStatus = "failed"
+	RaidLogicalVolumeStatusFailed RaidLogicalVolumeStatus = "failed"
 
-	RaidStatusLogicalVolumesStatusOk RaidStatusLogicalVolumesStatus = "ok"
+	RaidLogicalVolumeStatusOk RaidLogicalVolumeStatus = "ok"
 
-	RaidStatusLogicalVolumesStatusRebuilding RaidStatusLogicalVolumesStatus = "rebuilding"
+	RaidLogicalVolumeStatusRebuilding RaidLogicalVolumeStatus = "rebuilding"
+)
+
+// Defines values for RaidPhysicalDeviceStatus.
+const (
+	RaidPhysicalDeviceStatusFailed RaidPhysicalDeviceStatus = "failed"
+
+	RaidPhysicalDeviceStatusOk RaidPhysicalDeviceStatus = "ok"
 )
 
 // Defines values for RaidStatusOverallStatus.
@@ -163,13 +170,6 @@ const (
 	RaidStatusOverallStatusOk RaidStatusOverallStatus = "ok"
 
 	RaidStatusOverallStatusRebuilding RaidStatusOverallStatus = "rebuilding"
-)
-
-// Defines values for RaidStatusPhysicalDevicesStatus.
-const (
-	RaidStatusPhysicalDevicesStatusFailed RaidStatusPhysicalDevicesStatus = "failed"
-
-	RaidStatusPhysicalDevicesStatusOk RaidStatusPhysicalDevicesStatus = "ok"
 )
 
 // Defines values for ServerLockStatus.
@@ -569,20 +569,20 @@ type Ipv6SpecialUseAddressesType string
 type OsImage struct {
 	// パーティション手動構成が可能か
 	// (パーティション構成の指定が可能な場合に `true`)
-	ManualPartition *bool `json:"manual_partition,omitempty"`
+	ManualPartition bool `json:"manual_partition"`
 
 	// OSの名称
-	Name *string `json:"name,omitempty"`
+	Name string `json:"name"`
 
 	// インストール実行時に指定するOSイメージ名
-	OsImageId *string `json:"os_image_id,omitempty"`
+	OsImageId string `json:"os_image_id"`
 
 	// インストール時にパスワード指定が必要か
 	// (パスワード指定が必要な場合 `true`)
-	RequirePassword *bool `json:"require_password,omitempty"`
+	RequirePassword bool `json:"require_password"`
 
 	// OSインストール時に作成される管理ユーザー名
-	SuperuserName *string `json:"superuser_name,omitempty"`
+	SuperuserName string `json:"superuser_name"`
 }
 
 // PaginateMeta defines model for paginate_meta.
@@ -791,24 +791,51 @@ type ProblemDetails503 struct {
 // * `temporary_unavailable` - 一時的に利用不可
 type ProblemDetails503Title string
 
+// RaidLogicalVolume defines model for raid_logical_volume.
+type RaidLogicalVolume struct {
+	PhysicalDeviceIds []string `json:"physical_device_ids"`
+
+	// RAIDレベル
+	RaidLevel string `json:"raid_level"`
+
+	// このRAID論理ボリュームの状態
+	Status RaidLogicalVolumeStatus `json:"status"`
+
+	// このサーバーのRAID論理ボリュームの一意な識別子
+	VolumeId string `json:"volume_id"`
+}
+
+// このRAID論理ボリュームの状態
+type RaidLogicalVolumeStatus string
+
+// RaidPhysicalDevice defines model for raid_physical_device.
+type RaidPhysicalDevice struct {
+	// サーバーの物理ストレージデバイスの一意な識別子
+	DeviceId string `json:"device_id"`
+
+	// 接続スロット番号
+	Slot int `json:"slot"`
+
+	// この物理ストレージデバイスの状態
+	//
+	// * `ok` - 正常
+	// * `failed` - 異常を検知
+	Status RaidPhysicalDeviceStatus `json:"status"`
+}
+
+// この物理ストレージデバイスの状態
+//
+// * `ok` - 正常
+// * `failed` - 異常を検知
+type RaidPhysicalDeviceStatus string
+
 // RaidStatus defines model for raid_status.
 type RaidStatus struct {
 	// 作成済みRAID論理ボリュームのリスト
-	LogicalVolumes *[]struct {
-		PhysicalDeviceIds *[]string `json:"physical_device_ids,omitempty"`
-
-		// RAIDレベル
-		RaidLevel *string `json:"raid_level,omitempty"`
-
-		// このRAID論理ボリュームの状態
-		Status *RaidStatusLogicalVolumesStatus `json:"status,omitempty"`
-
-		// このサーバーのRAID論理ボリュームの一意な識別子
-		VolumeId *string `json:"volume_id,omitempty"`
-	} `json:"logical_volumes,omitempty"`
+	LogicalVolumes []RaidLogicalVolume `json:"logical_volumes"`
 
 	// RAID状態を取得した時刻
-	Monitored *time.Time `json:"monitored,omitempty"`
+	Monitored time.Time `json:"monitored"`
 
 	// 総合的なRAID論理ボリューム状態
 	//
@@ -822,23 +849,8 @@ type RaidStatus struct {
 	OverallStatus *RaidStatusOverallStatus `json:"overall_status"`
 
 	// 認識済み物理ストレージデバイスのリスト
-	PhysicalDevices *[]struct {
-		// サーバーの物理ストレージデバイスの一意な識別子
-		DeviceId *string `json:"device_id,omitempty"`
-
-		// 接続スロット番号
-		Slot *int `json:"slot,omitempty"`
-
-		// この物理ストレージデバイスの状態
-		//
-		// * `ok` - 正常
-		// * `failed` - 異常を検知
-		Status *RaidStatusPhysicalDevicesStatus `json:"status,omitempty"`
-	} `json:"physical_devices,omitempty"`
+	PhysicalDevices []RaidPhysicalDevice `json:"physical_devices"`
 }
-
-// このRAID論理ボリュームの状態
-type RaidStatusLogicalVolumesStatus string
 
 // 総合的なRAID論理ボリューム状態
 //
@@ -850,12 +862,6 @@ type RaidStatusLogicalVolumesStatus string
 //
 // `failed > degraded > rebuilding > ok` の順でより深刻なものが選択される
 type RaidStatusOverallStatus string
-
-// この物理ストレージデバイスの状態
-//
-// * `ok` - 正常
-// * `failed` - 異常を検知
-type RaidStatusPhysicalDevicesStatus string
 
 // Server defines model for server.
 type Server struct {
@@ -932,7 +938,7 @@ type ServerPowerStatus struct {
 	//
 	// * `on` - 起動
 	// * `off` - 停止
-	Status *ServerPowerStatusStatus `json:"status,omitempty"`
+	Status ServerPowerStatusStatus `json:"status"`
 }
 
 // サーバーの電源状態
@@ -1128,22 +1134,19 @@ type Tag struct {
 // TrafficGraph defines model for traffic_graph.
 type TrafficGraph struct {
 	// 受信方向トラフィック
-	Receive *[]struct {
-		// 取得時刻
-		Timestamp *time.Time `json:"timestamp,omitempty"`
-
-		// 1つ前のデータからの平均トラフィック(bps)
-		Value *int `json:"value,omitempty"`
-	} `json:"receive,omitempty"`
+	Receive []TrafficGraphData `json:"receive"`
 
 	// 送信方向トラフィック
-	Transmit *[]struct {
-		// 取得時刻
-		Timestamp *time.Time `json:"timestamp,omitempty"`
+	Transmit []TrafficGraphData `json:"transmit"`
+}
 
-		// 1つ前のデータからの平均トラフィック(bps)
-		Value *int `json:"value,omitempty"`
-	} `json:"transmit,omitempty"`
+// TrafficGraphData defines model for traffic_graph_data.
+type TrafficGraphData struct {
+	// 取得時刻
+	Timestamp time.Time `json:"timestamp"`
+
+	// 1つ前のデータからの平均トラフィック(bps)
+	Value int `json:"value"`
 }
 
 // Zone defines model for zone.
