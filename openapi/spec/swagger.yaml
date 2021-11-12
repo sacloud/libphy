@@ -2133,6 +2133,13 @@ components:
           type: integer
           description: 接続済みサーバー数
           example: 1
+      required:
+        - private_network_id
+        - service
+        - zone
+        - vlan_id
+        - hybrid
+        - server_count
     hybrid_connections:
       type: object
       properties:
