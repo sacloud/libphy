@@ -441,6 +441,8 @@ paths:
             schema:
               required:
                 - os_image_id
+                - password
+                - manual_partition
               properties:
                 password:
                   $ref: '#/components/schemas/password_input'
