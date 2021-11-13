@@ -2264,10 +2264,8 @@ func (r ReadServerPortChannelResponse) StatusCode() int {
 type SetPortChannelBondingResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *struct {
-		PortChannel *[]PortChannel `json:"port_channel,omitempty"`
-	}
-	JSON400 *struct {
+	JSON200      *PortChannel
+	JSON400      *struct {
 		// Embedded struct due to allOf(#/components/schemas/problem_details_400)
 		ProblemDetails400 `yaml:",inline"`
 		// Embedded fields due to inline allOf schema
@@ -3330,9 +3328,7 @@ func ParseSetPortChannelBondingResponse(rsp *http.Response) (*SetPortChannelBond
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest struct {
-			PortChannel *[]PortChannel `json:"port_channel,omitempty"`
-		}
+		var dest PortChannel
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
