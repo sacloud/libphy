@@ -633,17 +633,7 @@ paths:
                 - bonding_type
               properties:
                 bonding_type:
-                  type: string
-                  enum:
-                    - lacp
-                    - static
-                    - single
-                  description: |-
-                    ボンディング方式指定
-
-                    * `lacp` - LACP
-                    * `static` - static link aggregation
-                    * `single` - ボンディングなし(単体構成)
+                  $ref: '#/components/schemas/bonding_type'
                 port_nicknames:
                   type: array
                   nullable: true
@@ -651,7 +641,7 @@ paths:
                   description: |-
                     作成するポート名称の指定
 
-                    * `null`の場合は自動設定                    
+                    * `null`の場合は自動設定
                     * ボンディング構成する場合は1要素の配列
                     * ボンディングなしの場合は2要素の配列
                   items:
@@ -1603,17 +1593,7 @@ components:
           description: ポートチャネルID
           example: 1
         bonding_type:
-          type: string
-          enum:
-            - lacp
-            - static
-            - single
-          description: |-
-            ボンディング方式
-
-            * `lacp` - LACP
-            * `static` - static link aggregation
-            * `single` - ボンディングなし(単体構成)
+          $ref: '#/components/schemas/bonding_type'
         ports:
           type: array
           description: ポートチャネルを構成するポートIDのリスト
@@ -1984,6 +1964,19 @@ components:
             type: string
             description: 接続先ローカルネットワークのサービスコード
             example: '234567890123'
+
+    bonding_type:
+      type: string
+      enum:
+        - lacp
+        - static
+        - single
+      description: |-
+        ボンディング方式
+
+        * `lacp` - LACP
+        * `static` - static link aggregation
+        * `single` - ボンディングなし(単体構成)
 
     # dedicated subnets
     dedicated_subnets:
