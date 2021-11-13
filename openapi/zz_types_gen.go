@@ -41,6 +41,15 @@ const (
 	AssignNetworkModeTrunk AssignNetworkMode = "trunk"
 )
 
+// Defines values for BondingType.
+const (
+	BondingTypeLacp BondingType = "lacp"
+
+	BondingTypeSingle BondingType = "single"
+
+	BondingTypeStatic BondingType = "static"
+)
+
 // Defines values for CachedPowerStatusStatus.
 const (
 	CachedPowerStatusStatusOff CachedPowerStatusStatus = "off"
@@ -93,15 +102,6 @@ const (
 	Ipv6SpecialUseAddressesTypeGateway Ipv6SpecialUseAddressesType = "gateway"
 
 	Ipv6SpecialUseAddressesTypeGatewayReal Ipv6SpecialUseAddressesType = "gateway_real"
-)
-
-// Defines values for PortChannelBondingType.
-const (
-	PortChannelBondingTypeLacp PortChannelBondingType = "lacp"
-
-	PortChannelBondingTypeSingle PortChannelBondingType = "single"
-
-	PortChannelBondingTypeStatic PortChannelBondingType = "static"
 )
 
 // Defines values for PortChannelLinkSpeedType.
@@ -321,6 +321,13 @@ type AttachedPrivateNetwork struct {
 	// ローカルネットワークID
 	PrivateNetworkId string `json:"private_network_id"`
 }
+
+// ボンディング方式
+//
+// * `lacp` - LACP
+// * `static` - static link aggregation
+// * `single` - ボンディングなし(単体構成)
+type BondingType string
 
 // キャッシュされた電源状態(未キャッシュならば`null`)
 type CachedPowerStatus struct {
@@ -602,7 +609,7 @@ type PortChannel struct {
 	// * `lacp` - LACP
 	// * `static` - static link aggregation
 	// * `single` - ボンディングなし(単体構成)
-	BondingType PortChannelBondingType `json:"bonding_type"`
+	BondingType BondingType `json:"bonding_type"`
 
 	// 提供速度分類
 	//
@@ -619,13 +626,6 @@ type PortChannel struct {
 	// ポートチャネルを構成するポートIDのリスト
 	Ports []int `json:"ports"`
 }
-
-// ボンディング方式
-//
-// * `lacp` - LACP
-// * `static` - static link aggregation
-// * `single` - ボンディングなし(単体構成)
-type PortChannelBondingType string
 
 // 提供速度分類
 //
@@ -1351,12 +1351,12 @@ type OSInstallParamsXRequestedWith string
 
 // SetPortChannelBondingJSONBody defines parameters for SetPortChannelBonding.
 type SetPortChannelBondingJSONBody struct {
-	// ボンディング方式指定
+	// ボンディング方式
 	//
 	// * `lacp` - LACP
 	// * `static` - static link aggregation
 	// * `single` - ボンディングなし(単体構成)
-	BondingType SetPortChannelBondingJSONBodyBondingType `json:"bonding_type"`
+	BondingType BondingType `json:"bonding_type"`
 
 	// 作成するポート名称の指定
 	//
@@ -1374,9 +1374,6 @@ type SetPortChannelBondingParams struct {
 
 // SetPortChannelBondingParamsXRequestedWith defines parameters for SetPortChannelBonding.
 type SetPortChannelBondingParamsXRequestedWith string
-
-// SetPortChannelBondingJSONBodyBondingType defines parameters for SetPortChannelBonding.
-type SetPortChannelBondingJSONBodyBondingType string
 
 // UpdateServerPortJSONBody defines parameters for UpdateServerPort.
 type UpdateServerPortJSONBody struct {
