@@ -1330,14 +1330,14 @@ type ListServersParamsOrdering string
 type OSInstallJSONBody struct {
 	// リモートコンソールを利用し手動パーティション指定を行う
 	// (OSが対応している場合のみ)
-	ManualPartition *bool `json:"manual_partition,omitempty"`
+	ManualPartition bool `json:"manual_partition"`
 
 	// インストールするOSイメージ名
 	OsImageId string `json:"os_image_id"`
 
 	// 英数字と記号の組み合わせ
 	// 1文字以上のアルファベットと1文字以上の数字が必須
-	Password *PasswordInput `json:"password,omitempty"`
+	Password PasswordInput `json:"password"`
 }
 
 // OSInstallParams defines parameters for OSInstall.
