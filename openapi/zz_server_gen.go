@@ -56,7 +56,7 @@ type ServerInterface interface {
 	ReadServerPortChannel(c *gin.Context, serverId ServerId, portChannelId PortChannelId)
 	// ポートチャネル ボンディング設定
 	// (POST /servers/{server_id}/port_channels/{port_channel_id}/configure_bonding/)
-	SetPortChannelBonding(c *gin.Context, serverId ServerId, portChannelId PortChannelId, params SetPortChannelBondingParams)
+	ServerConfigureBonding(c *gin.Context, serverId ServerId, portChannelId PortChannelId, params ServerConfigureBondingParams)
 	// ポート情報取得
 	// (GET /servers/{server_id}/ports/{port_id}/)
 	ReadServerPort(c *gin.Context, serverId ServerId, portId PortId)
@@ -65,16 +65,16 @@ type ServerInterface interface {
 	UpdateServerPort(c *gin.Context, serverId ServerId, portId PortId, params UpdateServerPortParams)
 	// ネットワーク接続設定の変更
 	// (POST /servers/{server_id}/ports/{port_id}/assign_network/)
-	SetServerPortNetworkConnection(c *gin.Context, serverId ServerId, portId PortId, params SetServerPortNetworkConnectionParams)
+	ServerAssignNetwork(c *gin.Context, serverId ServerId, portId PortId, params ServerAssignNetworkParams)
 	// ポート有効/無効設定
 	// (POST /servers/{server_id}/ports/{port_id}/enable/)
-	SetServerPortEnabled(c *gin.Context, serverId ServerId, portId PortId, params SetServerPortEnabledParams)
+	EnableServerPort(c *gin.Context, serverId ServerId, portId PortId, params EnableServerPortParams)
 	// トラフィックデータ取得
 	// (GET /servers/{server_id}/ports/{port_id}/traffic_graph/)
 	ReadServerTrafficByPort(c *gin.Context, serverId ServerId, portId PortId, params ReadServerTrafficByPortParams)
 	// サーバーの電源操作
 	// (POST /servers/{server_id}/power_control/)
-	SetServerPowerStatus(c *gin.Context, serverId ServerId, params SetServerPowerStatusParams)
+	ServerPowerControl(c *gin.Context, serverId ServerId, params ServerPowerControlParams)
 	// サーバーの電源情報を取得する
 	// (GET /servers/{server_id}/power_status/)
 	ReadServerPowerStatus(c *gin.Context, serverId ServerId)
@@ -537,8 +537,8 @@ func (siw *ServerInterfaceWrapper) ReadServerPortChannel(c *gin.Context) {
 	siw.Handler.ReadServerPortChannel(c, serverId, portChannelId)
 }
 
-// SetPortChannelBonding operation middleware
-func (siw *ServerInterfaceWrapper) SetPortChannelBonding(c *gin.Context) {
+// ServerConfigureBonding operation middleware
+func (siw *ServerInterfaceWrapper) ServerConfigureBonding(c *gin.Context) {
 
 	var err error
 
@@ -563,13 +563,13 @@ func (siw *ServerInterfaceWrapper) SetPortChannelBonding(c *gin.Context) {
 	c.Set(Account_api_keyScopes, []string{""})
 
 	// Parameter object where we will unmarshal all parameters from the context
-	var params SetPortChannelBondingParams
+	var params ServerConfigureBondingParams
 
 	headers := c.Request.Header
 
 	// ------------- Required header parameter "X-Requested-With" -------------
 	if valueList, found := headers[http.CanonicalHeaderKey("X-Requested-With")]; found {
-		var XRequestedWith SetPortChannelBondingParamsXRequestedWith
+		var XRequestedWith ServerConfigureBondingParamsXRequestedWith
 		n := len(valueList)
 		if n != 1 {
 			c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Expected one value for X-Requested-With, got %d", n)})
@@ -593,7 +593,7 @@ func (siw *ServerInterfaceWrapper) SetPortChannelBonding(c *gin.Context) {
 		middleware(c)
 	}
 
-	siw.Handler.SetPortChannelBonding(c, serverId, portChannelId, params)
+	siw.Handler.ServerConfigureBonding(c, serverId, portChannelId, params)
 }
 
 // ReadServerPort operation middleware
@@ -687,8 +687,8 @@ func (siw *ServerInterfaceWrapper) UpdateServerPort(c *gin.Context) {
 	siw.Handler.UpdateServerPort(c, serverId, portId, params)
 }
 
-// SetServerPortNetworkConnection operation middleware
-func (siw *ServerInterfaceWrapper) SetServerPortNetworkConnection(c *gin.Context) {
+// ServerAssignNetwork operation middleware
+func (siw *ServerInterfaceWrapper) ServerAssignNetwork(c *gin.Context) {
 
 	var err error
 
@@ -713,13 +713,13 @@ func (siw *ServerInterfaceWrapper) SetServerPortNetworkConnection(c *gin.Context
 	c.Set(Account_api_keyScopes, []string{""})
 
 	// Parameter object where we will unmarshal all parameters from the context
-	var params SetServerPortNetworkConnectionParams
+	var params ServerAssignNetworkParams
 
 	headers := c.Request.Header
 
 	// ------------- Required header parameter "X-Requested-With" -------------
 	if valueList, found := headers[http.CanonicalHeaderKey("X-Requested-With")]; found {
-		var XRequestedWith SetServerPortNetworkConnectionParamsXRequestedWith
+		var XRequestedWith ServerAssignNetworkParamsXRequestedWith
 		n := len(valueList)
 		if n != 1 {
 			c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Expected one value for X-Requested-With, got %d", n)})
@@ -743,11 +743,11 @@ func (siw *ServerInterfaceWrapper) SetServerPortNetworkConnection(c *gin.Context
 		middleware(c)
 	}
 
-	siw.Handler.SetServerPortNetworkConnection(c, serverId, portId, params)
+	siw.Handler.ServerAssignNetwork(c, serverId, portId, params)
 }
 
-// SetServerPortEnabled operation middleware
-func (siw *ServerInterfaceWrapper) SetServerPortEnabled(c *gin.Context) {
+// EnableServerPort operation middleware
+func (siw *ServerInterfaceWrapper) EnableServerPort(c *gin.Context) {
 
 	var err error
 
@@ -772,13 +772,13 @@ func (siw *ServerInterfaceWrapper) SetServerPortEnabled(c *gin.Context) {
 	c.Set(Account_api_keyScopes, []string{""})
 
 	// Parameter object where we will unmarshal all parameters from the context
-	var params SetServerPortEnabledParams
+	var params EnableServerPortParams
 
 	headers := c.Request.Header
 
 	// ------------- Required header parameter "X-Requested-With" -------------
 	if valueList, found := headers[http.CanonicalHeaderKey("X-Requested-With")]; found {
-		var XRequestedWith SetServerPortEnabledParamsXRequestedWith
+		var XRequestedWith EnableServerPortParamsXRequestedWith
 		n := len(valueList)
 		if n != 1 {
 			c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Expected one value for X-Requested-With, got %d", n)})
@@ -802,7 +802,7 @@ func (siw *ServerInterfaceWrapper) SetServerPortEnabled(c *gin.Context) {
 		middleware(c)
 	}
 
-	siw.Handler.SetServerPortEnabled(c, serverId, portId, params)
+	siw.Handler.EnableServerPort(c, serverId, portId, params)
 }
 
 // ReadServerTrafficByPort operation middleware
@@ -873,8 +873,8 @@ func (siw *ServerInterfaceWrapper) ReadServerTrafficByPort(c *gin.Context) {
 	siw.Handler.ReadServerTrafficByPort(c, serverId, portId, params)
 }
 
-// SetServerPowerStatus operation middleware
-func (siw *ServerInterfaceWrapper) SetServerPowerStatus(c *gin.Context) {
+// ServerPowerControl operation middleware
+func (siw *ServerInterfaceWrapper) ServerPowerControl(c *gin.Context) {
 
 	var err error
 
@@ -890,13 +890,13 @@ func (siw *ServerInterfaceWrapper) SetServerPowerStatus(c *gin.Context) {
 	c.Set(Account_api_keyScopes, []string{""})
 
 	// Parameter object where we will unmarshal all parameters from the context
-	var params SetServerPowerStatusParams
+	var params ServerPowerControlParams
 
 	headers := c.Request.Header
 
 	// ------------- Required header parameter "X-Requested-With" -------------
 	if valueList, found := headers[http.CanonicalHeaderKey("X-Requested-With")]; found {
-		var XRequestedWith SetServerPowerStatusParamsXRequestedWith
+		var XRequestedWith ServerPowerControlParamsXRequestedWith
 		n := len(valueList)
 		if n != 1 {
 			c.JSON(http.StatusBadRequest, gin.H{"msg": fmt.Sprintf("Expected one value for X-Requested-With, got %d", n)})
@@ -920,7 +920,7 @@ func (siw *ServerInterfaceWrapper) SetServerPowerStatus(c *gin.Context) {
 		middleware(c)
 	}
 
-	siw.Handler.SetServerPowerStatus(c, serverId, params)
+	siw.Handler.ServerPowerControl(c, serverId, params)
 }
 
 // ReadServerPowerStatus operation middleware
@@ -1175,19 +1175,19 @@ func RegisterHandlersWithOptions(router *gin.Engine, si ServerInterface, options
 
 	router.GET(options.BaseURL+"/servers/:server_id/port_channels/:port_channel_id/", wrapper.ReadServerPortChannel)
 
-	router.POST(options.BaseURL+"/servers/:server_id/port_channels/:port_channel_id/configure_bonding/", wrapper.SetPortChannelBonding)
+	router.POST(options.BaseURL+"/servers/:server_id/port_channels/:port_channel_id/configure_bonding/", wrapper.ServerConfigureBonding)
 
 	router.GET(options.BaseURL+"/servers/:server_id/ports/:port_id/", wrapper.ReadServerPort)
 
 	router.PATCH(options.BaseURL+"/servers/:server_id/ports/:port_id/", wrapper.UpdateServerPort)
 
-	router.POST(options.BaseURL+"/servers/:server_id/ports/:port_id/assign_network/", wrapper.SetServerPortNetworkConnection)
+	router.POST(options.BaseURL+"/servers/:server_id/ports/:port_id/assign_network/", wrapper.ServerAssignNetwork)
 
-	router.POST(options.BaseURL+"/servers/:server_id/ports/:port_id/enable/", wrapper.SetServerPortEnabled)
+	router.POST(options.BaseURL+"/servers/:server_id/ports/:port_id/enable/", wrapper.EnableServerPort)
 
 	router.GET(options.BaseURL+"/servers/:server_id/ports/:port_id/traffic_graph/", wrapper.ReadServerTrafficByPort)
 
-	router.POST(options.BaseURL+"/servers/:server_id/power_control/", wrapper.SetServerPowerStatus)
+	router.POST(options.BaseURL+"/servers/:server_id/power_control/", wrapper.ServerPowerControl)
 
 	router.GET(options.BaseURL+"/servers/:server_id/power_status/", wrapper.ReadServerPowerStatus)
 

@@ -513,7 +513,7 @@ paths:
                 $ref: '#/components/schemas/problem_details_503'
   '/servers/{server_id}/power_control/':
     post:
-      operationId: "SetServerPowerStatus"
+      operationId: "ServerPowerControl"
       tags:
         - サーバーの電源
       summary: サーバーの電源操作
@@ -609,7 +609,7 @@ paths:
                 $ref: '#/components/schemas/problem_details_503'
   '/servers/{server_id}/port_channels/{port_channel_id}/configure_bonding/':
     post:
-      operationId: "SetPortChannelBonding"
+      operationId: "ServerConfigureBonding"
       tags:
         - サーバーネットワーク設定
       summary: ポートチャネル ボンディング設定
@@ -826,7 +826,7 @@ paths:
           $ref: '#/components/responses/generic_429'
   '/servers/{server_id}/ports/{port_id}/enable/':
     post:
-      operationId: "SetServerPortEnabled"
+      operationId: "EnableServerPort"
       tags:
         - サーバーネットワーク設定
       summary: ポート有効/無効設定
@@ -877,7 +877,7 @@ paths:
           $ref: '#/components/responses/generic_429'
   '/servers/{server_id}/ports/{port_id}/assign_network/':
     post:
-      operationId: "SetServerPortNetworkConnection"
+      operationId: "ServerAssignNetwork"
       tags:
         - サーバーネットワーク設定
       summary: ネットワーク接続設定の変更

@@ -44,9 +44,9 @@ func (s *Server) OSInstall(c *gin.Context, serverId openapi.ServerId, params ope
 func (s *Server) ReadServerPortChannel(c *gin.Context, serverId openapi.ServerId, portChannelId openapi.PortChannelId) {
 }
 
-// SetPortChannelBonding ポートチャネル ボンディング設定
+// ServerConfigureBonding ポートチャネル ボンディング設定
 // (POST /servers/{server_id}/port_channels/{port_channel_id}/configure_bonding/)
-func (s *Server) SetPortChannelBonding(c *gin.Context, serverId openapi.ServerId, portChannelId openapi.PortChannelId, params openapi.SetPortChannelBondingParams) {
+func (s *Server) ServerConfigureBonding(c *gin.Context, serverId openapi.ServerId, portChannelId openapi.PortChannelId, params openapi.ServerConfigureBondingParams) {
 }
 
 // ReadServerPort ポート情報取得
@@ -59,14 +59,14 @@ func (s *Server) ReadServerPort(c *gin.Context, serverId openapi.ServerId, portI
 func (s *Server) UpdateServerPort(c *gin.Context, serverId openapi.ServerId, portId openapi.PortId, params openapi.UpdateServerPortParams) {
 }
 
-// SetServerPortNetworkConnection ネットワーク接続設定の変更
+// ServerAssignNetwork ネットワーク接続設定の変更
 // (POST /servers/{server_id}/ports/{port_id}/assign_network/)
-func (s *Server) SetServerPortNetworkConnection(c *gin.Context, serverId openapi.ServerId, portId openapi.PortId, params openapi.SetServerPortNetworkConnectionParams) {
+func (s *Server) ServerAssignNetwork(c *gin.Context, serverId openapi.ServerId, portId openapi.PortId, params openapi.ServerAssignNetworkParams) {
 }
 
-// SetServerPortEnabled ポート有効/無効設定
+// EnableServerPort ポート有効/無効設定
 // (POST /servers/{server_id}/ports/{port_id}/enable/)
-func (s *Server) SetServerPortEnabled(c *gin.Context, serverId openapi.ServerId, portId openapi.PortId, params openapi.SetServerPortEnabledParams) {
+func (s *Server) EnableServerPort(c *gin.Context, serverId openapi.ServerId, portId openapi.PortId, params openapi.EnableServerPortParams) {
 }
 
 // ReadServerTrafficByPort トラフィックデータ取得
@@ -74,9 +74,9 @@ func (s *Server) SetServerPortEnabled(c *gin.Context, serverId openapi.ServerId,
 func (s *Server) ReadServerTrafficByPort(c *gin.Context, serverId openapi.ServerId, portId openapi.PortId, params openapi.ReadServerTrafficByPortParams) {
 }
 
-// SetServerPowerStatus サーバーの電源操作
+// ServerPowerControl サーバーの電源操作
 // (POST /servers/{server_id}/power_control/)
-func (s *Server) SetServerPowerStatus(c *gin.Context, serverId openapi.ServerId, params openapi.SetServerPowerStatusParams) {
+func (s *Server) ServerPowerControl(c *gin.Context, serverId openapi.ServerId, params openapi.ServerPowerControlParams) {
 }
 
 // ReadServerPowerStatus サーバーの電源情報を取得する

@@ -1349,8 +1349,8 @@ type OSInstallParams struct {
 // OSInstallParamsXRequestedWith defines parameters for OSInstall.
 type OSInstallParamsXRequestedWith string
 
-// SetPortChannelBondingJSONBody defines parameters for SetPortChannelBonding.
-type SetPortChannelBondingJSONBody struct {
+// ServerConfigureBondingJSONBody defines parameters for ServerConfigureBonding.
+type ServerConfigureBondingJSONBody struct {
 	// ボンディング方式
 	//
 	// * `lacp` - LACP
@@ -1366,14 +1366,14 @@ type SetPortChannelBondingJSONBody struct {
 	PortNicknames *[]string `json:"port_nicknames"`
 }
 
-// SetPortChannelBondingParams defines parameters for SetPortChannelBonding.
-type SetPortChannelBondingParams struct {
+// ServerConfigureBondingParams defines parameters for ServerConfigureBonding.
+type ServerConfigureBondingParams struct {
 	// CSRF防止用ヘッダー
-	XRequestedWith SetPortChannelBondingParamsXRequestedWith `json:"X-Requested-With"`
+	XRequestedWith ServerConfigureBondingParamsXRequestedWith `json:"X-Requested-With"`
 }
 
-// SetPortChannelBondingParamsXRequestedWith defines parameters for SetPortChannelBonding.
-type SetPortChannelBondingParamsXRequestedWith string
+// ServerConfigureBondingParamsXRequestedWith defines parameters for ServerConfigureBonding.
+type ServerConfigureBondingParamsXRequestedWith string
 
 // UpdateServerPortJSONBody defines parameters for UpdateServerPort.
 type UpdateServerPortJSONBody struct {
@@ -1390,32 +1390,32 @@ type UpdateServerPortParams struct {
 // UpdateServerPortParamsXRequestedWith defines parameters for UpdateServerPort.
 type UpdateServerPortParamsXRequestedWith string
 
-// SetServerPortNetworkConnectionJSONBody defines parameters for SetServerPortNetworkConnection.
-type SetServerPortNetworkConnectionJSONBody AssignNetwork
+// ServerAssignNetworkJSONBody defines parameters for ServerAssignNetwork.
+type ServerAssignNetworkJSONBody AssignNetwork
 
-// SetServerPortNetworkConnectionParams defines parameters for SetServerPortNetworkConnection.
-type SetServerPortNetworkConnectionParams struct {
+// ServerAssignNetworkParams defines parameters for ServerAssignNetwork.
+type ServerAssignNetworkParams struct {
 	// CSRF防止用ヘッダー
-	XRequestedWith SetServerPortNetworkConnectionParamsXRequestedWith `json:"X-Requested-With"`
+	XRequestedWith ServerAssignNetworkParamsXRequestedWith `json:"X-Requested-With"`
 }
 
-// SetServerPortNetworkConnectionParamsXRequestedWith defines parameters for SetServerPortNetworkConnection.
-type SetServerPortNetworkConnectionParamsXRequestedWith string
+// ServerAssignNetworkParamsXRequestedWith defines parameters for ServerAssignNetwork.
+type ServerAssignNetworkParamsXRequestedWith string
 
-// SetServerPortEnabledJSONBody defines parameters for SetServerPortEnabled.
-type SetServerPortEnabledJSONBody struct {
+// EnableServerPortJSONBody defines parameters for EnableServerPort.
+type EnableServerPortJSONBody struct {
 	// 通信を有効にする場合に `true`
 	Enable bool `json:"enable"`
 }
 
-// SetServerPortEnabledParams defines parameters for SetServerPortEnabled.
-type SetServerPortEnabledParams struct {
+// EnableServerPortParams defines parameters for EnableServerPort.
+type EnableServerPortParams struct {
 	// CSRF防止用ヘッダー
-	XRequestedWith SetServerPortEnabledParamsXRequestedWith `json:"X-Requested-With"`
+	XRequestedWith EnableServerPortParamsXRequestedWith `json:"X-Requested-With"`
 }
 
-// SetServerPortEnabledParamsXRequestedWith defines parameters for SetServerPortEnabled.
-type SetServerPortEnabledParamsXRequestedWith string
+// EnableServerPortParamsXRequestedWith defines parameters for EnableServerPort.
+type EnableServerPortParamsXRequestedWith string
 
 // ReadServerTrafficByPortParams defines parameters for ReadServerTrafficByPort.
 type ReadServerTrafficByPortParams struct {
@@ -1432,28 +1432,28 @@ type ReadServerTrafficByPortParams struct {
 // ReadServerTrafficByPortParamsStep defines parameters for ReadServerTrafficByPort.
 type ReadServerTrafficByPortParamsStep int
 
-// SetServerPowerStatusJSONBody defines parameters for SetServerPowerStatus.
-type SetServerPowerStatusJSONBody struct {
+// ServerPowerControlJSONBody defines parameters for ServerPowerControl.
+type ServerPowerControlJSONBody struct {
 	// 操作内容
 	//
 	// * `on` - 電源ON
 	// * `soft` - ACPIシャットダウン(OSでの電源シャットダウン)
 	// * `reset` - ハードウェア電源リセット(電源OFF+電源ON)
 	// * `off` - ハードウェア電源OFF
-	Operation SetServerPowerStatusJSONBodyOperation `json:"operation"`
+	Operation ServerPowerControlJSONBodyOperation `json:"operation"`
 }
 
-// SetServerPowerStatusParams defines parameters for SetServerPowerStatus.
-type SetServerPowerStatusParams struct {
+// ServerPowerControlParams defines parameters for ServerPowerControl.
+type ServerPowerControlParams struct {
 	// CSRF防止用ヘッダー
-	XRequestedWith SetServerPowerStatusParamsXRequestedWith `json:"X-Requested-With"`
+	XRequestedWith ServerPowerControlParamsXRequestedWith `json:"X-Requested-With"`
 }
 
-// SetServerPowerStatusParamsXRequestedWith defines parameters for SetServerPowerStatus.
-type SetServerPowerStatusParamsXRequestedWith string
+// ServerPowerControlParamsXRequestedWith defines parameters for ServerPowerControl.
+type ServerPowerControlParamsXRequestedWith string
 
-// SetServerPowerStatusJSONBodyOperation defines parameters for SetServerPowerStatus.
-type SetServerPowerStatusJSONBodyOperation string
+// ServerPowerControlJSONBodyOperation defines parameters for ServerPowerControl.
+type ServerPowerControlJSONBodyOperation string
 
 // ReadRAIDStatusParams defines parameters for ReadRAIDStatus.
 type ReadRAIDStatusParams struct {
@@ -1521,20 +1521,20 @@ type UpdateServiceParamsXRequestedWith string
 // OSInstallJSONRequestBody defines body for OSInstall for application/json ContentType.
 type OSInstallJSONRequestBody OSInstallJSONBody
 
-// SetPortChannelBondingJSONRequestBody defines body for SetPortChannelBonding for application/json ContentType.
-type SetPortChannelBondingJSONRequestBody SetPortChannelBondingJSONBody
+// ServerConfigureBondingJSONRequestBody defines body for ServerConfigureBonding for application/json ContentType.
+type ServerConfigureBondingJSONRequestBody ServerConfigureBondingJSONBody
 
 // UpdateServerPortJSONRequestBody defines body for UpdateServerPort for application/json ContentType.
 type UpdateServerPortJSONRequestBody UpdateServerPortJSONBody
 
-// SetServerPortNetworkConnectionJSONRequestBody defines body for SetServerPortNetworkConnection for application/json ContentType.
-type SetServerPortNetworkConnectionJSONRequestBody SetServerPortNetworkConnectionJSONBody
+// ServerAssignNetworkJSONRequestBody defines body for ServerAssignNetwork for application/json ContentType.
+type ServerAssignNetworkJSONRequestBody ServerAssignNetworkJSONBody
 
-// SetServerPortEnabledJSONRequestBody defines body for SetServerPortEnabled for application/json ContentType.
-type SetServerPortEnabledJSONRequestBody SetServerPortEnabledJSONBody
+// EnableServerPortJSONRequestBody defines body for EnableServerPort for application/json ContentType.
+type EnableServerPortJSONRequestBody EnableServerPortJSONBody
 
-// SetServerPowerStatusJSONRequestBody defines body for SetServerPowerStatus for application/json ContentType.
-type SetServerPowerStatusJSONRequestBody SetServerPowerStatusJSONBody
+// ServerPowerControlJSONRequestBody defines body for ServerPowerControl for application/json ContentType.
+type ServerPowerControlJSONRequestBody ServerPowerControlJSONBody
 
 // UpdateServiceJSONRequestBody defines body for UpdateService for application/json ContentType.
 type UpdateServiceJSONRequestBody UpdateServiceJSONBody
