@@ -15,19 +15,27 @@
 package fake
 
 import (
-	"net/http/httptest"
+	"io"
+	"net/http"
+	"testing"
 
-	"github.com/gin-gonic/gin"
-	"github.com/sacloud/phy-go/openapi"
+	"github.com/stretchr/testify/require"
 )
 
-type Server struct{}
+func TestServer(t *testing.T) {
+	server := &Server{}
+	cleanup := server.Start()
+	defer cleanup()
 
-func (s *Server) Start() *httptest.Server {
-	router := gin.Default()
+	resp, err := http.Get(server.URL() + "/ping")
+	if err != nil {
+		t.Fatal(err)
+	}
 
-	router.GET("/ping", func(c *gin.Context) {
-		c.String(200, "pong")
-	})
-	return httptest.NewServer(openapi.RegisterHandlers(router, s))
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	require.Equal(t, "pong", string(body))
 }
