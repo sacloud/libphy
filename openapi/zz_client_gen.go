@@ -133,10 +133,10 @@ type ClientInterface interface {
 	// ReadServerPortChannel request
 	ReadServerPortChannel(ctx context.Context, serverId ServerId, portChannelId PortChannelId, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// SetPortChannelBonding request with any body
-	SetPortChannelBondingWithBody(ctx context.Context, serverId ServerId, portChannelId PortChannelId, params *SetPortChannelBondingParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ServerConfigureBonding request with any body
+	ServerConfigureBondingWithBody(ctx context.Context, serverId ServerId, portChannelId PortChannelId, params *ServerConfigureBondingParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	SetPortChannelBonding(ctx context.Context, serverId ServerId, portChannelId PortChannelId, params *SetPortChannelBondingParams, body SetPortChannelBondingJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	ServerConfigureBonding(ctx context.Context, serverId ServerId, portChannelId PortChannelId, params *ServerConfigureBondingParams, body ServerConfigureBondingJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ReadServerPort request
 	ReadServerPort(ctx context.Context, serverId ServerId, portId PortId, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -146,23 +146,23 @@ type ClientInterface interface {
 
 	UpdateServerPort(ctx context.Context, serverId ServerId, portId PortId, params *UpdateServerPortParams, body UpdateServerPortJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// SetServerPortNetworkConnection request with any body
-	SetServerPortNetworkConnectionWithBody(ctx context.Context, serverId ServerId, portId PortId, params *SetServerPortNetworkConnectionParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ServerAssignNetwork request with any body
+	ServerAssignNetworkWithBody(ctx context.Context, serverId ServerId, portId PortId, params *ServerAssignNetworkParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	SetServerPortNetworkConnection(ctx context.Context, serverId ServerId, portId PortId, params *SetServerPortNetworkConnectionParams, body SetServerPortNetworkConnectionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	ServerAssignNetwork(ctx context.Context, serverId ServerId, portId PortId, params *ServerAssignNetworkParams, body ServerAssignNetworkJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// SetServerPortEnabled request with any body
-	SetServerPortEnabledWithBody(ctx context.Context, serverId ServerId, portId PortId, params *SetServerPortEnabledParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// EnableServerPort request with any body
+	EnableServerPortWithBody(ctx context.Context, serverId ServerId, portId PortId, params *EnableServerPortParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	SetServerPortEnabled(ctx context.Context, serverId ServerId, portId PortId, params *SetServerPortEnabledParams, body SetServerPortEnabledJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	EnableServerPort(ctx context.Context, serverId ServerId, portId PortId, params *EnableServerPortParams, body EnableServerPortJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ReadServerTrafficByPort request
 	ReadServerTrafficByPort(ctx context.Context, serverId ServerId, portId PortId, params *ReadServerTrafficByPortParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// SetServerPowerStatus request with any body
-	SetServerPowerStatusWithBody(ctx context.Context, serverId ServerId, params *SetServerPowerStatusParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+	// ServerPowerControl request with any body
+	ServerPowerControlWithBody(ctx context.Context, serverId ServerId, params *ServerPowerControlParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	SetServerPowerStatus(ctx context.Context, serverId ServerId, params *SetServerPowerStatusParams, body SetServerPowerStatusJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+	ServerPowerControl(ctx context.Context, serverId ServerId, params *ServerPowerControlParams, body ServerPowerControlJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ReadServerPowerStatus request
 	ReadServerPowerStatus(ctx context.Context, serverId ServerId, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -302,8 +302,8 @@ func (c *Client) ReadServerPortChannel(ctx context.Context, serverId ServerId, p
 	return c.Client.Do(req)
 }
 
-func (c *Client) SetPortChannelBondingWithBody(ctx context.Context, serverId ServerId, portChannelId PortChannelId, params *SetPortChannelBondingParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewSetPortChannelBondingRequestWithBody(c.Server, serverId, portChannelId, params, contentType, body)
+func (c *Client) ServerConfigureBondingWithBody(ctx context.Context, serverId ServerId, portChannelId PortChannelId, params *ServerConfigureBondingParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewServerConfigureBondingRequestWithBody(c.Server, serverId, portChannelId, params, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -314,8 +314,8 @@ func (c *Client) SetPortChannelBondingWithBody(ctx context.Context, serverId Ser
 	return c.Client.Do(req)
 }
 
-func (c *Client) SetPortChannelBonding(ctx context.Context, serverId ServerId, portChannelId PortChannelId, params *SetPortChannelBondingParams, body SetPortChannelBondingJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewSetPortChannelBondingRequest(c.Server, serverId, portChannelId, params, body)
+func (c *Client) ServerConfigureBonding(ctx context.Context, serverId ServerId, portChannelId PortChannelId, params *ServerConfigureBondingParams, body ServerConfigureBondingJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewServerConfigureBondingRequest(c.Server, serverId, portChannelId, params, body)
 	if err != nil {
 		return nil, err
 	}
@@ -362,8 +362,8 @@ func (c *Client) UpdateServerPort(ctx context.Context, serverId ServerId, portId
 	return c.Client.Do(req)
 }
 
-func (c *Client) SetServerPortNetworkConnectionWithBody(ctx context.Context, serverId ServerId, portId PortId, params *SetServerPortNetworkConnectionParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewSetServerPortNetworkConnectionRequestWithBody(c.Server, serverId, portId, params, contentType, body)
+func (c *Client) ServerAssignNetworkWithBody(ctx context.Context, serverId ServerId, portId PortId, params *ServerAssignNetworkParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewServerAssignNetworkRequestWithBody(c.Server, serverId, portId, params, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -374,8 +374,8 @@ func (c *Client) SetServerPortNetworkConnectionWithBody(ctx context.Context, ser
 	return c.Client.Do(req)
 }
 
-func (c *Client) SetServerPortNetworkConnection(ctx context.Context, serverId ServerId, portId PortId, params *SetServerPortNetworkConnectionParams, body SetServerPortNetworkConnectionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewSetServerPortNetworkConnectionRequest(c.Server, serverId, portId, params, body)
+func (c *Client) ServerAssignNetwork(ctx context.Context, serverId ServerId, portId PortId, params *ServerAssignNetworkParams, body ServerAssignNetworkJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewServerAssignNetworkRequest(c.Server, serverId, portId, params, body)
 	if err != nil {
 		return nil, err
 	}
@@ -386,8 +386,8 @@ func (c *Client) SetServerPortNetworkConnection(ctx context.Context, serverId Se
 	return c.Client.Do(req)
 }
 
-func (c *Client) SetServerPortEnabledWithBody(ctx context.Context, serverId ServerId, portId PortId, params *SetServerPortEnabledParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewSetServerPortEnabledRequestWithBody(c.Server, serverId, portId, params, contentType, body)
+func (c *Client) EnableServerPortWithBody(ctx context.Context, serverId ServerId, portId PortId, params *EnableServerPortParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewEnableServerPortRequestWithBody(c.Server, serverId, portId, params, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -398,8 +398,8 @@ func (c *Client) SetServerPortEnabledWithBody(ctx context.Context, serverId Serv
 	return c.Client.Do(req)
 }
 
-func (c *Client) SetServerPortEnabled(ctx context.Context, serverId ServerId, portId PortId, params *SetServerPortEnabledParams, body SetServerPortEnabledJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewSetServerPortEnabledRequest(c.Server, serverId, portId, params, body)
+func (c *Client) EnableServerPort(ctx context.Context, serverId ServerId, portId PortId, params *EnableServerPortParams, body EnableServerPortJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewEnableServerPortRequest(c.Server, serverId, portId, params, body)
 	if err != nil {
 		return nil, err
 	}
@@ -422,8 +422,8 @@ func (c *Client) ReadServerTrafficByPort(ctx context.Context, serverId ServerId,
 	return c.Client.Do(req)
 }
 
-func (c *Client) SetServerPowerStatusWithBody(ctx context.Context, serverId ServerId, params *SetServerPowerStatusParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewSetServerPowerStatusRequestWithBody(c.Server, serverId, params, contentType, body)
+func (c *Client) ServerPowerControlWithBody(ctx context.Context, serverId ServerId, params *ServerPowerControlParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewServerPowerControlRequestWithBody(c.Server, serverId, params, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -434,8 +434,8 @@ func (c *Client) SetServerPowerStatusWithBody(ctx context.Context, serverId Serv
 	return c.Client.Do(req)
 }
 
-func (c *Client) SetServerPowerStatus(ctx context.Context, serverId ServerId, params *SetServerPowerStatusParams, body SetServerPowerStatusJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewSetServerPowerStatusRequest(c.Server, serverId, params, body)
+func (c *Client) ServerPowerControl(ctx context.Context, serverId ServerId, params *ServerPowerControlParams, body ServerPowerControlJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewServerPowerControlRequest(c.Server, serverId, params, body)
 	if err != nil {
 		return nil, err
 	}
@@ -1152,19 +1152,19 @@ func NewReadServerPortChannelRequest(server string, serverId ServerId, portChann
 	return req, nil
 }
 
-// NewSetPortChannelBondingRequest calls the generic SetPortChannelBonding builder with application/json body
-func NewSetPortChannelBondingRequest(server string, serverId ServerId, portChannelId PortChannelId, params *SetPortChannelBondingParams, body SetPortChannelBondingJSONRequestBody) (*http.Request, error) {
+// NewServerConfigureBondingRequest calls the generic ServerConfigureBonding builder with application/json body
+func NewServerConfigureBondingRequest(server string, serverId ServerId, portChannelId PortChannelId, params *ServerConfigureBondingParams, body ServerConfigureBondingJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewSetPortChannelBondingRequestWithBody(server, serverId, portChannelId, params, "application/json", bodyReader)
+	return NewServerConfigureBondingRequestWithBody(server, serverId, portChannelId, params, "application/json", bodyReader)
 }
 
-// NewSetPortChannelBondingRequestWithBody generates requests for SetPortChannelBonding with any type of body
-func NewSetPortChannelBondingRequestWithBody(server string, serverId ServerId, portChannelId PortChannelId, params *SetPortChannelBondingParams, contentType string, body io.Reader) (*http.Request, error) {
+// NewServerConfigureBondingRequestWithBody generates requests for ServerConfigureBonding with any type of body
+func NewServerConfigureBondingRequestWithBody(server string, serverId ServerId, portChannelId PortChannelId, params *ServerConfigureBondingParams, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1319,19 +1319,19 @@ func NewUpdateServerPortRequestWithBody(server string, serverId ServerId, portId
 	return req, nil
 }
 
-// NewSetServerPortNetworkConnectionRequest calls the generic SetServerPortNetworkConnection builder with application/json body
-func NewSetServerPortNetworkConnectionRequest(server string, serverId ServerId, portId PortId, params *SetServerPortNetworkConnectionParams, body SetServerPortNetworkConnectionJSONRequestBody) (*http.Request, error) {
+// NewServerAssignNetworkRequest calls the generic ServerAssignNetwork builder with application/json body
+func NewServerAssignNetworkRequest(server string, serverId ServerId, portId PortId, params *ServerAssignNetworkParams, body ServerAssignNetworkJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewSetServerPortNetworkConnectionRequestWithBody(server, serverId, portId, params, "application/json", bodyReader)
+	return NewServerAssignNetworkRequestWithBody(server, serverId, portId, params, "application/json", bodyReader)
 }
 
-// NewSetServerPortNetworkConnectionRequestWithBody generates requests for SetServerPortNetworkConnection with any type of body
-func NewSetServerPortNetworkConnectionRequestWithBody(server string, serverId ServerId, portId PortId, params *SetServerPortNetworkConnectionParams, contentType string, body io.Reader) (*http.Request, error) {
+// NewServerAssignNetworkRequestWithBody generates requests for ServerAssignNetwork with any type of body
+func NewServerAssignNetworkRequestWithBody(server string, serverId ServerId, portId PortId, params *ServerAssignNetworkParams, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1382,19 +1382,19 @@ func NewSetServerPortNetworkConnectionRequestWithBody(server string, serverId Se
 	return req, nil
 }
 
-// NewSetServerPortEnabledRequest calls the generic SetServerPortEnabled builder with application/json body
-func NewSetServerPortEnabledRequest(server string, serverId ServerId, portId PortId, params *SetServerPortEnabledParams, body SetServerPortEnabledJSONRequestBody) (*http.Request, error) {
+// NewEnableServerPortRequest calls the generic EnableServerPort builder with application/json body
+func NewEnableServerPortRequest(server string, serverId ServerId, portId PortId, params *EnableServerPortParams, body EnableServerPortJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewSetServerPortEnabledRequestWithBody(server, serverId, portId, params, "application/json", bodyReader)
+	return NewEnableServerPortRequestWithBody(server, serverId, portId, params, "application/json", bodyReader)
 }
 
-// NewSetServerPortEnabledRequestWithBody generates requests for SetServerPortEnabled with any type of body
-func NewSetServerPortEnabledRequestWithBody(server string, serverId ServerId, portId PortId, params *SetServerPortEnabledParams, contentType string, body io.Reader) (*http.Request, error) {
+// NewEnableServerPortRequestWithBody generates requests for EnableServerPort with any type of body
+func NewEnableServerPortRequestWithBody(server string, serverId ServerId, portId PortId, params *EnableServerPortParams, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1538,19 +1538,19 @@ func NewReadServerTrafficByPortRequest(server string, serverId ServerId, portId 
 	return req, nil
 }
 
-// NewSetServerPowerStatusRequest calls the generic SetServerPowerStatus builder with application/json body
-func NewSetServerPowerStatusRequest(server string, serverId ServerId, params *SetServerPowerStatusParams, body SetServerPowerStatusJSONRequestBody) (*http.Request, error) {
+// NewServerPowerControlRequest calls the generic ServerPowerControl builder with application/json body
+func NewServerPowerControlRequest(server string, serverId ServerId, params *ServerPowerControlParams, body ServerPowerControlJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
 	buf, err := json.Marshal(body)
 	if err != nil {
 		return nil, err
 	}
 	bodyReader = bytes.NewReader(buf)
-	return NewSetServerPowerStatusRequestWithBody(server, serverId, params, "application/json", bodyReader)
+	return NewServerPowerControlRequestWithBody(server, serverId, params, "application/json", bodyReader)
 }
 
-// NewSetServerPowerStatusRequestWithBody generates requests for SetServerPowerStatus with any type of body
-func NewSetServerPowerStatusRequestWithBody(server string, serverId ServerId, params *SetServerPowerStatusParams, contentType string, body io.Reader) (*http.Request, error) {
+// NewServerPowerControlRequestWithBody generates requests for ServerPowerControl with any type of body
+func NewServerPowerControlRequestWithBody(server string, serverId ServerId, params *ServerPowerControlParams, contentType string, body io.Reader) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -1971,10 +1971,10 @@ type ClientWithResponsesInterface interface {
 	// ReadServerPortChannel request
 	ReadServerPortChannelWithResponse(ctx context.Context, serverId ServerId, portChannelId PortChannelId, reqEditors ...RequestEditorFn) (*ReadServerPortChannelResponse, error)
 
-	// SetPortChannelBonding request with any body
-	SetPortChannelBondingWithBodyWithResponse(ctx context.Context, serverId ServerId, portChannelId PortChannelId, params *SetPortChannelBondingParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SetPortChannelBondingResponse, error)
+	// ServerConfigureBonding request with any body
+	ServerConfigureBondingWithBodyWithResponse(ctx context.Context, serverId ServerId, portChannelId PortChannelId, params *ServerConfigureBondingParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ServerConfigureBondingResponse, error)
 
-	SetPortChannelBondingWithResponse(ctx context.Context, serverId ServerId, portChannelId PortChannelId, params *SetPortChannelBondingParams, body SetPortChannelBondingJSONRequestBody, reqEditors ...RequestEditorFn) (*SetPortChannelBondingResponse, error)
+	ServerConfigureBondingWithResponse(ctx context.Context, serverId ServerId, portChannelId PortChannelId, params *ServerConfigureBondingParams, body ServerConfigureBondingJSONRequestBody, reqEditors ...RequestEditorFn) (*ServerConfigureBondingResponse, error)
 
 	// ReadServerPort request
 	ReadServerPortWithResponse(ctx context.Context, serverId ServerId, portId PortId, reqEditors ...RequestEditorFn) (*ReadServerPortResponse, error)
@@ -1984,23 +1984,23 @@ type ClientWithResponsesInterface interface {
 
 	UpdateServerPortWithResponse(ctx context.Context, serverId ServerId, portId PortId, params *UpdateServerPortParams, body UpdateServerPortJSONRequestBody, reqEditors ...RequestEditorFn) (*UpdateServerPortResponse, error)
 
-	// SetServerPortNetworkConnection request with any body
-	SetServerPortNetworkConnectionWithBodyWithResponse(ctx context.Context, serverId ServerId, portId PortId, params *SetServerPortNetworkConnectionParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SetServerPortNetworkConnectionResponse, error)
+	// ServerAssignNetwork request with any body
+	ServerAssignNetworkWithBodyWithResponse(ctx context.Context, serverId ServerId, portId PortId, params *ServerAssignNetworkParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ServerAssignNetworkResponse, error)
 
-	SetServerPortNetworkConnectionWithResponse(ctx context.Context, serverId ServerId, portId PortId, params *SetServerPortNetworkConnectionParams, body SetServerPortNetworkConnectionJSONRequestBody, reqEditors ...RequestEditorFn) (*SetServerPortNetworkConnectionResponse, error)
+	ServerAssignNetworkWithResponse(ctx context.Context, serverId ServerId, portId PortId, params *ServerAssignNetworkParams, body ServerAssignNetworkJSONRequestBody, reqEditors ...RequestEditorFn) (*ServerAssignNetworkResponse, error)
 
-	// SetServerPortEnabled request with any body
-	SetServerPortEnabledWithBodyWithResponse(ctx context.Context, serverId ServerId, portId PortId, params *SetServerPortEnabledParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SetServerPortEnabledResponse, error)
+	// EnableServerPort request with any body
+	EnableServerPortWithBodyWithResponse(ctx context.Context, serverId ServerId, portId PortId, params *EnableServerPortParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*EnableServerPortResponse, error)
 
-	SetServerPortEnabledWithResponse(ctx context.Context, serverId ServerId, portId PortId, params *SetServerPortEnabledParams, body SetServerPortEnabledJSONRequestBody, reqEditors ...RequestEditorFn) (*SetServerPortEnabledResponse, error)
+	EnableServerPortWithResponse(ctx context.Context, serverId ServerId, portId PortId, params *EnableServerPortParams, body EnableServerPortJSONRequestBody, reqEditors ...RequestEditorFn) (*EnableServerPortResponse, error)
 
 	// ReadServerTrafficByPort request
 	ReadServerTrafficByPortWithResponse(ctx context.Context, serverId ServerId, portId PortId, params *ReadServerTrafficByPortParams, reqEditors ...RequestEditorFn) (*ReadServerTrafficByPortResponse, error)
 
-	// SetServerPowerStatus request with any body
-	SetServerPowerStatusWithBodyWithResponse(ctx context.Context, serverId ServerId, params *SetServerPowerStatusParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SetServerPowerStatusResponse, error)
+	// ServerPowerControl request with any body
+	ServerPowerControlWithBodyWithResponse(ctx context.Context, serverId ServerId, params *ServerPowerControlParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ServerPowerControlResponse, error)
 
-	SetServerPowerStatusWithResponse(ctx context.Context, serverId ServerId, params *SetServerPowerStatusParams, body SetServerPowerStatusJSONRequestBody, reqEditors ...RequestEditorFn) (*SetServerPowerStatusResponse, error)
+	ServerPowerControlWithResponse(ctx context.Context, serverId ServerId, params *ServerPowerControlParams, body ServerPowerControlJSONRequestBody, reqEditors ...RequestEditorFn) (*ServerPowerControlResponse, error)
 
 	// ReadServerPowerStatus request
 	ReadServerPowerStatusWithResponse(ctx context.Context, serverId ServerId, reqEditors ...RequestEditorFn) (*ReadServerPowerStatusResponse, error)
@@ -2261,7 +2261,7 @@ func (r ReadServerPortChannelResponse) StatusCode() int {
 	return 0
 }
 
-type SetPortChannelBondingResponse struct {
+type ServerConfigureBondingResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *PortChannel
@@ -2277,7 +2277,7 @@ type SetPortChannelBondingResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r SetPortChannelBondingResponse) Status() string {
+func (r ServerConfigureBondingResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2285,7 +2285,7 @@ func (r SetPortChannelBondingResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r SetPortChannelBondingResponse) StatusCode() int {
+func (r ServerConfigureBondingResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -2349,7 +2349,7 @@ func (r UpdateServerPortResponse) StatusCode() int {
 	return 0
 }
 
-type SetServerPortNetworkConnectionResponse struct {
+type ServerAssignNetworkResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
@@ -2368,7 +2368,7 @@ type SetServerPortNetworkConnectionResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r SetServerPortNetworkConnectionResponse) Status() string {
+func (r ServerAssignNetworkResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2376,14 +2376,14 @@ func (r SetServerPortNetworkConnectionResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r SetServerPortNetworkConnectionResponse) StatusCode() int {
+func (r ServerAssignNetworkResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
 	return 0
 }
 
-type SetServerPortEnabledResponse struct {
+type EnableServerPortResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
@@ -2398,7 +2398,7 @@ type SetServerPortEnabledResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r SetServerPortEnabledResponse) Status() string {
+func (r EnableServerPortResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2406,7 +2406,7 @@ func (r SetServerPortEnabledResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r SetServerPortEnabledResponse) StatusCode() int {
+func (r EnableServerPortResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -2438,7 +2438,7 @@ func (r ReadServerTrafficByPortResponse) StatusCode() int {
 	return 0
 }
 
-type SetServerPowerStatusResponse struct {
+type ServerPowerControlResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON400      *ProblemDetails400
@@ -2449,7 +2449,7 @@ type SetServerPowerStatusResponse struct {
 }
 
 // Status returns HTTPResponse.Status
-func (r SetServerPowerStatusResponse) Status() string {
+func (r ServerPowerControlResponse) Status() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Status
 	}
@@ -2457,7 +2457,7 @@ func (r SetServerPowerStatusResponse) Status() string {
 }
 
 // StatusCode returns HTTPResponse.StatusCode
-func (r SetServerPowerStatusResponse) StatusCode() int {
+func (r ServerPowerControlResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -2688,21 +2688,21 @@ func (c *ClientWithResponses) ReadServerPortChannelWithResponse(ctx context.Cont
 	return ParseReadServerPortChannelResponse(rsp)
 }
 
-// SetPortChannelBondingWithBodyWithResponse request with arbitrary body returning *SetPortChannelBondingResponse
-func (c *ClientWithResponses) SetPortChannelBondingWithBodyWithResponse(ctx context.Context, serverId ServerId, portChannelId PortChannelId, params *SetPortChannelBondingParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SetPortChannelBondingResponse, error) {
-	rsp, err := c.SetPortChannelBondingWithBody(ctx, serverId, portChannelId, params, contentType, body, reqEditors...)
+// ServerConfigureBondingWithBodyWithResponse request with arbitrary body returning *ServerConfigureBondingResponse
+func (c *ClientWithResponses) ServerConfigureBondingWithBodyWithResponse(ctx context.Context, serverId ServerId, portChannelId PortChannelId, params *ServerConfigureBondingParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ServerConfigureBondingResponse, error) {
+	rsp, err := c.ServerConfigureBondingWithBody(ctx, serverId, portChannelId, params, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseSetPortChannelBondingResponse(rsp)
+	return ParseServerConfigureBondingResponse(rsp)
 }
 
-func (c *ClientWithResponses) SetPortChannelBondingWithResponse(ctx context.Context, serverId ServerId, portChannelId PortChannelId, params *SetPortChannelBondingParams, body SetPortChannelBondingJSONRequestBody, reqEditors ...RequestEditorFn) (*SetPortChannelBondingResponse, error) {
-	rsp, err := c.SetPortChannelBonding(ctx, serverId, portChannelId, params, body, reqEditors...)
+func (c *ClientWithResponses) ServerConfigureBondingWithResponse(ctx context.Context, serverId ServerId, portChannelId PortChannelId, params *ServerConfigureBondingParams, body ServerConfigureBondingJSONRequestBody, reqEditors ...RequestEditorFn) (*ServerConfigureBondingResponse, error) {
+	rsp, err := c.ServerConfigureBonding(ctx, serverId, portChannelId, params, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseSetPortChannelBondingResponse(rsp)
+	return ParseServerConfigureBondingResponse(rsp)
 }
 
 // ReadServerPortWithResponse request returning *ReadServerPortResponse
@@ -2731,38 +2731,38 @@ func (c *ClientWithResponses) UpdateServerPortWithResponse(ctx context.Context, 
 	return ParseUpdateServerPortResponse(rsp)
 }
 
-// SetServerPortNetworkConnectionWithBodyWithResponse request with arbitrary body returning *SetServerPortNetworkConnectionResponse
-func (c *ClientWithResponses) SetServerPortNetworkConnectionWithBodyWithResponse(ctx context.Context, serverId ServerId, portId PortId, params *SetServerPortNetworkConnectionParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SetServerPortNetworkConnectionResponse, error) {
-	rsp, err := c.SetServerPortNetworkConnectionWithBody(ctx, serverId, portId, params, contentType, body, reqEditors...)
+// ServerAssignNetworkWithBodyWithResponse request with arbitrary body returning *ServerAssignNetworkResponse
+func (c *ClientWithResponses) ServerAssignNetworkWithBodyWithResponse(ctx context.Context, serverId ServerId, portId PortId, params *ServerAssignNetworkParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ServerAssignNetworkResponse, error) {
+	rsp, err := c.ServerAssignNetworkWithBody(ctx, serverId, portId, params, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseSetServerPortNetworkConnectionResponse(rsp)
+	return ParseServerAssignNetworkResponse(rsp)
 }
 
-func (c *ClientWithResponses) SetServerPortNetworkConnectionWithResponse(ctx context.Context, serverId ServerId, portId PortId, params *SetServerPortNetworkConnectionParams, body SetServerPortNetworkConnectionJSONRequestBody, reqEditors ...RequestEditorFn) (*SetServerPortNetworkConnectionResponse, error) {
-	rsp, err := c.SetServerPortNetworkConnection(ctx, serverId, portId, params, body, reqEditors...)
+func (c *ClientWithResponses) ServerAssignNetworkWithResponse(ctx context.Context, serverId ServerId, portId PortId, params *ServerAssignNetworkParams, body ServerAssignNetworkJSONRequestBody, reqEditors ...RequestEditorFn) (*ServerAssignNetworkResponse, error) {
+	rsp, err := c.ServerAssignNetwork(ctx, serverId, portId, params, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseSetServerPortNetworkConnectionResponse(rsp)
+	return ParseServerAssignNetworkResponse(rsp)
 }
 
-// SetServerPortEnabledWithBodyWithResponse request with arbitrary body returning *SetServerPortEnabledResponse
-func (c *ClientWithResponses) SetServerPortEnabledWithBodyWithResponse(ctx context.Context, serverId ServerId, portId PortId, params *SetServerPortEnabledParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SetServerPortEnabledResponse, error) {
-	rsp, err := c.SetServerPortEnabledWithBody(ctx, serverId, portId, params, contentType, body, reqEditors...)
+// EnableServerPortWithBodyWithResponse request with arbitrary body returning *EnableServerPortResponse
+func (c *ClientWithResponses) EnableServerPortWithBodyWithResponse(ctx context.Context, serverId ServerId, portId PortId, params *EnableServerPortParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*EnableServerPortResponse, error) {
+	rsp, err := c.EnableServerPortWithBody(ctx, serverId, portId, params, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseSetServerPortEnabledResponse(rsp)
+	return ParseEnableServerPortResponse(rsp)
 }
 
-func (c *ClientWithResponses) SetServerPortEnabledWithResponse(ctx context.Context, serverId ServerId, portId PortId, params *SetServerPortEnabledParams, body SetServerPortEnabledJSONRequestBody, reqEditors ...RequestEditorFn) (*SetServerPortEnabledResponse, error) {
-	rsp, err := c.SetServerPortEnabled(ctx, serverId, portId, params, body, reqEditors...)
+func (c *ClientWithResponses) EnableServerPortWithResponse(ctx context.Context, serverId ServerId, portId PortId, params *EnableServerPortParams, body EnableServerPortJSONRequestBody, reqEditors ...RequestEditorFn) (*EnableServerPortResponse, error) {
+	rsp, err := c.EnableServerPort(ctx, serverId, portId, params, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseSetServerPortEnabledResponse(rsp)
+	return ParseEnableServerPortResponse(rsp)
 }
 
 // ReadServerTrafficByPortWithResponse request returning *ReadServerTrafficByPortResponse
@@ -2774,21 +2774,21 @@ func (c *ClientWithResponses) ReadServerTrafficByPortWithResponse(ctx context.Co
 	return ParseReadServerTrafficByPortResponse(rsp)
 }
 
-// SetServerPowerStatusWithBodyWithResponse request with arbitrary body returning *SetServerPowerStatusResponse
-func (c *ClientWithResponses) SetServerPowerStatusWithBodyWithResponse(ctx context.Context, serverId ServerId, params *SetServerPowerStatusParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SetServerPowerStatusResponse, error) {
-	rsp, err := c.SetServerPowerStatusWithBody(ctx, serverId, params, contentType, body, reqEditors...)
+// ServerPowerControlWithBodyWithResponse request with arbitrary body returning *ServerPowerControlResponse
+func (c *ClientWithResponses) ServerPowerControlWithBodyWithResponse(ctx context.Context, serverId ServerId, params *ServerPowerControlParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ServerPowerControlResponse, error) {
+	rsp, err := c.ServerPowerControlWithBody(ctx, serverId, params, contentType, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseSetServerPowerStatusResponse(rsp)
+	return ParseServerPowerControlResponse(rsp)
 }
 
-func (c *ClientWithResponses) SetServerPowerStatusWithResponse(ctx context.Context, serverId ServerId, params *SetServerPowerStatusParams, body SetServerPowerStatusJSONRequestBody, reqEditors ...RequestEditorFn) (*SetServerPowerStatusResponse, error) {
-	rsp, err := c.SetServerPowerStatus(ctx, serverId, params, body, reqEditors...)
+func (c *ClientWithResponses) ServerPowerControlWithResponse(ctx context.Context, serverId ServerId, params *ServerPowerControlParams, body ServerPowerControlJSONRequestBody, reqEditors ...RequestEditorFn) (*ServerPowerControlResponse, error) {
+	rsp, err := c.ServerPowerControl(ctx, serverId, params, body, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
-	return ParseSetServerPowerStatusResponse(rsp)
+	return ParseServerPowerControlResponse(rsp)
 }
 
 // ReadServerPowerStatusWithResponse request returning *ReadServerPowerStatusResponse
@@ -3313,15 +3313,15 @@ func ParseReadServerPortChannelResponse(rsp *http.Response) (*ReadServerPortChan
 	return response, nil
 }
 
-// ParseSetPortChannelBondingResponse parses an HTTP response from a SetPortChannelBondingWithResponse call
-func ParseSetPortChannelBondingResponse(rsp *http.Response) (*SetPortChannelBondingResponse, error) {
+// ParseServerConfigureBondingResponse parses an HTTP response from a ServerConfigureBondingWithResponse call
+func ParseServerConfigureBondingResponse(rsp *http.Response) (*ServerConfigureBondingResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &SetPortChannelBondingResponse{
+	response := &ServerConfigureBondingResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -3491,15 +3491,15 @@ func ParseUpdateServerPortResponse(rsp *http.Response) (*UpdateServerPortRespons
 	return response, nil
 }
 
-// ParseSetServerPortNetworkConnectionResponse parses an HTTP response from a SetServerPortNetworkConnectionWithResponse call
-func ParseSetServerPortNetworkConnectionResponse(rsp *http.Response) (*SetServerPortNetworkConnectionResponse, error) {
+// ParseServerAssignNetworkResponse parses an HTTP response from a ServerAssignNetworkWithResponse call
+func ParseServerAssignNetworkResponse(rsp *http.Response) (*ServerAssignNetworkResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &SetServerPortNetworkConnectionResponse{
+	response := &ServerAssignNetworkResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -3559,15 +3559,15 @@ func ParseSetServerPortNetworkConnectionResponse(rsp *http.Response) (*SetServer
 	return response, nil
 }
 
-// ParseSetServerPortEnabledResponse parses an HTTP response from a SetServerPortEnabledWithResponse call
-func ParseSetServerPortEnabledResponse(rsp *http.Response) (*SetServerPortEnabledResponse, error) {
+// ParseEnableServerPortResponse parses an HTTP response from a EnableServerPortWithResponse call
+func ParseEnableServerPortResponse(rsp *http.Response) (*EnableServerPortResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &SetServerPortEnabledResponse{
+	response := &EnableServerPortResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
@@ -3670,15 +3670,15 @@ func ParseReadServerTrafficByPortResponse(rsp *http.Response) (*ReadServerTraffi
 	return response, nil
 }
 
-// ParseSetServerPowerStatusResponse parses an HTTP response from a SetServerPowerStatusWithResponse call
-func ParseSetServerPowerStatusResponse(rsp *http.Response) (*SetServerPowerStatusResponse, error) {
+// ParseServerPowerControlResponse parses an HTTP response from a ServerPowerControlWithResponse call
+func ParseServerPowerControlResponse(rsp *http.Response) (*ServerPowerControlResponse, error) {
 	bodyBytes, err := ioutil.ReadAll(rsp.Body)
 	defer func() { _ = rsp.Body.Close() }()
 	if err != nil {
 		return nil, err
 	}
 
-	response := &SetServerPowerStatusResponse{
+	response := &ServerPowerControlResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
