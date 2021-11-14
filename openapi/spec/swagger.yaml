@@ -1698,18 +1698,7 @@ components:
             * `common_subnet` - 共用グローバルネットワークのIPアドレスを割り当て
             * `dedicated_subnet` - 専用グローバルネットワーク割り当て
         dedicated_subnet:
-          type: object
-          description: 専用グローバルネットワーク情報(共用グローバルネットワーク割り当て時は`null`)
-          nullable: true
-          properties:
-            dedicated_subnet_id:
-              type: string
-              description: 専用グローバルネットワークのサービスコード
-              example: '345678901234'
-            nickname:
-              type: string
-              description: 専用グローバルネットワークに設定した名称
-              example: グローバルネットワーク名
+          $ref: '#/components/schemas/attached_dedicated_subnet'
         network_address:
           type: string
           format: ipv4
@@ -1724,6 +1713,22 @@ components:
         - dedicated_subnet
         - network_address
         - prefix_length
+    attached_dedicated_subnet:
+      type: object
+      description: 専用グローバルネットワーク情報(共用グローバルネットワーク割り当て時は`null`)
+      nullable: true
+      properties:
+        dedicated_subnet_id:
+          type: string
+          description: 専用グローバルネットワークのサービスコード
+          example: '345678901234'
+        nickname:
+          type: string
+          description: 専用グローバルネットワークに設定した名称
+          example: グローバルネットワーク名
+      required:
+        - dedicated_subnet_id
+        - nickname
     attached_private_network:
       type: object
       description: ローカルネットワーク情報
