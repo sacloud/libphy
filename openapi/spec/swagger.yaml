@@ -2333,19 +2333,43 @@ components:
         - special_use_address
 
     # errors
-    invalid_parameter_detail:
+    invalid_parameter:
+      description: |-
+        入力値に対するエラーを構造化した情報
+        (titleが`invalid`の場合のみ)
+
+        * `non_field_errors` - リクエスト全体に起因した(単一項目でない)エラー内容
+        * `*` - 対応した入力項目ごとのエラー内容
+      nullable: true
+      example:
+        foo:
+          - code: required
+            message: この項目は必須です
+      type: object
+      properties:
+        non_field_errors:
+          $ref: '#/components/schemas/invalid_parameter_details'
+      additionalProperties:
+        $ref: '#/components/schemas/invalid_parameter_details'
+    invalid_parameter_details:
       type: array
       items:
-        type: object
-        properties:
-          code:
-            type: string
-            description: エラー内容を示す簡潔な識別子
-            example: required
-          message:
-            type: string
-            description: 人間のためのエラーメッセージ
-            example: この項目は必須です
+        $ref: '#/components/schemas/invalid_parameter_detail'
+    invalid_parameter_detail:
+      type: object
+      properties:
+        code:
+          type: string
+          description: エラー内容を示す簡潔な識別子
+          example: required
+        message:
+          type: string
+          description: 人間のためのエラーメッセージ
+          example: この項目は必須です
+      required:
+        - code
+        - message
+
     problem_details_400:
       type: object
       properties:
@@ -2371,23 +2395,7 @@ components:
           description: HTTPステータスコード
           example: 400
         invalid_parameters:
-          description: |-
-            入力値に対するエラーを構造化した情報
-            (titleが`invalid`の場合のみ)
-
-            * `non_field_errors` - リクエスト全体に起因した(単一項目でない)エラー内容
-            * `*` - 対応した入力項目ごとのエラー内容
-          nullable: true
-          example:
-            foo:
-              - code: required
-                message: この項目は必須です
-          type: object
-          properties:
-            non_field_errors:
-              $ref: '#/components/schemas/invalid_parameter_detail'
-          additionalProperties:
-            $ref: '#/components/schemas/invalid_parameter_detail'
+          $ref: '#/components/schemas/invalid_parameter'
     problem_details_401:
       type: object
       properties:
@@ -2404,6 +2412,10 @@ components:
           type: string
           description: 人間のためのエラーメッセージ
           example: error-unauthorized
+      required:
+        - status
+        - error_code
+        - error_msg
     problem_details_404:
       type: object
       properties:
@@ -2426,6 +2438,11 @@ components:
           type: integer
           description: HTTPステータスコード
           example: 404
+      required:
+        - type
+        - title
+        - detail
+        - status
     problem_details_409:
       type: object
       properties:
@@ -2448,6 +2465,11 @@ components:
           type: integer
           description: HTTPステータスコード
           example: 409
+      required:
+        - type
+        - title
+        - detail
+        - status
     problem_details_429:
       type: object
       properties:
@@ -2470,6 +2492,11 @@ components:
           type: integer
           description: HTTPステータスコード
           example: 429
+      required:
+        - type
+        - title
+        - detail
+        - status
     problem_details_503:
       type: object
       properties:
@@ -2492,6 +2519,11 @@ components:
           type: integer
           description: HTTPステータスコード
           example: 503
+      required:
+        - type
+        - title
+        - detail
+        - status
   responses:
     generic_400:
       description: 入力値検証エラー

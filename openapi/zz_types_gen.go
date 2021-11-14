@@ -476,14 +476,27 @@ type Internet struct {
 // * `dedicated_subnet` - 専用グローバルネットワーク割り当て
 type InternetSubnetType string
 
+// 入力値に対するエラーを構造化した情報
+// (titleが`invalid`の場合のみ)
+//
+// * `non_field_errors` - リクエスト全体に起因した(単一項目でない)エラー内容
+// * `*` - 対応した入力項目ごとのエラー内容
+type InvalidParameter struct {
+	NonFieldErrors       *InvalidParameterDetails           `json:"non_field_errors,omitempty"`
+	AdditionalProperties map[string]InvalidParameterDetails `json:"-"`
+}
+
 // InvalidParameterDetail defines model for invalid_parameter_detail.
-type InvalidParameterDetail []struct {
+type InvalidParameterDetail struct {
 	// エラー内容を示す簡潔な識別子
-	Code *string `json:"code,omitempty"`
+	Code string `json:"code"`
 
 	// 人間のためのエラーメッセージ
-	Message *string `json:"message,omitempty"`
+	Message string `json:"message"`
 }
+
+// InvalidParameterDetails defines model for invalid_parameter_details.
+type InvalidParameterDetails []InvalidParameterDetail
 
 // Ipam defines model for ipam.
 type Ipam struct {
@@ -670,7 +683,7 @@ type ProblemDetails400 struct {
 	//
 	// * `non_field_errors` - リクエスト全体に起因した(単一項目でない)エラー内容
 	// * `*` - 対応した入力項目ごとのエラー内容
-	InvalidParameters *ProblemDetails400_InvalidParameters `json:"invalid_parameters"`
+	InvalidParameters *InvalidParameter `json:"invalid_parameters"`
 
 	// HTTPステータスコード
 	Status *int `json:"status,omitempty"`
@@ -683,16 +696,6 @@ type ProblemDetails400 struct {
 	Type  *string                 `json:"type,omitempty"`
 }
 
-// 入力値に対するエラーを構造化した情報
-// (titleが`invalid`の場合のみ)
-//
-// * `non_field_errors` - リクエスト全体に起因した(単一項目でない)エラー内容
-// * `*` - 対応した入力項目ごとのエラー内容
-type ProblemDetails400_InvalidParameters struct {
-	NonFieldErrors       *InvalidParameterDetail           `json:"non_field_errors,omitempty"`
-	AdditionalProperties map[string]InvalidParameterDetail `json:"-"`
-}
-
 // エラー内容を示す簡潔な識別子
 //
 // * `invalid` - 不正なリクエスト値,リクエスト値が妥当でない
@@ -702,13 +705,13 @@ type ProblemDetails400Title string
 // ProblemDetails401 defines model for problem_details_401.
 type ProblemDetails401 struct {
 	// エラー内容を示す簡潔な識別子
-	ErrorCode *ProblemDetails401ErrorCode `json:"error_code,omitempty"`
+	ErrorCode ProblemDetails401ErrorCode `json:"error_code"`
 
 	// 人間のためのエラーメッセージ
-	ErrorMsg *string `json:"error_msg,omitempty"`
+	ErrorMsg string `json:"error_msg"`
 
 	// HTTPステータスコード
-	Status *string `json:"status,omitempty"`
+	Status string `json:"status"`
 }
 
 // エラー内容を示す簡潔な識別子
@@ -717,16 +720,16 @@ type ProblemDetails401ErrorCode string
 // ProblemDetails404 defines model for problem_details_404.
 type ProblemDetails404 struct {
 	// 人間のためのエラーメッセージ
-	Detail *string `json:"detail,omitempty"`
+	Detail string `json:"detail"`
 
 	// HTTPステータスコード
-	Status *int `json:"status,omitempty"`
+	Status int `json:"status"`
 
 	// エラー内容を示す簡潔な識別子
 	//
 	// * `not_found` - 未検出
-	Title *ProblemDetails404Title `json:"title,omitempty"`
-	Type  *string                 `json:"type,omitempty"`
+	Title ProblemDetails404Title `json:"title"`
+	Type  string                 `json:"type"`
 }
 
 // エラー内容を示す簡潔な識別子
@@ -737,16 +740,16 @@ type ProblemDetails404Title string
 // ProblemDetails409 defines model for problem_details_409.
 type ProblemDetails409 struct {
 	// 人間のためのエラーメッセージ
-	Detail *string `json:"detail,omitempty"`
+	Detail string `json:"detail"`
 
 	// HTTPステータスコード
-	Status *int `json:"status,omitempty"`
+	Status int `json:"status"`
 
 	// エラー内容を示す簡潔な識別子
 	//
 	// * `conflict` - 競合を検出
-	Title *ProblemDetails409Title `json:"title,omitempty"`
-	Type  *string                 `json:"type,omitempty"`
+	Title ProblemDetails409Title `json:"title"`
+	Type  string                 `json:"type"`
 }
 
 // エラー内容を示す簡潔な識別子
@@ -757,16 +760,16 @@ type ProblemDetails409Title string
 // ProblemDetails429 defines model for problem_details_429.
 type ProblemDetails429 struct {
 	// 人間のためのエラーメッセージ
-	Detail *string `json:"detail,omitempty"`
+	Detail string `json:"detail"`
 
 	// HTTPステータスコード
-	Status *int `json:"status,omitempty"`
+	Status int `json:"status"`
 
 	// エラー内容を示す簡潔な識別子
 	//
 	// * `throttled` - リクエスト数制限に達している
-	Title *ProblemDetails429Title `json:"title,omitempty"`
-	Type  *string                 `json:"type,omitempty"`
+	Title ProblemDetails429Title `json:"title"`
+	Type  string                 `json:"type"`
 }
 
 // エラー内容を示す簡潔な識別子
@@ -777,16 +780,16 @@ type ProblemDetails429Title string
 // ProblemDetails503 defines model for problem_details_503.
 type ProblemDetails503 struct {
 	// 人間のためのエラーメッセージ
-	Detail *string `json:"detail,omitempty"`
+	Detail string `json:"detail"`
 
 	// HTTPステータスコード
-	Status *int `json:"status,omitempty"`
+	Status int `json:"status"`
 
 	// エラー内容を示す簡潔な識別子
 	//
 	// * `temporary_unavailable` - 一時的に利用不可
-	Title *ProblemDetails503Title `json:"title,omitempty"`
-	Type  *string                 `json:"type,omitempty"`
+	Title ProblemDetails503Title `json:"title"`
+	Type  string                 `json:"type"`
 }
 
 // エラー内容を示す簡潔な識別子
@@ -1542,25 +1545,25 @@ type ServerPowerControlJSONRequestBody ServerPowerControlJSONBody
 // UpdateServiceJSONRequestBody defines body for UpdateService for application/json ContentType.
 type UpdateServiceJSONRequestBody UpdateServiceJSONBody
 
-// Getter for additional properties for ProblemDetails400_InvalidParameters. Returns the specified
+// Getter for additional properties for InvalidParameter. Returns the specified
 // element and whether it was found
-func (a ProblemDetails400_InvalidParameters) Get(fieldName string) (value InvalidParameterDetail, found bool) {
+func (a InvalidParameter) Get(fieldName string) (value InvalidParameterDetails, found bool) {
 	if a.AdditionalProperties != nil {
 		value, found = a.AdditionalProperties[fieldName]
 	}
 	return
 }
 
-// Setter for additional properties for ProblemDetails400_InvalidParameters
-func (a *ProblemDetails400_InvalidParameters) Set(fieldName string, value InvalidParameterDetail) {
+// Setter for additional properties for InvalidParameter
+func (a *InvalidParameter) Set(fieldName string, value InvalidParameterDetails) {
 	if a.AdditionalProperties == nil {
-		a.AdditionalProperties = make(map[string]InvalidParameterDetail)
+		a.AdditionalProperties = make(map[string]InvalidParameterDetails)
 	}
 	a.AdditionalProperties[fieldName] = value
 }
 
-// Override default JSON handling for ProblemDetails400_InvalidParameters to handle AdditionalProperties
-func (a *ProblemDetails400_InvalidParameters) UnmarshalJSON(b []byte) error {
+// Override default JSON handling for InvalidParameter to handle AdditionalProperties
+func (a *InvalidParameter) UnmarshalJSON(b []byte) error {
 	object := make(map[string]json.RawMessage)
 	err := json.Unmarshal(b, &object)
 	if err != nil {
@@ -1576,9 +1579,9 @@ func (a *ProblemDetails400_InvalidParameters) UnmarshalJSON(b []byte) error {
 	}
 
 	if len(object) != 0 {
-		a.AdditionalProperties = make(map[string]InvalidParameterDetail)
+		a.AdditionalProperties = make(map[string]InvalidParameterDetails)
 		for fieldName, fieldBuf := range object {
-			var fieldVal InvalidParameterDetail
+			var fieldVal InvalidParameterDetails
 			err := json.Unmarshal(fieldBuf, &fieldVal)
 			if err != nil {
 				return fmt.Errorf("error unmarshaling field %s: %w", fieldName, err)
@@ -1589,8 +1592,8 @@ func (a *ProblemDetails400_InvalidParameters) UnmarshalJSON(b []byte) error {
 	return nil
 }
 
-// Override default JSON handling for ProblemDetails400_InvalidParameters to handle AdditionalProperties
-func (a ProblemDetails400_InvalidParameters) MarshalJSON() ([]byte, error) {
+// Override default JSON handling for InvalidParameter to handle AdditionalProperties
+func (a InvalidParameter) MarshalJSON() ([]byte, error) {
 	var err error
 	object := make(map[string]json.RawMessage)
 
