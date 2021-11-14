@@ -2325,7 +2325,8 @@ type UpdateServerPortResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	JSON200      *struct {
-		Port *[]InterfacePort `json:"port,omitempty"`
+		// ネットワークインターフェースの接続ポート情報
+		Port InterfacePort `json:"port"`
 	}
 	JSON400 *ProblemDetails400
 	JSON401 *ProblemDetails401
@@ -3451,7 +3452,8 @@ func ParseUpdateServerPortResponse(rsp *http.Response) (*UpdateServerPortRespons
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest struct {
-			Port *[]InterfacePort `json:"port,omitempty"`
+			// ネットワークインターフェースの接続ポート情報
+			Port InterfacePort `json:"port"`
 		}
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err

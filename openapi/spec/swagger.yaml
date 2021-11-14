@@ -756,9 +756,9 @@ paths:
                 type: object
                 properties:
                   port:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/interface_port'
+                    $ref: '#/components/schemas/interface_port'
+                required:
+                  - port
         '400':
           $ref: '#/components/responses/generic_400'
         '401':
