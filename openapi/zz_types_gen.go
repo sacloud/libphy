@@ -295,6 +295,15 @@ type AssignNetworkInternetType string
 // * `trunk` - トランクポート
 type AssignNetworkMode string
 
+// 専用グローバルネットワーク情報(共用グローバルネットワーク割り当て時は`null`)
+type AttachedDedicatedSubnet struct {
+	// 専用グローバルネットワークのサービスコード
+	DedicatedSubnetId string `json:"dedicated_subnet_id"`
+
+	// 専用グローバルネットワークに設定した名称
+	Nickname string `json:"nickname"`
+}
+
 // 割り当て済みファイアウォール(利用していない場合は`null`)
 type AttachedFirewall struct {
 	// ファイアウォールのサービスコード
@@ -446,13 +455,7 @@ type InterfacePortMode string
 // このポートにインターネット接続が割り当てられていない場合は`null`
 type Internet struct {
 	// 専用グローバルネットワーク情報(共用グローバルネットワーク割り当て時は`null`)
-	DedicatedSubnet *struct {
-		// 専用グローバルネットワークのサービスコード
-		DedicatedSubnetId *string `json:"dedicated_subnet_id,omitempty"`
-
-		// 専用グローバルネットワークに設定した名称
-		Nickname *string `json:"nickname,omitempty"`
-	} `json:"dedicated_subnet"`
+	DedicatedSubnet *AttachedDedicatedSubnet `json:"dedicated_subnet"`
 
 	// ネットワークアドレス
 	NetworkAddress string `json:"network_address"`
