@@ -531,19 +531,7 @@ paths:
                 - operation
               properties:
                 operation:
-                  type: string
-                  enum:
-                    - 'on'
-                    - soft
-                    - reset
-                    - 'off'
-                  description: |-
-                    操作内容
-
-                    * `on` - 電源ON
-                    * `soft` - ACPIシャットダウン(OSでの電源シャットダウン)
-                    * `reset` - ハードウェア電源リセット(電源OFF+電源ON)
-                    * `off` - ハードウェア電源OFF
+                  $ref: '#/components/schemas/server_power_operations'
       responses:
         '204':
           description: 成功
@@ -2331,6 +2319,21 @@ components:
         - gateway_address
         - broadcast_address
         - special_use_address
+    server_power_operations:
+      type: string
+      enum:
+        - 'on'
+        - soft
+        - reset
+        - 'off'
+      description: |-
+        操作内容
+
+        * `on` - 電源ON
+        * `soft` - ACPIシャットダウン(OSでの電源シャットダウン)
+        * `reset` - ハードウェア電源リセット(電源OFF+電源ON)
+        * `off` - ハードウェア電源OFF
+
 
     # errors
     invalid_parameter:

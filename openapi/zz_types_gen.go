@@ -188,6 +188,17 @@ const (
 	ServerIpv4GlobalTypeDedicatedIpAddress ServerIpv4GlobalType = "dedicated_ip_address"
 )
 
+// Defines values for ServerPowerOperations.
+const (
+	ServerPowerOperationsOff ServerPowerOperations = "off"
+
+	ServerPowerOperationsOn ServerPowerOperations = "on"
+
+	ServerPowerOperationsReset ServerPowerOperations = "reset"
+
+	ServerPowerOperationsSoft ServerPowerOperations = "soft"
+)
+
 // Defines values for ServerPowerStatusStatus.
 const (
 	ServerPowerStatusStatusOff ServerPowerStatusStatus = "off"
@@ -938,6 +949,14 @@ type ServerIpv4Global struct {
 // * `dedicated_ip_address` - 専用グローバルネットワークのIPアドレス(割り当て設定が必要)
 type ServerIpv4GlobalType string
 
+// 操作内容
+//
+// * `on` - 電源ON
+// * `soft` - ACPIシャットダウン(OSでの電源シャットダウン)
+// * `reset` - ハードウェア電源リセット(電源OFF+電源ON)
+// * `off` - ハードウェア電源OFF
+type ServerPowerOperations string
+
 // ServerPowerStatus defines model for server_power_status.
 type ServerPowerStatus struct {
 	// サーバーの電源状態
@@ -1446,7 +1465,7 @@ type ServerPowerControlJSONBody struct {
 	// * `soft` - ACPIシャットダウン(OSでの電源シャットダウン)
 	// * `reset` - ハードウェア電源リセット(電源OFF+電源ON)
 	// * `off` - ハードウェア電源OFF
-	Operation ServerPowerControlJSONBodyOperation `json:"operation"`
+	Operation ServerPowerOperations `json:"operation"`
 }
 
 // ServerPowerControlParams defines parameters for ServerPowerControl.
@@ -1457,9 +1476,6 @@ type ServerPowerControlParams struct {
 
 // ServerPowerControlParamsXRequestedWith defines parameters for ServerPowerControl.
 type ServerPowerControlParamsXRequestedWith string
-
-// ServerPowerControlJSONBodyOperation defines parameters for ServerPowerControl.
-type ServerPowerControlJSONBodyOperation string
 
 // ReadRAIDStatusParams defines parameters for ReadRAIDStatus.
 type ReadRAIDStatusParams struct {
