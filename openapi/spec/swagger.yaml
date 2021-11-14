@@ -2399,6 +2399,12 @@ components:
           example: 400
         invalid_parameters:
           $ref: '#/components/schemas/invalid_parameter'
+      required:
+        - type
+        - title
+        - detail
+        - status
+        - invalid_parameters
     problem_details_401:
       type: object
       properties:

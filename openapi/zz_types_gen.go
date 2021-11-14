@@ -687,7 +687,7 @@ type PrivateNetworks struct {
 // ProblemDetails400 defines model for problem_details_400.
 type ProblemDetails400 struct {
 	// 人間のためのエラーメッセージ
-	Detail *string `json:"detail,omitempty"`
+	Detail string `json:"detail"`
 
 	// 入力値に対するエラーを構造化した情報
 	// (titleが`invalid`の場合のみ)
@@ -697,14 +697,14 @@ type ProblemDetails400 struct {
 	InvalidParameters *InvalidParameter `json:"invalid_parameters"`
 
 	// HTTPステータスコード
-	Status *int `json:"status,omitempty"`
+	Status int `json:"status"`
 
 	// エラー内容を示す簡潔な識別子
 	//
 	// * `invalid` - 不正なリクエスト値,リクエスト値が妥当でない
 	// * `parse_error` - 不正な形式,リクエスト値を読み取ることができない
-	Title *ProblemDetails400Title `json:"title,omitempty"`
-	Type  *string                 `json:"type,omitempty"`
+	Title ProblemDetails400Title `json:"title"`
+	Type  string                 `json:"type"`
 }
 
 // エラー内容を示す簡潔な識別子
