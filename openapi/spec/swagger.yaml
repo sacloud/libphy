@@ -186,20 +186,7 @@ paths:
         content:
           application/json:
             schema:
-              properties:
-                nickname:
-                  type: string
-                  example: サーバーやネットワークの簡潔な名前
-                  description: 名称：サーバーやネットワークなどの表示名
-                  maxLength: 64
-                description:
-                  type: string
-                  example: |-
-                    サーバーやネットワークの利用用途などを
-                    自由に記述
-                  description: メモ：サーバーやネットワークなどの説明
-                  nullable: true
-                  maxLength: 1000
+              $ref: '#/components/schemas/update_service_parameter'
       responses:
         '200':
           description: 成功
@@ -439,22 +426,7 @@ paths:
         content:
           application/json:
             schema:
-              required:
-                - os_image_id
-                - password
-                - manual_partition
-              properties:
-                password:
-                  $ref: '#/components/schemas/password_input'
-                os_image_id:
-                  type: string
-                  description: インストールするOSイメージ名
-                  example: centos7-x86_64
-                manual_partition:
-                  type: boolean
-                  description: |-
-                    リモートコンソールを利用し手動パーティション指定を行う
-                    (OSが対応している場合のみ)
+              $ref: '#/components/schemas/os_install_parameter'
       responses:
         '204':
           description: 処理開始
@@ -526,12 +498,8 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - operation
-              properties:
-                operation:
-                  $ref: '#/components/schemas/server_power_operations'
+              $ref: '#/components/schemas/power_control_parameter'
+
       responses:
         '204':
           description: 成功
@@ -615,30 +583,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - port_channel_id
-                - bonding_type
-              properties:
-                bonding_type:
-                  $ref: '#/components/schemas/bonding_type'
-                port_nicknames:
-                  type: array
-                  nullable: true
-                  default: null
-                  description: |-
-                    作成するポート名称の指定
-
-                    * `null`の場合は自動設定
-                    * ボンディング構成する場合は1要素の配列
-                    * ボンディングなしの場合は2要素の配列
-                  items:
-                    type: string
-                    description: ポート名称
-                    maxLength: 50
-                  example:
-                    - ポート名称1
-                    - ポート名称2
+              $ref: '#/components/schemas/configure_bonding_parameter'
       responses:
         '200':
           description: 成功
@@ -726,15 +671,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - nickname
-              properties:
-                nickname:
-                  type: string
-                  description: ポート名称
-                  example: ポート名称1
-                  maxLength: 50
+              $ref: '#/components/schemas/update_server_port_parameter'
       responses:
         '200':
           description: 成功
@@ -828,13 +765,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - enable
-              properties:
-                enable:
-                  type: boolean
-                  description: 通信を有効にする場合に `true`
+              $ref: '#/components/schemas/enable_server_port_parameter'
       responses:
         '200':
           description: 成功
@@ -879,7 +810,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/assign_network'
+              $ref: '#/components/schemas/assign_network_parameter'
       responses:
         '200':
           description: 成功
@@ -1194,6 +1125,152 @@ components:
         type: integer
       description: ポートID
   schemas:
+    # request parameter
+    os_install_parameter:
+      required:
+        - os_image_id
+        - password
+        - manual_partition
+      properties:
+        password:
+          $ref: '#/components/schemas/password_input'
+        os_image_id:
+          type: string
+          description: インストールするOSイメージ名
+          example: centos7-x86_64
+        manual_partition:
+          type: boolean
+          description: |-
+            リモートコンソールを利用し手動パーティション指定を行う
+            (OSが対応している場合のみ)
+
+    update_service_parameter:
+      properties:
+        nickname:
+          type: string
+          example: サーバーやネットワークの簡潔な名前
+          description: 名称：サーバーやネットワークなどの表示名
+          maxLength: 64
+        description:
+          type: string
+          example: |-
+            サーバーやネットワークの利用用途などを
+            自由に記述
+          description: メモ：サーバーやネットワークなどの説明
+          nullable: true
+          maxLength: 1000
+      required:
+        - nickname
+        - description
+    power_control_parameter:
+      type: object
+      properties:
+        operation:
+          $ref: '#/components/schemas/server_power_operations'
+      required:
+        - operation
+    configure_bonding_parameter:
+      type: object
+      properties:
+        bonding_type:
+          $ref: '#/components/schemas/bonding_type'
+        port_nicknames:
+          type: array
+          nullable: true
+          default: null
+          description: |-
+            作成するポート名称の指定
+
+            * `null`の場合は自動設定
+            * ボンディング構成する場合は1要素の配列
+            * ボンディングなしの場合は2要素の配列
+          items:
+            type: string
+            description: ポート名称
+            maxLength: 50
+          example:
+            - ポート名称1
+            - ポート名称2
+      required:
+        - port_channel_id
+        - bonding_type
+    update_server_port_parameter:
+      type: object
+      properties:
+        nickname:
+          type: string
+          description: ポート名称
+          example: ポート名称1
+          maxLength: 50
+      required:
+        - nickname
+    enable_server_port_parameter:
+      type: object
+      properties:
+        enable:
+          type: boolean
+          description: 通信を有効にする場合に `true`
+      required:
+        - enable
+    assign_network_parameter:
+      type: object
+      description: |-
+        ポートの接続ネットワーク指定
+
+        `mode=access`の場合は
+
+        * 共用グローバルネットワーク
+        * 専用グローバルネットワーク
+        * ローカルネットワーク
+
+        のいずれか1つのみ接続可能で、
+        複数のネットワークが指定されている場合はエラーとなる
+      required:
+        - mode
+        - internet_type
+        - dedicated_subnet_id
+        - private_network_ids
+      properties:
+        mode:
+          type: string
+          enum:
+            - access
+            - trunk
+          description: |-
+            ポートモード
+
+            * `access` - アクセスポート
+            * `trunk` - トランクポート
+        internet_type:
+          type: string
+          nullable: true
+          default: null
+          enum:
+            - common_subnet
+            - dedicated_subnet
+          description: |-
+            * `null` - インターネット接続なし
+            * `common_subnet` - 共用グローバルネットワーク利用
+            * `dedicated_subnet` - 専用グローバルネットワーク利用
+          example: dedicated_subnet
+        dedicated_subnet_id:
+          type: string
+          nullable: true
+          default: null
+          description: |-
+            専用グローバルネットワークのサービスコード指定
+            `global_network_type`が`dedicated_subnet`の場合に必須
+          example: '345678901234'
+        private_network_ids:
+          type: array
+          nullable: true
+          default: null
+          description: 接続先ローカルネットワークの配列
+          items:
+            type: string
+            description: 接続先ローカルネットワークのサービスコード
+            example: '234567890123'
+
     # services
     services:
       type: object
@@ -1899,65 +1976,6 @@ components:
       required:
         - timestamp
         - value
-    assign_network:
-      type: object
-      description: |-
-        ポートの接続ネットワーク指定
-
-        `mode=access`の場合は
-
-        * 共用グローバルネットワーク
-        * 専用グローバルネットワーク
-        * ローカルネットワーク
-
-        のいずれか1つのみ接続可能で、
-        複数のネットワークが指定されている場合はエラーとなる
-      required:
-        - mode
-        - internet_type
-        - dedicated_subnet_id
-        - private_network_ids
-      properties:
-        mode:
-          type: string
-          enum:
-            - access
-            - trunk
-          description: |-
-            ポートモード
-
-            * `access` - アクセスポート
-            * `trunk` - トランクポート
-        internet_type:
-          type: string
-          nullable: true
-          default: null
-          enum:
-            - common_subnet
-            - dedicated_subnet
-          description: |-
-            * `null` - インターネット接続なし
-            * `common_subnet` - 共用グローバルネットワーク利用
-            * `dedicated_subnet` - 専用グローバルネットワーク利用
-          example: dedicated_subnet
-        dedicated_subnet_id:
-          type: string
-          nullable: true
-          default: null
-          description: |-
-            専用グローバルネットワークのサービスコード指定
-            `global_network_type`が`dedicated_subnet`の場合に必須
-          example: '345678901234'
-        private_network_ids:
-          type: array
-          nullable: true
-          default: null
-          description: 接続先ローカルネットワークの配列
-          items:
-            type: string
-            description: 接続先ローカルネットワークのサービスコード
-            example: '234567890123'
-
     bonding_type:
       type: string
       enum:
@@ -1970,6 +1988,7 @@ components:
         * `lacp` - LACP
         * `static` - static link aggregation
         * `single` - ボンディングなし(単体構成)
+
 
     # dedicated subnets
     dedicated_subnets:
@@ -2333,6 +2352,7 @@ components:
         * `soft` - ACPIシャットダウン(OSでの電源シャットダウン)
         * `reset` - ハードウェア電源リセット(電源OFF+電源ON)
         * `off` - ハードウェア電源OFF
+
 
 
     # errors

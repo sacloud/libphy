@@ -27,18 +27,18 @@ const (
 	Account_api_keyScopes = "account_api_key.Scopes"
 )
 
-// Defines values for AssignNetworkInternetType.
+// Defines values for AssignNetworkParameterInternetType.
 const (
-	AssignNetworkInternetTypeCommonSubnet AssignNetworkInternetType = "common_subnet"
+	AssignNetworkParameterInternetTypeCommonSubnet AssignNetworkParameterInternetType = "common_subnet"
 
-	AssignNetworkInternetTypeDedicatedSubnet AssignNetworkInternetType = "dedicated_subnet"
+	AssignNetworkParameterInternetTypeDedicatedSubnet AssignNetworkParameterInternetType = "dedicated_subnet"
 )
 
-// Defines values for AssignNetworkMode.
+// Defines values for AssignNetworkParameterMode.
 const (
-	AssignNetworkModeAccess AssignNetworkMode = "access"
+	AssignNetworkParameterModeAccess AssignNetworkParameterMode = "access"
 
-	AssignNetworkModeTrunk AssignNetworkMode = "trunk"
+	AssignNetworkParameterModeTrunk AssignNetworkParameterMode = "trunk"
 )
 
 // Defines values for BondingType.
@@ -275,7 +275,7 @@ const (
 //
 // のいずれか1つのみ接続可能で、
 // 複数のネットワークが指定されている場合はエラーとなる
-type AssignNetwork struct {
+type AssignNetworkParameter struct {
 	// 専用グローバルネットワークのサービスコード指定
 	// `global_network_type`が`dedicated_subnet`の場合に必須
 	DedicatedSubnetId *string `json:"dedicated_subnet_id"`
@@ -283,13 +283,13 @@ type AssignNetwork struct {
 	// * `null` - インターネット接続なし
 	// * `common_subnet` - 共用グローバルネットワーク利用
 	// * `dedicated_subnet` - 専用グローバルネットワーク利用
-	InternetType *AssignNetworkInternetType `json:"internet_type"`
+	InternetType *AssignNetworkParameterInternetType `json:"internet_type"`
 
 	// ポートモード
 	//
 	// * `access` - アクセスポート
 	// * `trunk` - トランクポート
-	Mode AssignNetworkMode `json:"mode"`
+	Mode AssignNetworkParameterMode `json:"mode"`
 
 	// 接続先ローカルネットワークの配列
 	PrivateNetworkIds *[]string `json:"private_network_ids"`
@@ -298,13 +298,13 @@ type AssignNetwork struct {
 // * `null` - インターネット接続なし
 // * `common_subnet` - 共用グローバルネットワーク利用
 // * `dedicated_subnet` - 専用グローバルネットワーク利用
-type AssignNetworkInternetType string
+type AssignNetworkParameterInternetType string
 
 // ポートモード
 //
 // * `access` - アクセスポート
 // * `trunk` - トランクポート
-type AssignNetworkMode string
+type AssignNetworkParameterMode string
 
 // 専用グローバルネットワーク情報(共用グローバルネットワーク割り当て時は`null`)
 type AttachedDedicatedSubnet struct {
@@ -361,6 +361,23 @@ type CachedPowerStatus struct {
 // 電源状態
 type CachedPowerStatusStatus string
 
+// ConfigureBondingParameter defines model for configure_bonding_parameter.
+type ConfigureBondingParameter struct {
+	// ボンディング方式
+	//
+	// * `lacp` - LACP
+	// * `static` - static link aggregation
+	// * `single` - ボンディングなし(単体構成)
+	BondingType BondingType `json:"bonding_type"`
+
+	// 作成するポート名称の指定
+	//
+	// * `null`の場合は自動設定
+	// * ボンディング構成する場合は1要素の配列
+	// * ボンディングなしの場合は2要素の配列
+	PortNicknames *[]string `json:"port_nicknames"`
+}
+
 // DedicatedSubnet defines model for dedicated_subnet.
 type DedicatedSubnet struct {
 	// 設定変更によるロック状態
@@ -406,6 +423,12 @@ type DedicatedSubnetConfigStatus string
 type DedicatedSubnets struct {
 	DedicatedSubnets []DedicatedSubnet `json:"dedicated_subnets"`
 	Meta             PaginateMeta      `json:"meta"`
+}
+
+// EnableServerPortParameter defines model for enable_server_port_parameter.
+type EnableServerPortParameter struct {
+	// 通信を有効にする場合に `true`
+	Enable bool `json:"enable"`
 }
 
 // HybridConnection defines model for hybrid_connection.
@@ -619,6 +642,20 @@ type OsImage struct {
 	SuperuserName string `json:"superuser_name"`
 }
 
+// OsInstallParameter defines model for os_install_parameter.
+type OsInstallParameter struct {
+	// リモートコンソールを利用し手動パーティション指定を行う
+	// (OSが対応している場合のみ)
+	ManualPartition bool `json:"manual_partition"`
+
+	// インストールするOSイメージ名
+	OsImageId string `json:"os_image_id"`
+
+	// 英数字と記号の組み合わせ
+	// 1文字以上のアルファベットと1文字以上の数字が必須
+	Password PasswordInput `json:"password"`
+}
+
 // PaginateMeta defines model for paginate_meta.
 type PaginateMeta struct {
 	// 総件数
@@ -659,6 +696,17 @@ type PortChannel struct {
 // * `1gbe` - 1GbE
 // * `10gbe` - 10GbE
 type PortChannelLinkSpeedType string
+
+// PowerControlParameter defines model for power_control_parameter.
+type PowerControlParameter struct {
+	// 操作内容
+	//
+	// * `on` - 電源ON
+	// * `soft` - ACPIシャットダウン(OSでの電源シャットダウン)
+	// * `reset` - ハードウェア電源リセット(電源OFF+電源ON)
+	// * `off` - ハードウェア電源OFF
+	Operation ServerPowerOperations `json:"operation"`
+}
 
 // PrivateNetwork defines model for private_network.
 type PrivateNetwork struct {
@@ -1174,6 +1222,21 @@ type TrafficGraphData struct {
 	Value int `json:"value"`
 }
 
+// UpdateServerPortParameter defines model for update_server_port_parameter.
+type UpdateServerPortParameter struct {
+	// ポート名称
+	Nickname string `json:"nickname"`
+}
+
+// UpdateServiceParameter defines model for update_service_parameter.
+type UpdateServiceParameter struct {
+	// メモ：サーバーやネットワークなどの説明
+	Description *string `json:"description"`
+
+	// 名称：サーバーやネットワークなどの表示名
+	Nickname string `json:"nickname"`
+}
+
 // Zone defines model for zone.
 type Zone struct {
 	// 地域名
@@ -1352,18 +1415,7 @@ type ListServersParamsPowerStatus string
 type ListServersParamsOrdering string
 
 // OSInstallJSONBody defines parameters for OSInstall.
-type OSInstallJSONBody struct {
-	// リモートコンソールを利用し手動パーティション指定を行う
-	// (OSが対応している場合のみ)
-	ManualPartition bool `json:"manual_partition"`
-
-	// インストールするOSイメージ名
-	OsImageId string `json:"os_image_id"`
-
-	// 英数字と記号の組み合わせ
-	// 1文字以上のアルファベットと1文字以上の数字が必須
-	Password PasswordInput `json:"password"`
-}
+type OSInstallJSONBody OsInstallParameter
 
 // OSInstallParams defines parameters for OSInstall.
 type OSInstallParams struct {
@@ -1375,21 +1427,7 @@ type OSInstallParams struct {
 type OSInstallParamsXRequestedWith string
 
 // ServerConfigureBondingJSONBody defines parameters for ServerConfigureBonding.
-type ServerConfigureBondingJSONBody struct {
-	// ボンディング方式
-	//
-	// * `lacp` - LACP
-	// * `static` - static link aggregation
-	// * `single` - ボンディングなし(単体構成)
-	BondingType BondingType `json:"bonding_type"`
-
-	// 作成するポート名称の指定
-	//
-	// * `null`の場合は自動設定
-	// * ボンディング構成する場合は1要素の配列
-	// * ボンディングなしの場合は2要素の配列
-	PortNicknames *[]string `json:"port_nicknames"`
-}
+type ServerConfigureBondingJSONBody ConfigureBondingParameter
 
 // ServerConfigureBondingParams defines parameters for ServerConfigureBonding.
 type ServerConfigureBondingParams struct {
@@ -1401,10 +1439,7 @@ type ServerConfigureBondingParams struct {
 type ServerConfigureBondingParamsXRequestedWith string
 
 // UpdateServerPortJSONBody defines parameters for UpdateServerPort.
-type UpdateServerPortJSONBody struct {
-	// ポート名称
-	Nickname string `json:"nickname"`
-}
+type UpdateServerPortJSONBody UpdateServerPortParameter
 
 // UpdateServerPortParams defines parameters for UpdateServerPort.
 type UpdateServerPortParams struct {
@@ -1416,7 +1451,7 @@ type UpdateServerPortParams struct {
 type UpdateServerPortParamsXRequestedWith string
 
 // ServerAssignNetworkJSONBody defines parameters for ServerAssignNetwork.
-type ServerAssignNetworkJSONBody AssignNetwork
+type ServerAssignNetworkJSONBody AssignNetworkParameter
 
 // ServerAssignNetworkParams defines parameters for ServerAssignNetwork.
 type ServerAssignNetworkParams struct {
@@ -1428,10 +1463,7 @@ type ServerAssignNetworkParams struct {
 type ServerAssignNetworkParamsXRequestedWith string
 
 // EnableServerPortJSONBody defines parameters for EnableServerPort.
-type EnableServerPortJSONBody struct {
-	// 通信を有効にする場合に `true`
-	Enable bool `json:"enable"`
-}
+type EnableServerPortJSONBody EnableServerPortParameter
 
 // EnableServerPortParams defines parameters for EnableServerPort.
 type EnableServerPortParams struct {
@@ -1458,15 +1490,7 @@ type ReadServerTrafficByPortParams struct {
 type ReadServerTrafficByPortParamsStep int
 
 // ServerPowerControlJSONBody defines parameters for ServerPowerControl.
-type ServerPowerControlJSONBody struct {
-	// 操作内容
-	//
-	// * `on` - 電源ON
-	// * `soft` - ACPIシャットダウン(OSでの電源シャットダウン)
-	// * `reset` - ハードウェア電源リセット(電源OFF+電源ON)
-	// * `off` - ハードウェア電源OFF
-	Operation ServerPowerOperations `json:"operation"`
-}
+type ServerPowerControlJSONBody PowerControlParameter
 
 // ServerPowerControlParams defines parameters for ServerPowerControl.
 type ServerPowerControlParams struct {
@@ -1523,13 +1547,7 @@ type ListServicesParamsProductCategory string
 type ListServicesParamsOrdering string
 
 // UpdateServiceJSONBody defines parameters for UpdateService.
-type UpdateServiceJSONBody struct {
-	// メモ：サーバーやネットワークなどの説明
-	Description *string `json:"description"`
-
-	// 名称：サーバーやネットワークなどの表示名
-	Nickname *string `json:"nickname,omitempty"`
-}
+type UpdateServiceJSONBody UpdateServiceParameter
 
 // UpdateServiceParams defines parameters for UpdateService.
 type UpdateServiceParams struct {

@@ -57,7 +57,7 @@ func (s *Server) ListOSImages(c *gin.Context, serverId openapi.ServerId) {
 // OSInstall OSインストールの実行
 // (POST /servers/{server_id}/os_install/)
 func (s *Server) OSInstall(c *gin.Context, serverId openapi.ServerId, _ openapi.OSInstallParams) {
-	var paramJSON openapi.OSInstallJSONBody
+	var paramJSON openapi.OsInstallParameter
 	if err := c.ShouldBindJSON(&paramJSON); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -84,7 +84,7 @@ func (s *Server) ReadServerPortChannel(c *gin.Context, serverId openapi.ServerId
 // ServerConfigureBonding ポートチャネル ボンディング設定
 // (POST /servers/{server_id}/port_channels/{port_channel_id}/configure_bonding/)
 func (s *Server) ServerConfigureBonding(c *gin.Context, serverId openapi.ServerId, portChannelId openapi.PortChannelId, _ openapi.ServerConfigureBondingParams) {
-	var paramJSON openapi.ServerConfigureBondingJSONBody
+	var paramJSON openapi.ConfigureBondingParameter
 	if err := c.ShouldBindJSON(&paramJSON); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -112,7 +112,7 @@ func (s *Server) ReadServerPort(c *gin.Context, serverId openapi.ServerId, portI
 // UpdateServerPort ポート名称設定
 // (PATCH /servers/{server_id}/ports/{port_id}/)
 func (s *Server) UpdateServerPort(c *gin.Context, serverId openapi.ServerId, portId openapi.PortId, _ openapi.UpdateServerPortParams) {
-	var paramJSON openapi.UpdateServerPortJSONBody
+	var paramJSON openapi.UpdateServerPortParameter
 	if err := c.ShouldBindJSON(&paramJSON); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -129,7 +129,7 @@ func (s *Server) UpdateServerPort(c *gin.Context, serverId openapi.ServerId, por
 // ServerAssignNetwork ネットワーク接続設定の変更
 // (POST /servers/{server_id}/ports/{port_id}/assign_network/)
 func (s *Server) ServerAssignNetwork(c *gin.Context, serverId openapi.ServerId, portId openapi.PortId, _ openapi.ServerAssignNetworkParams) {
-	var paramJSON openapi.ServerAssignNetworkJSONBody
+	var paramJSON openapi.AssignNetworkParameter
 	if err := c.ShouldBindJSON(&paramJSON); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -146,7 +146,7 @@ func (s *Server) ServerAssignNetwork(c *gin.Context, serverId openapi.ServerId, 
 // EnableServerPort ポート有効/無効設定
 // (POST /servers/{server_id}/ports/{port_id}/enable/)
 func (s *Server) EnableServerPort(c *gin.Context, serverId openapi.ServerId, portId openapi.PortId, _ openapi.EnableServerPortParams) {
-	var paramJSON openapi.EnableServerPortJSONBody
+	var paramJSON openapi.EnableServerPortParameter
 	if err := c.ShouldBindJSON(&paramJSON); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -174,7 +174,7 @@ func (s *Server) ReadServerTrafficByPort(c *gin.Context, serverId openapi.Server
 // ServerPowerControl サーバーの電源操作
 // (POST /servers/{server_id}/power_control/)
 func (s *Server) ServerPowerControl(c *gin.Context, serverId openapi.ServerId, _ openapi.ServerPowerControlParams) {
-	var paramJSON openapi.ServerPowerControlJSONBody
+	var paramJSON openapi.PowerControlParameter
 	if err := c.ShouldBindJSON(&paramJSON); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

@@ -83,9 +83,9 @@ func TestDataStore_Services(t *testing.T) {
 	})
 
 	t.Run("update", func(t *testing.T) {
-		svc, err := ds.UpdateService("100000000001", openapi.UpdateServiceJSONBody{
+		svc, err := ds.UpdateService("100000000001", openapi.UpdateServiceParameter{
 			Description: nil,
-			Nickname:    pointer.String("nickname1-upd"),
+			Nickname:    "nickname1-upd",
 		})
 		require.NoError(t, err)
 		require.NotNil(t, svc)
