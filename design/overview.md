@@ -72,8 +72,8 @@ API定義: [https://manual.sakura.ad.jp/ds/phy/api/api-spec.html](https://manual
 ### パッケージ構造
 
 - 実装するコードはプロジェクトルート直下の`phy`パッケージに
-- 定義ファイル類はopenapiディレクトリ配下に
-- 自動生成されるコードはopenapiディレクトリ配下に
+- 定義ファイル類はapis/v*/specディレクトリ配下に
+- 自動生成されるコードはapisディレクトリ配下に
 - その他機能が増えるようであればプロジェクトルート配下にディレクトリを追加していく
 
 ```
@@ -81,11 +81,9 @@ API定義: [https://manual.sakura.ad.jp/ds/phy/api/api-spec.html](https://manual
 ├── xxx.go       # プロジェクト直下に各種実装コードを配置
 ├── go.mod
 ├── go.sum
-└── openapi    # openapi配下に定義ファイルや自動生成されたコードを配置
+└── apis/v* # 定義ファイルや自動生成されたコードを配置
     ├── spec
     │   └── swagger.yaml
-    ├── test   # openapi用のFakeサーバの実装
-    │   └── xxx.go
     ├── zz_client_gen.go
     └── zz_types_gen.go
 ```
@@ -102,9 +100,10 @@ API定義: [https://manual.sakura.ad.jp/ds/phy/api/api-spec.html](https://manual
     - GlobalNetworkAPI / GlobalNetworkOp
     - LocalNetworkAPI / LocalNetworkOp
 
-#### `openapi`パッケージ
+#### `apis`パッケージ
 
 ツールにより生成されたコードを格納する。
+API定義のメジャーバージョンごとにディレクトリを分ける。例: `v1`,`v2alpha1`
 
 ### テスト
 
@@ -142,3 +141,4 @@ serviceインターフェースを用意することでUsacloudからは処理�
 # 履歴
 
 - 2021/11/9 @yamamoto-febc 初版作成
+- 2021/11/15 @yamamoto-febc パッケージ構造を反映
