@@ -117,12 +117,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "service": {
-                      "$ref": "#/components/schemas/service"
-                    }
-                  }
+                  "$ref": "#/components/schemas/response_body_service"
                 }
               }
             }
@@ -177,12 +172,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "service": {
-                      "$ref": "#/components/schemas/service"
-                    }
-                  }
+                  "$ref": "#/components/schemas/response_body_service"
                 }
               }
             }
@@ -340,12 +330,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "server": {
-                      "$ref": "#/components/schemas/server"
-                    }
-                  }
+                  "$ref": "#/components/schemas/response_body_server"
                 }
               }
             }
@@ -398,12 +383,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "raid_status": {
-                      "$ref": "#/components/schemas/raid_status"
-                    }
-                  }
+                  "$ref": "#/components/schemas/response_body_raid_status"
                 }
               }
             }
@@ -456,15 +436,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "os_images": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/os_image"
-                      }
-                    }
-                  }
+                  "$ref": "#/components/schemas/response_body_os_images"
                 }
               }
             }
@@ -570,12 +542,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "power_status": {
-                      "$ref": "#/components/schemas/server_power_status"
-                    }
-                  }
+                  "$ref": "#/components/schemas/response_body_server_power_status"
                 }
               }
             }
@@ -693,12 +660,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "port_channel": {
-                      "$ref": "#/components/schemas/port_channel"
-                    }
-                  }
+                  "$ref": "#/components/schemas/response_body_port_channel"
                 }
               }
             }
@@ -777,7 +739,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/port_channel"
+                  "$ref": "#/components/schemas/response_body_port_channel"
                 }
               }
             }
@@ -850,12 +812,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "port": {
-                      "$ref": "#/components/schemas/interface_port"
-                    }
-                  }
+                  "$ref": "#/components/schemas/response_body_port"
                 }
               }
             }
@@ -922,15 +879,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "port": {
-                      "$ref": "#/components/schemas/interface_port"
-                    }
-                  },
-                  "required": [
-                    "port"
-                  ]
+                  "$ref": "#/components/schemas/response_body_port"
                 }
               }
             }
@@ -1074,12 +1023,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "port": {
-                      "$ref": "#/components/schemas/interface_port"
-                    }
-                  }
+                  "$ref": "#/components/schemas/response_body_port"
                 }
               }
             }
@@ -1151,12 +1095,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "port": {
-                      "$ref": "#/components/schemas/interface_port"
-                    }
-                  }
+                  "$ref": "#/components/schemas/response_body_port"
                 }
               }
             }
@@ -1297,12 +1236,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "dedicated_subnet": {
-                      "$ref": "#/components/schemas/dedicated_subnet"
-                    }
-                  }
+                  "$ref": "#/components/schemas/response_body_dedicated_subnet"
                 }
               }
             }
@@ -1416,12 +1350,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "private_network": {
-                      "$ref": "#/components/schemas/private_network"
-                    }
-                  }
+                  "$ref": "#/components/schemas/response_body_private_network"
                 }
               }
             }
@@ -1734,6 +1663,108 @@
             }
           }
         }
+      },
+      "response_body_service": {
+        "type": "object",
+        "properties": {
+          "service": {
+            "$ref": "#/components/schemas/service"
+          }
+        },
+        "required": [
+          "service"
+        ]
+      },
+      "response_body_server": {
+        "type": "object",
+        "properties": {
+          "server": {
+            "$ref": "#/components/schemas/server"
+          }
+        },
+        "required": [
+          "server"
+        ]
+      },
+      "response_body_raid_status": {
+        "type": "object",
+        "properties": {
+          "raid_status": {
+            "$ref": "#/components/schemas/raid_status"
+          }
+        },
+        "required": [
+          "raid_status"
+        ]
+      },
+      "response_body_os_images": {
+        "type": "object",
+        "properties": {
+          "os_images": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/os_image"
+            }
+          }
+        },
+        "required": [
+          "os_images"
+        ]
+      },
+      "response_body_server_power_status": {
+        "type": "object",
+        "properties": {
+          "power_status": {
+            "$ref": "#/components/schemas/server_power_status"
+          }
+        },
+        "required": [
+          "power_status"
+        ]
+      },
+      "response_body_port_channel": {
+        "type": "object",
+        "properties": {
+          "port_channel": {
+            "$ref": "#/components/schemas/port_channel"
+          }
+        },
+        "required": [
+          "port_channel"
+        ]
+      },
+      "response_body_port": {
+        "type": "object",
+        "properties": {
+          "port": {
+            "$ref": "#/components/schemas/interface_port"
+          }
+        },
+        "required": [
+          "port"
+        ]
+      },
+      "response_body_dedicated_subnet": {
+        "type": "object",
+        "properties": {
+          "dedicated_subnet": {
+            "$ref": "#/components/schemas/dedicated_subnet"
+          }
+        },
+        "required": [
+          "dedicated_subnet"
+        ]
+      },
+      "response_body_private_network": {
+        "type": "object",
+        "properties": {
+          "private_network": {
+            "$ref": "#/components/schemas/private_network"
+          }
+        },
+        "required": [
+          "private_network"
+        ]
       },
       "services": {
         "type": "object",

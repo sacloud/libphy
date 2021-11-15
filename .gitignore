@@ -1,4 +1,4 @@
 .env
-openapi/spec/original-swagger.yaml
-openapi/spec/swagger.json
+apis/v1/spec/original-swagger.yaml
+apis/v1/spec/swagger.json
 dist/

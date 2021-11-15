@@ -27,7 +27,6 @@ func (engine *Engine) ListServices(_ v1.ListServicesParams) (*v1.Services, error
 	defer engine.rLock()()
 
 	// TODO 検索条件の処理を実装
-
 	return &v1.Services{
 		Meta: v1.PaginateMeta{
 			Count: len(engine.Services),
