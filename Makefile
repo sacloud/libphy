@@ -62,13 +62,13 @@ openapi/spec/original-swagger.yaml: openapi/spec/original-swagger.json
 openapi/spec/swagger.json: openapi/spec/swagger.yaml
 	swagger-cli bundle openapi/spec/swagger.yaml -o openapi/spec/swagger.json --type json
 
-openapi/zz_types_gen.go: openapi/spec/swagger.yaml
+openapi/zz_types_gen.go: openapi/spec/swagger.yaml openapi/spec/codegen/types.yaml
 	oapi-codegen -config openapi/spec/codegen/types.yaml openapi/spec/swagger.yaml
 
-openapi/zz_client_gen.go: openapi/spec/swagger.yaml
+openapi/zz_client_gen.go: openapi/spec/swagger.yaml openapi/spec/codegen/client.yaml
 	oapi-codegen -config openapi/spec/codegen/client.yaml openapi/spec/swagger.yaml
 
-openapi/zz_server_gen.go: openapi/spec/swagger.yaml
+openapi/zz_server_gen.go: openapi/spec/swagger.yaml openapi/spec/codegen/gin.yaml
 	oapi-codegen -config openapi/spec/codegen/gin.yaml openapi/spec/swagger.yaml
 
 .PHONY: goimports
