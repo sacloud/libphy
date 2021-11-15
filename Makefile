@@ -19,6 +19,12 @@ COPYRIGHT_FILES ?=$$(find . -name "*.go" -print | grep -v "/vendor/")
 
 default: gen fmt set-license goimports lint test
 
+.PHONY: all
+all: dist/phy-go-fake-server
+
+dist/phy-go-fake-server: *.go
+	go build -o dist/phy-go-fake-server cmd/phy-go-fake-server/*.go
+
 .PHONY: test
 test:
 	TESTACC= go test ./... $(TESTARGS) -v -timeout=120m -parallel=8 -race;

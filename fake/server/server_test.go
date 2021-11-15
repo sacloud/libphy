@@ -19,6 +19,7 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+	"net/http/httptest"
 	"os"
 	"testing"
 	"time"
@@ -340,15 +341,17 @@ var server = func() *Server {
 	}
 }()
 
+var testServer *httptest.Server
+
 func TestMain(m *testing.M) {
-	cleanup := server.Start()
-	defer cleanup()
+	testServer = httptest.NewServer(server.Handler())
+	defer testServer.Close()
 
 	os.Exit(m.Run())
 }
 
 func TestServer_ping(t *testing.T) {
-	resp, err := http.Get(server.URL() + "/ping")
+	resp, err := http.Get(testServer.URL + "/ping")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -362,7 +365,7 @@ func TestServer_ping(t *testing.T) {
 }
 
 func TestServer_ListServices(t *testing.T) {
-	resp, err := http.Get(server.URL() + "/services/")
+	resp, err := http.Get(testServer.URL + "/services/")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -383,7 +386,7 @@ func TestServer_ListServices(t *testing.T) {
 
 func TestServer_ServerPowerControl(t *testing.T) {
 	params := bytes.NewBufferString(`{"operation":"off"}`)
-	req, err := http.NewRequest(http.MethodPost, server.URL()+"/servers/100000000001/power_control/", params)
+	req, err := http.NewRequest(http.MethodPost, testServer.URL+"/servers/100000000001/power_control/", params)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -397,7 +400,7 @@ func TestServer_ServerPowerControl(t *testing.T) {
 	require.Equal(t, http.StatusNoContent, resp.StatusCode)
 	time.Sleep(500 * time.Millisecond) // シャットダウンされるまで少し待つ
 
-	resp, err = http.Get(server.URL() + "/servers/100000000001/power_status")
+	resp, err = http.Get(testServer.URL + "/servers/100000000001/power_status")
 	if err != nil {
 		t.Fatal(err)
 	}
