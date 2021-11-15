@@ -40,5 +40,7 @@ func (s *Server) ReadDedicatedSubnet(c *gin.Context, dedicatedSubnetId v1.Dedica
 		s.handleError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, subnet)
+	c.JSON(http.StatusOK, &v1.ResponseBodyDedicatedSubnet{
+		DedicatedSubnet: *subnet,
+	})
 }

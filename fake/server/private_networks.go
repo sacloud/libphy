@@ -40,5 +40,7 @@ func (s *Server) ReadPrivateNetwork(c *gin.Context, privateNetworkId v1.PrivateN
 		s.handleError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, network)
+	c.JSON(http.StatusOK, &v1.ResponseBodyPrivateNetwork{
+		PrivateNetwork: *network,
+	})
 }

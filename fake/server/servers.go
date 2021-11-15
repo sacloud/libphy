@@ -40,18 +40,27 @@ func (s *Server) ReadServer(c *gin.Context, serverId v1.ServerId) {
 		s.handleError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, server)
+	c.JSON(http.StatusOK, &v1.ResponseBodyServer{
+		Server: *server,
+	})
 }
 
 // ListOSImages インストール可能OS一覧
 // (GET /servers/{server_id}/os_images/)
 func (s *Server) ListOSImages(c *gin.Context, serverId v1.ServerId) {
-	images, err := s.Engine.ListOSImages(serverId)
+	results, err := s.Engine.ListOSImages(serverId)
 	if err != nil {
 		s.handleError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, images)
+
+	var images []v1.OsImage
+	for _, v := range results {
+		images = append(images, *v)
+	}
+	c.JSON(http.StatusOK, &v1.ResponseBodyOsImages{
+		OsImages: images,
+	})
 }
 
 // OSInstall OSインストールの実行
@@ -78,7 +87,9 @@ func (s *Server) ReadServerPortChannel(c *gin.Context, serverId v1.ServerId, por
 		s.handleError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, portChannel)
+	c.JSON(http.StatusOK, &v1.ResponseBodyPortChannel{
+		PortChannel: *portChannel,
+	})
 }
 
 // ServerConfigureBonding ポートチャネル ボンディング設定
@@ -95,7 +106,9 @@ func (s *Server) ServerConfigureBonding(c *gin.Context, serverId v1.ServerId, po
 		s.handleError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, portChannel)
+	c.JSON(http.StatusOK, &v1.ResponseBodyPortChannel{
+		PortChannel: *portChannel,
+	})
 }
 
 // ReadServerPort ポート情報取得
@@ -106,7 +119,9 @@ func (s *Server) ReadServerPort(c *gin.Context, serverId v1.ServerId, portId v1.
 		s.handleError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, port)
+	c.JSON(http.StatusOK, &v1.ResponseBodyPort{
+		Port: *port,
+	})
 }
 
 // UpdateServerPort ポート名称設定
@@ -118,12 +133,14 @@ func (s *Server) UpdateServerPort(c *gin.Context, serverId v1.ServerId, portId v
 		return
 	}
 
-	portChannel, err := s.Engine.UpdateServerPort(serverId, portId, paramJSON)
+	port, err := s.Engine.UpdateServerPort(serverId, portId, paramJSON)
 	if err != nil {
 		s.handleError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, portChannel)
+	c.JSON(http.StatusOK, &v1.ResponseBodyPort{
+		Port: *port,
+	})
 }
 
 // ServerAssignNetwork ネットワーク接続設定の変更
@@ -135,12 +152,14 @@ func (s *Server) ServerAssignNetwork(c *gin.Context, serverId v1.ServerId, portI
 		return
 	}
 
-	portChannel, err := s.Engine.ServerAssignNetwork(serverId, portId, paramJSON)
+	port, err := s.Engine.ServerAssignNetwork(serverId, portId, paramJSON)
 	if err != nil {
 		s.handleError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, portChannel)
+	c.JSON(http.StatusOK, &v1.ResponseBodyPort{
+		Port: *port,
+	})
 }
 
 // EnableServerPort ポート有効/無効設定
@@ -152,12 +171,14 @@ func (s *Server) EnableServerPort(c *gin.Context, serverId v1.ServerId, portId v
 		return
 	}
 
-	portChannel, err := s.Engine.EnableServerPort(serverId, portId, paramJSON)
+	port, err := s.Engine.EnableServerPort(serverId, portId, paramJSON)
 	if err != nil {
 		s.handleError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, portChannel)
+	c.JSON(http.StatusOK, v1.ResponseBodyPort{
+		Port: *port,
+	})
 }
 
 // ReadServerTrafficByPort トラフィックデータ取得
@@ -195,7 +216,9 @@ func (s *Server) ReadServerPowerStatus(c *gin.Context, serverId v1.ServerId) {
 		s.handleError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, ps)
+	c.JSON(http.StatusOK, &v1.ResponseBodyServerPowerStatus{
+		PowerStatus: *ps,
+	})
 }
 
 // ReadRAIDStatus サーバーのRAID状態を取得
@@ -206,5 +229,7 @@ func (s *Server) ReadRAIDStatus(c *gin.Context, serverId v1.ServerId, params v1.
 		s.handleError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, raidStatus)
+	c.JSON(http.StatusOK, &v1.ResponseBodyRaidStatus{
+		RaidStatus: *raidStatus,
+	})
 }
