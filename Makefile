@@ -46,30 +46,30 @@ tools:
 .PHONY: clean
 clean:
 	find . -type f -name "*_gen.go" -delete
-	rm openapi/spec/original-swagger.yaml
-	rm openapi/spec/swagger.json
+	rm apis/v1/spec/original-swagger.yaml
+	rm apis/v1/spec/swagger.json
 
 .PHONY: gen
 gen: _gen fmt goimports set-license
 
 .PHONY: _gen
-_gen: openapi/spec/original-swagger.yaml openapi/spec/swagger.json openapi/zz_types_gen.go openapi/zz_client_gen.go openapi/zz_server_gen.go
+_gen: apis/v1/spec/original-swagger.yaml apis/v1/spec/swagger.json apis/v1/zz_types_gen.go apis/v1/zz_client_gen.go apis/v1/zz_server_gen.go
 	go generate ./...
 
-openapi/spec/original-swagger.yaml: openapi/spec/original-swagger.json
-	swagger-cli bundle openapi/spec/original-swagger.json -o openapi/spec/original-swagger.yaml --type yaml
+apis/v1/spec/original-swagger.yaml: apis/v1/spec/original-swagger.json
+	swagger-cli bundle apis/v1/spec/original-swagger.json -o apis/v1/spec/original-swagger.yaml --type yaml
 
-openapi/spec/swagger.json: openapi/spec/swagger.yaml
-	swagger-cli bundle openapi/spec/swagger.yaml -o openapi/spec/swagger.json --type json
+apis/v1/spec/swagger.json: apis/v1/spec/swagger.yaml
+	swagger-cli bundle apis/v1/spec/swagger.yaml -o apis/v1/spec/swagger.json --type json
 
-openapi/zz_types_gen.go: openapi/spec/swagger.yaml openapi/spec/codegen/types.yaml
-	oapi-codegen -config openapi/spec/codegen/types.yaml openapi/spec/swagger.yaml
+apis/v1/zz_types_gen.go: apis/v1/spec/swagger.yaml apis/v1/spec/codegen/types.yaml
+	oapi-codegen -config apis/v1/spec/codegen/types.yaml apis/v1/spec/swagger.yaml
 
-openapi/zz_client_gen.go: openapi/spec/swagger.yaml openapi/spec/codegen/client.yaml
-	oapi-codegen -config openapi/spec/codegen/client.yaml openapi/spec/swagger.yaml
+apis/v1/zz_client_gen.go: apis/v1/spec/swagger.yaml apis/v1/spec/codegen/client.yaml
+	oapi-codegen -config apis/v1/spec/codegen/client.yaml apis/v1/spec/swagger.yaml
 
-openapi/zz_server_gen.go: openapi/spec/swagger.yaml openapi/spec/codegen/gin.yaml
-	oapi-codegen -config openapi/spec/codegen/gin.yaml openapi/spec/swagger.yaml
+apis/v1/zz_server_gen.go: apis/v1/spec/swagger.yaml apis/v1/spec/codegen/gin.yaml
+	oapi-codegen -config apis/v1/spec/codegen/gin.yaml apis/v1/spec/swagger.yaml
 
 .PHONY: goimports
 goimports: fmt
@@ -90,4 +90,4 @@ lint-go:
 	golangci-lint run ./...
 
 lint-def:
-	docker run --rm -v $$PWD:$$PWD -w $$PWD stoplight/spectral:latest lint -F warn openapi/spec/swagger.yaml
+	docker run --rm -v $$PWD:$$PWD -w $$PWD stoplight/spectral:latest lint -F warn apis/v1/spec/swagger.yaml

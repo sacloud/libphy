@@ -18,23 +18,23 @@ import (
 	"testing"
 	"time"
 
-	"github.com/sacloud/phy-go/openapi"
+	v1 "github.com/sacloud/phy-go/apis/v1"
 	"github.com/stretchr/testify/require"
 )
 
 func TestDataStore_PrivateNetworks(t *testing.T) {
 	ds := &Engine{
-		PrivateNetworks: []*openapi.PrivateNetwork{
+		PrivateNetworks: []*v1.PrivateNetwork{
 			{
 				PrivateNetworkId: "100000000001",
 				ServerCount:      1,
-				Service: openapi.ServiceQuiet{
+				Service: v1.ServiceQuiet{
 					Activated: time.Now(),
 					Nickname:  "private-network01",
 					ServiceId: "100000000001",
 				},
 				VlanId: 1,
-				Zone: openapi.Zone{
+				Zone: v1.Zone{
 					Region: "is",
 					ZoneId: 302,
 				},
@@ -42,13 +42,13 @@ func TestDataStore_PrivateNetworks(t *testing.T) {
 			{
 				PrivateNetworkId: "100000000002",
 				ServerCount:      1,
-				Service: openapi.ServiceQuiet{
+				Service: v1.ServiceQuiet{
 					Activated: time.Now(),
 					Nickname:  "private-network02",
 					ServiceId: "100000000002",
 				},
 				VlanId: 1,
-				Zone: openapi.Zone{
+				Zone: v1.Zone{
 					Region: "is",
 					ZoneId: 302,
 				},
@@ -57,7 +57,7 @@ func TestDataStore_PrivateNetworks(t *testing.T) {
 	}
 
 	t.Run("select all", func(t *testing.T) {
-		networks, err := ds.ListPrivateNetworks(openapi.ListPrivateNetworksParams{})
+		networks, err := ds.ListPrivateNetworks(v1.ListPrivateNetworksParams{})
 		require.NoError(t, err)
 		require.Equal(t, len(ds.PrivateNetworks), networks.Meta.Count)
 		require.Len(t, networks.PrivateNetworks, len(ds.PrivateNetworks))

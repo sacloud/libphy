@@ -18,12 +18,12 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sacloud/phy-go/openapi"
+	v1 "github.com/sacloud/phy-go/apis/v1"
 )
 
 // ListDedicatedSubnets 専用グローバルネットワーク 一覧
 // (GET /dedicated_subnets/)
-func (s *Server) ListDedicatedSubnets(c *gin.Context, params openapi.ListDedicatedSubnetsParams) {
+func (s *Server) ListDedicatedSubnets(c *gin.Context, params v1.ListDedicatedSubnetsParams) {
 	subnets, err := s.Engine.ListDedicatedSubnets(params)
 	if err != nil {
 		s.handleError(c, err)
@@ -34,7 +34,7 @@ func (s *Server) ListDedicatedSubnets(c *gin.Context, params openapi.ListDedicat
 
 // ReadDedicatedSubnet 専用グローバルネットワーク
 // (GET /dedicated_subnets/{dedicated_subnet_id}/)
-func (s *Server) ReadDedicatedSubnet(c *gin.Context, dedicatedSubnetId openapi.DedicatedSubnetId, params openapi.ReadDedicatedSubnetParams) {
+func (s *Server) ReadDedicatedSubnet(c *gin.Context, dedicatedSubnetId v1.DedicatedSubnetId, params v1.ReadDedicatedSubnetParams) {
 	subnet, err := s.Engine.ReadDedicatedSubnet(dedicatedSubnetId, params)
 	if err != nil {
 		s.handleError(c, err)

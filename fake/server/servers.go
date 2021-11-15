@@ -18,12 +18,12 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sacloud/phy-go/openapi"
+	v1 "github.com/sacloud/phy-go/apis/v1"
 )
 
 // ListServers サーバー一覧
 // (GET /servers/)
-func (s *Server) ListServers(c *gin.Context, params openapi.ListServersParams) {
+func (s *Server) ListServers(c *gin.Context, params v1.ListServersParams) {
 	servers, err := s.Engine.ListServers(params)
 	if err != nil {
 		s.handleError(c, err)
@@ -34,7 +34,7 @@ func (s *Server) ListServers(c *gin.Context, params openapi.ListServersParams) {
 
 // ReadServer サーバー
 // (GET /servers/{server_id}/)
-func (s *Server) ReadServer(c *gin.Context, serverId openapi.ServerId) {
+func (s *Server) ReadServer(c *gin.Context, serverId v1.ServerId) {
 	server, err := s.Engine.ReadServer(serverId)
 	if err != nil {
 		s.handleError(c, err)
@@ -45,7 +45,7 @@ func (s *Server) ReadServer(c *gin.Context, serverId openapi.ServerId) {
 
 // ListOSImages インストール可能OS一覧
 // (GET /servers/{server_id}/os_images/)
-func (s *Server) ListOSImages(c *gin.Context, serverId openapi.ServerId) {
+func (s *Server) ListOSImages(c *gin.Context, serverId v1.ServerId) {
 	images, err := s.Engine.ListOSImages(serverId)
 	if err != nil {
 		s.handleError(c, err)
@@ -56,8 +56,8 @@ func (s *Server) ListOSImages(c *gin.Context, serverId openapi.ServerId) {
 
 // OSInstall OSインストールの実行
 // (POST /servers/{server_id}/os_install/)
-func (s *Server) OSInstall(c *gin.Context, serverId openapi.ServerId, _ openapi.OSInstallParams) {
-	var paramJSON openapi.OsInstallParameter
+func (s *Server) OSInstall(c *gin.Context, serverId v1.ServerId, _ v1.OSInstallParams) {
+	var paramJSON v1.OsInstallParameter
 	if err := c.ShouldBindJSON(&paramJSON); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -72,7 +72,7 @@ func (s *Server) OSInstall(c *gin.Context, serverId openapi.ServerId, _ openapi.
 
 // ReadServerPortChannel ポートチャネル状態取得
 // (GET /servers/{server_id}/port_channels/{port_channel_id}/)
-func (s *Server) ReadServerPortChannel(c *gin.Context, serverId openapi.ServerId, portChannelId openapi.PortChannelId) {
+func (s *Server) ReadServerPortChannel(c *gin.Context, serverId v1.ServerId, portChannelId v1.PortChannelId) {
 	portChannel, err := s.Engine.ReadServerPortChannel(serverId, portChannelId)
 	if err != nil {
 		s.handleError(c, err)
@@ -83,8 +83,8 @@ func (s *Server) ReadServerPortChannel(c *gin.Context, serverId openapi.ServerId
 
 // ServerConfigureBonding ポートチャネル ボンディング設定
 // (POST /servers/{server_id}/port_channels/{port_channel_id}/configure_bonding/)
-func (s *Server) ServerConfigureBonding(c *gin.Context, serverId openapi.ServerId, portChannelId openapi.PortChannelId, _ openapi.ServerConfigureBondingParams) {
-	var paramJSON openapi.ConfigureBondingParameter
+func (s *Server) ServerConfigureBonding(c *gin.Context, serverId v1.ServerId, portChannelId v1.PortChannelId, _ v1.ServerConfigureBondingParams) {
+	var paramJSON v1.ConfigureBondingParameter
 	if err := c.ShouldBindJSON(&paramJSON); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -100,7 +100,7 @@ func (s *Server) ServerConfigureBonding(c *gin.Context, serverId openapi.ServerI
 
 // ReadServerPort ポート情報取得
 // (GET /servers/{server_id}/ports/{port_id}/)
-func (s *Server) ReadServerPort(c *gin.Context, serverId openapi.ServerId, portId openapi.PortId) {
+func (s *Server) ReadServerPort(c *gin.Context, serverId v1.ServerId, portId v1.PortId) {
 	port, err := s.Engine.ReadServerPort(serverId, portId)
 	if err != nil {
 		s.handleError(c, err)
@@ -111,8 +111,8 @@ func (s *Server) ReadServerPort(c *gin.Context, serverId openapi.ServerId, portI
 
 // UpdateServerPort ポート名称設定
 // (PATCH /servers/{server_id}/ports/{port_id}/)
-func (s *Server) UpdateServerPort(c *gin.Context, serverId openapi.ServerId, portId openapi.PortId, _ openapi.UpdateServerPortParams) {
-	var paramJSON openapi.UpdateServerPortParameter
+func (s *Server) UpdateServerPort(c *gin.Context, serverId v1.ServerId, portId v1.PortId, _ v1.UpdateServerPortParams) {
+	var paramJSON v1.UpdateServerPortParameter
 	if err := c.ShouldBindJSON(&paramJSON); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -128,8 +128,8 @@ func (s *Server) UpdateServerPort(c *gin.Context, serverId openapi.ServerId, por
 
 // ServerAssignNetwork ネットワーク接続設定の変更
 // (POST /servers/{server_id}/ports/{port_id}/assign_network/)
-func (s *Server) ServerAssignNetwork(c *gin.Context, serverId openapi.ServerId, portId openapi.PortId, _ openapi.ServerAssignNetworkParams) {
-	var paramJSON openapi.AssignNetworkParameter
+func (s *Server) ServerAssignNetwork(c *gin.Context, serverId v1.ServerId, portId v1.PortId, _ v1.ServerAssignNetworkParams) {
+	var paramJSON v1.AssignNetworkParameter
 	if err := c.ShouldBindJSON(&paramJSON); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -145,8 +145,8 @@ func (s *Server) ServerAssignNetwork(c *gin.Context, serverId openapi.ServerId, 
 
 // EnableServerPort ポート有効/無効設定
 // (POST /servers/{server_id}/ports/{port_id}/enable/)
-func (s *Server) EnableServerPort(c *gin.Context, serverId openapi.ServerId, portId openapi.PortId, _ openapi.EnableServerPortParams) {
-	var paramJSON openapi.EnableServerPortParameter
+func (s *Server) EnableServerPort(c *gin.Context, serverId v1.ServerId, portId v1.PortId, _ v1.EnableServerPortParams) {
+	var paramJSON v1.EnableServerPortParameter
 	if err := c.ShouldBindJSON(&paramJSON); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -162,7 +162,7 @@ func (s *Server) EnableServerPort(c *gin.Context, serverId openapi.ServerId, por
 
 // ReadServerTrafficByPort トラフィックデータ取得
 // (GET /servers/{server_id}/ports/{port_id}/traffic_graph/)
-func (s *Server) ReadServerTrafficByPort(c *gin.Context, serverId openapi.ServerId, portId openapi.PortId, params openapi.ReadServerTrafficByPortParams) {
+func (s *Server) ReadServerTrafficByPort(c *gin.Context, serverId v1.ServerId, portId v1.PortId, params v1.ReadServerTrafficByPortParams) {
 	traffic, err := s.Engine.ReadServerTrafficByPort(serverId, portId, params)
 	if err != nil {
 		s.handleError(c, err)
@@ -173,8 +173,8 @@ func (s *Server) ReadServerTrafficByPort(c *gin.Context, serverId openapi.Server
 
 // ServerPowerControl サーバーの電源操作
 // (POST /servers/{server_id}/power_control/)
-func (s *Server) ServerPowerControl(c *gin.Context, serverId openapi.ServerId, _ openapi.ServerPowerControlParams) {
-	var paramJSON openapi.PowerControlParameter
+func (s *Server) ServerPowerControl(c *gin.Context, serverId v1.ServerId, _ v1.ServerPowerControlParams) {
+	var paramJSON v1.PowerControlParameter
 	if err := c.ShouldBindJSON(&paramJSON); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -189,7 +189,7 @@ func (s *Server) ServerPowerControl(c *gin.Context, serverId openapi.ServerId, _
 
 // ReadServerPowerStatus サーバーの電源情報を取得する
 // (GET /servers/{server_id}/power_status/)
-func (s *Server) ReadServerPowerStatus(c *gin.Context, serverId openapi.ServerId) {
+func (s *Server) ReadServerPowerStatus(c *gin.Context, serverId v1.ServerId) {
 	ps, err := s.Engine.ReadServerPowerStatus(serverId)
 	if err != nil {
 		s.handleError(c, err)
@@ -200,7 +200,7 @@ func (s *Server) ReadServerPowerStatus(c *gin.Context, serverId openapi.ServerId
 
 // ReadRAIDStatus サーバーのRAID状態を取得
 // (GET /servers/{server_id}/raid_status/)
-func (s *Server) ReadRAIDStatus(c *gin.Context, serverId openapi.ServerId, params openapi.ReadRAIDStatusParams) {
+func (s *Server) ReadRAIDStatus(c *gin.Context, serverId v1.ServerId, params v1.ReadRAIDStatusParams) {
 	raidStatus, err := s.Engine.ReadRAIDStatus(serverId, params)
 	if err != nil {
 		s.handleError(c, err)

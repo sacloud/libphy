@@ -18,7 +18,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/sacloud/phy-go/openapi"
+	v1 "github.com/sacloud/phy-go/apis/v1"
 )
 
 const defaultActionInterval = 100 * time.Millisecond
@@ -27,10 +27,10 @@ const defaultActionInterval = 100 * time.Millisecond
 //
 // Serverに渡した後はDataStore内のデータを外部から操作しないこと
 type Engine struct {
-	Services         []*openapi.Service
+	Services         []*v1.Service
 	Servers          []*Server
-	DedicatedSubnets []*openapi.DedicatedSubnet
-	PrivateNetworks  []*openapi.PrivateNetwork
+	DedicatedSubnets []*v1.DedicatedSubnet
+	PrivateNetworks  []*v1.PrivateNetwork
 
 	// ActionInterval バックグラウンドでリソースの状態を変化させるアクションの実行間隔
 	ActionInterval time.Duration

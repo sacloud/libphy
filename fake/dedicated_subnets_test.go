@@ -18,18 +18,18 @@ import (
 	"testing"
 	"time"
 
-	"github.com/sacloud/phy-go/openapi"
+	v1 "github.com/sacloud/phy-go/apis/v1"
 	"github.com/stretchr/testify/require"
 )
 
 func TestDataStore_DedicatedSubnets(t *testing.T) {
 	ds := &Engine{
-		DedicatedSubnets: []*openapi.DedicatedSubnet{
+		DedicatedSubnets: []*v1.DedicatedSubnet{
 			{
-				ConfigStatus:      openapi.DedicatedSubnetConfigStatusOperational,
+				ConfigStatus:      v1.DedicatedSubnetConfigStatusOperational,
 				DedicatedSubnetId: "100000000001",
 				Firewall:          nil,
-				Ipv4: openapi.Ipv4{
+				Ipv4: v1.Ipv4{
 					BroadcastAddress:    "192.0.2.239",
 					GatewayAddress:      "192.0.2.225",
 					NetworkAddress:      "192.0.2.224",
@@ -38,22 +38,22 @@ func TestDataStore_DedicatedSubnets(t *testing.T) {
 				},
 				LoadBalancer: nil,
 				ServerCount:  1,
-				Service: openapi.ServiceQuiet{
+				Service: v1.ServiceQuiet{
 					Activated: time.Now(),
 					Nickname:  "global-network01",
 					ServiceId: "100000000001",
 					Tags:      nil,
 				},
-				Zone: openapi.Zone{
+				Zone: v1.Zone{
 					Region: "is",
 					ZoneId: 302,
 				},
 			},
 			{
-				ConfigStatus:      openapi.DedicatedSubnetConfigStatusOperational,
+				ConfigStatus:      v1.DedicatedSubnetConfigStatusOperational,
 				DedicatedSubnetId: "100000000002",
 				Firewall:          nil,
-				Ipv4: openapi.Ipv4{
+				Ipv4: v1.Ipv4{
 					BroadcastAddress:    "192.0.2.239",
 					GatewayAddress:      "192.0.2.225",
 					NetworkAddress:      "192.0.2.224",
@@ -62,13 +62,13 @@ func TestDataStore_DedicatedSubnets(t *testing.T) {
 				},
 				LoadBalancer: nil,
 				ServerCount:  1,
-				Service: openapi.ServiceQuiet{
+				Service: v1.ServiceQuiet{
 					Activated: time.Now(),
 					Nickname:  "global-network02",
 					ServiceId: "100000000002",
 					Tags:      nil,
 				},
-				Zone: openapi.Zone{
+				Zone: v1.Zone{
 					Region: "is",
 					ZoneId: 302,
 				},
@@ -77,14 +77,14 @@ func TestDataStore_DedicatedSubnets(t *testing.T) {
 	}
 
 	t.Run("select all", func(t *testing.T) {
-		subnets, err := ds.ListDedicatedSubnets(openapi.ListDedicatedSubnetsParams{})
+		subnets, err := ds.ListDedicatedSubnets(v1.ListDedicatedSubnetsParams{})
 		require.NoError(t, err)
 		require.Equal(t, len(ds.DedicatedSubnets), subnets.Meta.Count)
 		require.Len(t, subnets.DedicatedSubnets, len(ds.DedicatedSubnets))
 	})
 
 	t.Run("select by id", func(t *testing.T) {
-		subnet, err := ds.ReadDedicatedSubnet("100000000002", openapi.ReadDedicatedSubnetParams{})
+		subnet, err := ds.ReadDedicatedSubnet("100000000002", v1.ReadDedicatedSubnetParams{})
 		require.NoError(t, err)
 		require.Equal(t, "global-network02", subnet.Service.Nickname)
 	})

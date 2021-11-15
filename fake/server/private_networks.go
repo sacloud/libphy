@@ -18,12 +18,12 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sacloud/phy-go/openapi"
+	v1 "github.com/sacloud/phy-go/apis/v1"
 )
 
 // ListPrivateNetworks ローカルネットワーク 一覧
 // (GET /private_networks/)
-func (s *Server) ListPrivateNetworks(c *gin.Context, params openapi.ListPrivateNetworksParams) {
+func (s *Server) ListPrivateNetworks(c *gin.Context, params v1.ListPrivateNetworksParams) {
 	networks, err := s.Engine.ListPrivateNetworks(params)
 	if err != nil {
 		s.handleError(c, err)
@@ -34,7 +34,7 @@ func (s *Server) ListPrivateNetworks(c *gin.Context, params openapi.ListPrivateN
 
 // ReadPrivateNetwork ローカルネットワーク 詳細
 // (GET /private_networks/{private_network_id}/)
-func (s *Server) ReadPrivateNetwork(c *gin.Context, privateNetworkId openapi.PrivateNetworkId) {
+func (s *Server) ReadPrivateNetwork(c *gin.Context, privateNetworkId v1.PrivateNetworkId) {
 	network, err := s.Engine.ReadPrivateNetwork(privateNetworkId)
 	if err != nil {
 		s.handleError(c, err)
