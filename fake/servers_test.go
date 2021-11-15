@@ -329,7 +329,7 @@ func TestDataStore_Servers(t *testing.T) {
 	})
 
 	t.Run("os install", func(t *testing.T) {
-		err := ds.OSInstall("100000000002", openapi.OSInstallJSONBody{
+		err := ds.OSInstall("100000000002", openapi.OsInstallParameter{
 			ManualPartition: true,
 			OsImageId:       "usacloud2",
 			Password:        "passw0rd",
@@ -350,7 +350,7 @@ func TestDataStore_Servers(t *testing.T) {
 	})
 
 	t.Run("update server port", func(t *testing.T) {
-		_, err := ds.UpdateServerPort("100000000002", 2002, openapi.UpdateServerPortJSONBody{
+		_, err := ds.UpdateServerPort("100000000002", 2002, openapi.UpdateServerPortParameter{
 			Nickname: "server02-port01-upd",
 		})
 		require.NoError(t, err)
@@ -365,7 +365,7 @@ func TestDataStore_Servers(t *testing.T) {
 		require.NoError(t, err)
 		require.False(t, before.Enabled)
 
-		_, err = ds.EnableServerPort("100000000002", 2002, openapi.EnableServerPortJSONBody{Enable: true})
+		_, err = ds.EnableServerPort("100000000002", 2002, openapi.EnableServerPortParameter{Enable: true})
 		require.NoError(t, err)
 
 		after, err := ds.ReadServerPort("100000000002", 2002)
@@ -375,10 +375,10 @@ func TestDataStore_Servers(t *testing.T) {
 
 	t.Run("assign network", func(t *testing.T) {
 		t.Run("to common global", func(t *testing.T) {
-			internetType := openapi.AssignNetworkInternetTypeCommonSubnet
-			_, err := ds.ServerAssignNetwork("100000000002", 2002, openapi.ServerAssignNetworkJSONBody{
+			internetType := openapi.AssignNetworkParameterInternetTypeCommonSubnet
+			_, err := ds.ServerAssignNetwork("100000000002", 2002, openapi.AssignNetworkParameter{
 				InternetType: &internetType,
-				Mode:         openapi.AssignNetworkModeAccess,
+				Mode:         openapi.AssignNetworkParameterModeAccess,
 			})
 			require.NoError(t, err)
 
@@ -389,11 +389,11 @@ func TestDataStore_Servers(t *testing.T) {
 		})
 
 		t.Run("to dedicated subnet", func(t *testing.T) {
-			internetType := openapi.AssignNetworkInternetTypeDedicatedSubnet
+			internetType := openapi.AssignNetworkParameterInternetTypeDedicatedSubnet
 			subnetId := "100000000001"
-			_, err := ds.ServerAssignNetwork("100000000002", 2002, openapi.ServerAssignNetworkJSONBody{
+			_, err := ds.ServerAssignNetwork("100000000002", 2002, openapi.AssignNetworkParameter{
 				InternetType:      &internetType,
-				Mode:              openapi.AssignNetworkModeAccess,
+				Mode:              openapi.AssignNetworkParameterModeAccess,
 				DedicatedSubnetId: &subnetId,
 			})
 			require.NoError(t, err)
@@ -406,8 +406,8 @@ func TestDataStore_Servers(t *testing.T) {
 
 		t.Run("to private subnet", func(t *testing.T) {
 			privateNetworkIds := []string{"100000000001"}
-			_, err := ds.ServerAssignNetwork("100000000002", 2002, openapi.ServerAssignNetworkJSONBody{
-				Mode:              openapi.AssignNetworkModeAccess,
+			_, err := ds.ServerAssignNetwork("100000000002", 2002, openapi.AssignNetworkParameter{
+				Mode:              openapi.AssignNetworkParameterModeAccess,
 				PrivateNetworkIds: &privateNetworkIds,
 			})
 			require.NoError(t, err)
@@ -420,11 +420,11 @@ func TestDataStore_Servers(t *testing.T) {
 		})
 
 		t.Run("trunk port", func(t *testing.T) {
-			internetType := openapi.AssignNetworkInternetTypeCommonSubnet
+			internetType := openapi.AssignNetworkParameterInternetTypeCommonSubnet
 			privateNetworkIds := []string{"100000000001"}
-			_, err := ds.ServerAssignNetwork("100000000002", 2002, openapi.ServerAssignNetworkJSONBody{
+			_, err := ds.ServerAssignNetwork("100000000002", 2002, openapi.AssignNetworkParameter{
 				InternetType:      &internetType,
-				Mode:              openapi.AssignNetworkModeTrunk,
+				Mode:              openapi.AssignNetworkParameterModeTrunk,
 				PrivateNetworkIds: &privateNetworkIds,
 			})
 			require.NoError(t, err)
@@ -437,8 +437,8 @@ func TestDataStore_Servers(t *testing.T) {
 		})
 
 		t.Run("disconnect", func(t *testing.T) {
-			_, err := ds.ServerAssignNetwork("100000000002", 2002, openapi.ServerAssignNetworkJSONBody{
-				Mode: openapi.AssignNetworkModeAccess,
+			_, err := ds.ServerAssignNetwork("100000000002", 2002, openapi.AssignNetworkParameter{
+				Mode: openapi.AssignNetworkParameterModeAccess,
 			})
 			require.NoError(t, err)
 
@@ -451,7 +451,7 @@ func TestDataStore_Servers(t *testing.T) {
 	})
 
 	t.Run("power control", func(t *testing.T) {
-		err := ds.ServerPowerControl("100000000002", openapi.ServerPowerControlJSONBody{Operation: "reset"})
+		err := ds.ServerPowerControl("100000000002", openapi.PowerControlParameter{Operation: "reset"})
 		require.NoError(t, err)
 		time.Sleep(ds.actionInterval() * 10) // 反映されるまで少し待つ
 
@@ -459,7 +459,7 @@ func TestDataStore_Servers(t *testing.T) {
 		require.NoError(t, err)
 		require.Equal(t, openapi.ServerPowerStatusStatusOn, powerStatus.Status)
 
-		err = ds.ServerPowerControl("100000000002", openapi.ServerPowerControlJSONBody{Operation: "off"})
+		err = ds.ServerPowerControl("100000000002", openapi.PowerControlParameter{Operation: "off"})
 		require.NoError(t, err)
 		time.Sleep(ds.actionInterval() * 10) // 反映されるまで少し待つ
 
@@ -478,7 +478,7 @@ func TestDataStore_Servers(t *testing.T) {
 	// 副作用(portIdが変わる)があるため最後に実施
 	t.Run("configure bonding", func(t *testing.T) {
 		t.Run("LACP", func(t *testing.T) {
-			pc, err := ds.ServerConfigureBonding("100000000002", 1002, openapi.ServerConfigureBondingJSONBody{
+			pc, err := ds.ServerConfigureBonding("100000000002", 1002, openapi.ConfigureBondingParameter{
 				BondingType:   openapi.BondingTypeLacp,
 				PortNicknames: nil,
 			})
@@ -489,7 +489,7 @@ func TestDataStore_Servers(t *testing.T) {
 			require.Len(t, server.Server.Ports, 1)
 		})
 		t.Run("Single", func(t *testing.T) {
-			pc, err := ds.ServerConfigureBonding("100000000002", 1002, openapi.ServerConfigureBondingJSONBody{
+			pc, err := ds.ServerConfigureBonding("100000000002", 1002, openapi.ConfigureBondingParameter{
 				BondingType:   openapi.BondingTypeSingle,
 				PortNicknames: nil,
 			})

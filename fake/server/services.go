@@ -46,7 +46,7 @@ func (s *Server) ReadService(c *gin.Context, serviceId openapi.ServiceId) {
 // UpdateService サービスの名称・説明の変更
 // (PATCH /services/{service_id}/)
 func (s *Server) UpdateService(c *gin.Context, serviceId openapi.ServiceId, _ openapi.UpdateServiceParams) {
-	var paramJSON openapi.UpdateServiceJSONBody
+	var paramJSON openapi.UpdateServiceParameter
 	if err := c.ShouldBindJSON(&paramJSON); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

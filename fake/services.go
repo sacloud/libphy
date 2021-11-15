@@ -54,16 +54,12 @@ func (engine *Engine) ReadService(serviceId openapi.ServiceId) (*openapi.Service
 
 // UpdateService サービスの名称・説明の変更
 // (PATCH /services/{service_id}/)
-func (engine *Engine) UpdateService(serviceId openapi.ServiceId, body openapi.UpdateServiceJSONBody) (*openapi.Service, error) {
+func (engine *Engine) UpdateService(serviceId openapi.ServiceId, body openapi.UpdateServiceParameter) (*openapi.Service, error) {
 	defer engine.lock()()
 	service := engine.getServiceById(serviceId)
 	if service != nil {
-		if body.Nickname != nil {
-			service.Nickname = *body.Nickname
-		}
-		if body.Description != nil {
-			service.Description = body.Description
-		}
+		service.Nickname = body.Nickname
+		service.Description = body.Description
 		var svc openapi.Service
 		if err := deepcopy.Copy(&svc, service); err != nil {
 			return nil, err
