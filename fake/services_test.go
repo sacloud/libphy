@@ -18,26 +18,26 @@ import (
 	"testing"
 	"time"
 
-	"github.com/sacloud/phy-go/openapi"
+	v1 "github.com/sacloud/phy-go/apis/v1"
 	"github.com/sacloud/phy-go/pointer"
 	"github.com/stretchr/testify/require"
 )
 
 func TestDataStore_Services(t *testing.T) {
 	ds := &Engine{
-		Services: []*openapi.Service{
+		Services: []*v1.Service{
 			{
 				Activated:   time.Now(),
 				Description: pointer.String("description1"),
 				Nickname:    "nickname1",
 				OptionPlans: nil,
-				Plan: &openapi.ServicePlan{
+				Plan: &v1.ServicePlan{
 					Name:   "plan-01",
 					PlanId: "maker-series-spec-region-01",
 				},
-				ProductCategory: openapi.ServiceProductCategoryServer,
+				ProductCategory: v1.ServiceProductCategoryServer,
 				ServiceId:       "100000000001",
-				Tags: []openapi.Tag{
+				Tags: []v1.Tag{
 					{
 						Color: pointer.String("ffffff"),
 						Label: "label",
@@ -50,13 +50,13 @@ func TestDataStore_Services(t *testing.T) {
 				Description: pointer.String("description2"),
 				Nickname:    "nickname2",
 				OptionPlans: nil,
-				Plan: &openapi.ServicePlan{
+				Plan: &v1.ServicePlan{
 					Name:   "plan-02",
 					PlanId: "maker-series-spec-region-02",
 				},
-				ProductCategory: openapi.ServiceProductCategoryServer,
+				ProductCategory: v1.ServiceProductCategoryServer,
 				ServiceId:       "100000000002",
-				Tags: []openapi.Tag{
+				Tags: []v1.Tag{
 					{
 						Color: pointer.String("ffffff"),
 						Label: "label",
@@ -68,7 +68,7 @@ func TestDataStore_Services(t *testing.T) {
 	}
 
 	t.Run("select all", func(t *testing.T) {
-		services, err := ds.ListServices(openapi.ListServicesParams{})
+		services, err := ds.ListServices(v1.ListServicesParams{})
 		require.NoError(t, err)
 		require.NotNil(t, services)
 		require.Equal(t, services.Meta.Count, len(ds.Services))
@@ -83,7 +83,7 @@ func TestDataStore_Services(t *testing.T) {
 	})
 
 	t.Run("update", func(t *testing.T) {
-		svc, err := ds.UpdateService("100000000001", openapi.UpdateServiceParameter{
+		svc, err := ds.UpdateService("100000000001", v1.UpdateServiceParameter{
 			Description: nil,
 			Nickname:    "nickname1-upd",
 		})

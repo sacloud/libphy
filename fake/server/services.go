@@ -18,12 +18,12 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/sacloud/phy-go/openapi"
+	v1 "github.com/sacloud/phy-go/apis/v1"
 )
 
 // ListServices サービス一覧
 // (GET /services/)
-func (s *Server) ListServices(c *gin.Context, params openapi.ListServicesParams) {
+func (s *Server) ListServices(c *gin.Context, params v1.ListServicesParams) {
 	services, err := s.Engine.ListServices(params)
 	if err != nil {
 		s.handleError(c, err)
@@ -34,7 +34,7 @@ func (s *Server) ListServices(c *gin.Context, params openapi.ListServicesParams)
 
 // ReadService サービス 詳細
 // (GET /services/{service_id}/)
-func (s *Server) ReadService(c *gin.Context, serviceId openapi.ServiceId) {
+func (s *Server) ReadService(c *gin.Context, serviceId v1.ServiceId) {
 	service, err := s.Engine.ReadService(serviceId)
 	if err != nil {
 		s.handleError(c, err)
@@ -45,8 +45,8 @@ func (s *Server) ReadService(c *gin.Context, serviceId openapi.ServiceId) {
 
 // UpdateService サービスの名称・説明の変更
 // (PATCH /services/{service_id}/)
-func (s *Server) UpdateService(c *gin.Context, serviceId openapi.ServiceId, _ openapi.UpdateServiceParams) {
-	var paramJSON openapi.UpdateServiceParameter
+func (s *Server) UpdateService(c *gin.Context, serviceId v1.ServiceId, _ v1.UpdateServiceParams) {
+	var paramJSON v1.UpdateServiceParameter
 	if err := c.ShouldBindJSON(&paramJSON); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

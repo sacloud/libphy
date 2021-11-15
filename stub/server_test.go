@@ -24,7 +24,7 @@ import (
 )
 
 func TestServer(t *testing.T) {
-	server := httptest.NewServer((&Server{}).Hander())
+	server := httptest.NewServer((&Server{}).Handler())
 	defer server.Close()
 
 	resp, err := http.Get(server.URL + "/ping")

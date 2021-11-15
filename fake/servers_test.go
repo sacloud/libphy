@@ -18,39 +18,39 @@ import (
 	"testing"
 	"time"
 
-	"github.com/sacloud/phy-go/openapi"
+	v1 "github.com/sacloud/phy-go/apis/v1"
 	"github.com/stretchr/testify/require"
 )
 
 func TestDataStore_Servers(t *testing.T) {
-	raidOverallStatus := openapi.RaidStatusOverallStatusOk
+	raidOverallStatus := v1.RaidStatusOverallStatusOk
 	ds := &Engine{
 		Servers: []*Server{
 			{
-				Server: &openapi.Server{
-					CachedPowerStatus: &openapi.CachedPowerStatus{
-						Status: openapi.CachedPowerStatusStatusOn,
+				Server: &v1.Server{
+					CachedPowerStatus: &v1.CachedPowerStatus{
+						Status: v1.CachedPowerStatusStatusOn,
 						Stored: time.Now(),
 					},
-					Ipv4: &openapi.ServerIpv4Global{
+					Ipv4: &v1.ServerIpv4Global{
 						GatewayAddress: "192.0.2.1",
 						IpAddress:      "192.0.2.11",
 						NameServers:    []string{"198.51.100.1", "198.51.100.2"},
 						NetworkAddress: "192.0.2.0",
 						PrefixLength:   24,
-						Type:           openapi.ServerIpv4GlobalTypeCommonIpAddress,
+						Type:           v1.ServerIpv4GlobalTypeCommonIpAddress,
 					},
 					LockStatus: nil,
-					PortChannels: []openapi.PortChannel{
+					PortChannels: []v1.PortChannel{
 						{
-							BondingType:   openapi.BondingTypeLacp,
-							LinkSpeedType: openapi.PortChannelLinkSpeedTypeN1gbe,
+							BondingType:   v1.BondingTypeLacp,
+							LinkSpeedType: v1.PortChannelLinkSpeedTypeN1gbe,
 							Locked:        false,
 							PortChannelId: 1001,
 							Ports:         []int{2001},
 						},
 					},
-					Ports: []openapi.InterfacePort{
+					Ports: []v1.InterfacePort{
 						{
 							Enabled:             true,
 							GlobalBandwidthMbps: nil,
@@ -64,14 +64,14 @@ func TestDataStore_Servers(t *testing.T) {
 						},
 					},
 					ServerId: "100000000001",
-					Service: openapi.ServiceQuiet{
+					Service: v1.ServiceQuiet{
 						Activated:   time.Now(),
 						Description: nil,
 						Nickname:    "server01",
 						ServiceId:   "100000000001",
 						Tags:        nil,
 					},
-					Spec: openapi.ServerSpec{
+					Spec: v1.ServerSpec{
 						CpuClockSpeed:         3,
 						CpuCoreCount:          4,
 						CpuCount:              1,
@@ -79,46 +79,46 @@ func TestDataStore_Servers(t *testing.T) {
 						MemorySize:            8,
 						PortChannel10gbeCount: 0,
 						PortChannel1gbeCount:  1,
-						Storages: []openapi.Storage{
+						Storages: []v1.Storage{
 							{
-								BusType:     openapi.StorageBusTypeSata,
+								BusType:     v1.StorageBusTypeSata,
 								DeviceCount: 2,
-								MediaType:   openapi.StorageMediaTypeSsd,
+								MediaType:   v1.StorageMediaTypeSsd,
 								Size:        1000,
 							},
 						},
 						TotalStorageDeviceCount: 1,
 					},
-					Zone: openapi.Zone{
+					Zone: v1.Zone{
 						Region: "is",
 						ZoneId: 302,
 					},
 				},
-				RaidStatus: &openapi.RaidStatus{
-					LogicalVolumes: []openapi.RaidLogicalVolume{
+				RaidStatus: &v1.RaidStatus{
+					LogicalVolumes: []v1.RaidLogicalVolume{
 						{
 							PhysicalDeviceIds: []string{"0", "1"},
 							RaidLevel:         "1",
-							Status:            openapi.RaidLogicalVolumeStatusOk,
+							Status:            v1.RaidLogicalVolumeStatusOk,
 							VolumeId:          "0",
 						},
 					},
 					Monitored:     time.Now(),
 					OverallStatus: &raidOverallStatus,
-					PhysicalDevices: []openapi.RaidPhysicalDevice{
+					PhysicalDevices: []v1.RaidPhysicalDevice{
 						{
 							DeviceId: "0",
 							Slot:     0,
-							Status:   openapi.RaidPhysicalDeviceStatusOk,
+							Status:   v1.RaidPhysicalDeviceStatusOk,
 						},
 						{
 							DeviceId: "1",
 							Slot:     1,
-							Status:   openapi.RaidPhysicalDeviceStatusOk,
+							Status:   v1.RaidPhysicalDeviceStatusOk,
 						},
 					},
 				},
-				OSImages: []*openapi.OsImage{
+				OSImages: []*v1.OsImage{
 					{
 						ManualPartition: true,
 						Name:            "Usacloud Linux",
@@ -127,17 +127,17 @@ func TestDataStore_Servers(t *testing.T) {
 						SuperuserName:   "root",
 					},
 				},
-				PowerStatus: &openapi.ServerPowerStatus{
-					Status: openapi.ServerPowerStatusStatusOn,
+				PowerStatus: &v1.ServerPowerStatus{
+					Status: v1.ServerPowerStatusStatusOn,
 				},
-				TrafficGraph: &openapi.TrafficGraph{
-					Receive: []openapi.TrafficGraphData{
+				TrafficGraph: &v1.TrafficGraph{
+					Receive: []v1.TrafficGraphData{
 						{
 							Timestamp: time.Now(),
 							Value:     1,
 						},
 					},
-					Transmit: []openapi.TrafficGraphData{
+					Transmit: []v1.TrafficGraphData{
 						{
 							Timestamp: time.Now(),
 							Value:     1,
@@ -146,30 +146,30 @@ func TestDataStore_Servers(t *testing.T) {
 				},
 			},
 			{
-				Server: &openapi.Server{
-					CachedPowerStatus: &openapi.CachedPowerStatus{
-						Status: openapi.CachedPowerStatusStatusOn,
+				Server: &v1.Server{
+					CachedPowerStatus: &v1.CachedPowerStatus{
+						Status: v1.CachedPowerStatusStatusOn,
 						Stored: time.Now(),
 					},
-					Ipv4: &openapi.ServerIpv4Global{
+					Ipv4: &v1.ServerIpv4Global{
 						GatewayAddress: "192.0.2.1",
 						IpAddress:      "192.0.2.11",
 						NameServers:    []string{"198.51.100.1", "198.51.100.2"},
 						NetworkAddress: "192.0.2.0",
 						PrefixLength:   24,
-						Type:           openapi.ServerIpv4GlobalTypeCommonIpAddress,
+						Type:           v1.ServerIpv4GlobalTypeCommonIpAddress,
 					},
 					LockStatus: nil,
-					PortChannels: []openapi.PortChannel{
+					PortChannels: []v1.PortChannel{
 						{
-							BondingType:   openapi.BondingTypeLacp,
-							LinkSpeedType: openapi.PortChannelLinkSpeedTypeN1gbe,
+							BondingType:   v1.BondingTypeLacp,
+							LinkSpeedType: v1.PortChannelLinkSpeedTypeN1gbe,
 							Locked:        false,
 							PortChannelId: 1002,
 							Ports:         []int{2002},
 						},
 					},
-					Ports: []openapi.InterfacePort{
+					Ports: []v1.InterfacePort{
 						{
 							Enabled:             false,
 							GlobalBandwidthMbps: nil,
@@ -183,14 +183,14 @@ func TestDataStore_Servers(t *testing.T) {
 						},
 					},
 					ServerId: "100000000002",
-					Service: openapi.ServiceQuiet{
+					Service: v1.ServiceQuiet{
 						Activated:   time.Now(),
 						Description: nil,
 						Nickname:    "server02",
 						ServiceId:   "100000000002",
 						Tags:        nil,
 					},
-					Spec: openapi.ServerSpec{
+					Spec: v1.ServerSpec{
 						CpuClockSpeed:         3,
 						CpuCoreCount:          4,
 						CpuCount:              1,
@@ -198,46 +198,46 @@ func TestDataStore_Servers(t *testing.T) {
 						MemorySize:            8,
 						PortChannel10gbeCount: 0,
 						PortChannel1gbeCount:  1,
-						Storages: []openapi.Storage{
+						Storages: []v1.Storage{
 							{
-								BusType:     openapi.StorageBusTypeSata,
+								BusType:     v1.StorageBusTypeSata,
 								DeviceCount: 2,
-								MediaType:   openapi.StorageMediaTypeSsd,
+								MediaType:   v1.StorageMediaTypeSsd,
 								Size:        1000,
 							},
 						},
 						TotalStorageDeviceCount: 1,
 					},
-					Zone: openapi.Zone{
+					Zone: v1.Zone{
 						Region: "is",
 						ZoneId: 302,
 					},
 				},
-				RaidStatus: &openapi.RaidStatus{
-					LogicalVolumes: []openapi.RaidLogicalVolume{
+				RaidStatus: &v1.RaidStatus{
+					LogicalVolumes: []v1.RaidLogicalVolume{
 						{
 							PhysicalDeviceIds: []string{"0", "1"},
 							RaidLevel:         "1",
-							Status:            openapi.RaidLogicalVolumeStatusOk,
+							Status:            v1.RaidLogicalVolumeStatusOk,
 							VolumeId:          "0",
 						},
 					},
 					Monitored:     time.Now(),
 					OverallStatus: &raidOverallStatus,
-					PhysicalDevices: []openapi.RaidPhysicalDevice{
+					PhysicalDevices: []v1.RaidPhysicalDevice{
 						{
 							DeviceId: "0",
 							Slot:     0,
-							Status:   openapi.RaidPhysicalDeviceStatusOk,
+							Status:   v1.RaidPhysicalDeviceStatusOk,
 						},
 						{
 							DeviceId: "1",
 							Slot:     1,
-							Status:   openapi.RaidPhysicalDeviceStatusOk,
+							Status:   v1.RaidPhysicalDeviceStatusOk,
 						},
 					},
 				},
-				OSImages: []*openapi.OsImage{
+				OSImages: []*v1.OsImage{
 					{
 						ManualPartition: true,
 						Name:            "Usacloud Linux2",
@@ -246,17 +246,17 @@ func TestDataStore_Servers(t *testing.T) {
 						SuperuserName:   "root",
 					},
 				},
-				PowerStatus: &openapi.ServerPowerStatus{
-					Status: openapi.ServerPowerStatusStatusOn,
+				PowerStatus: &v1.ServerPowerStatus{
+					Status: v1.ServerPowerStatusStatusOn,
 				},
-				TrafficGraph: &openapi.TrafficGraph{
-					Receive: []openapi.TrafficGraphData{
+				TrafficGraph: &v1.TrafficGraph{
+					Receive: []v1.TrafficGraphData{
 						{
 							Timestamp: time.Now(),
 							Value:     1,
 						},
 					},
-					Transmit: []openapi.TrafficGraphData{
+					Transmit: []v1.TrafficGraphData{
 						{
 							Timestamp: time.Now(),
 							Value:     1,
@@ -265,12 +265,12 @@ func TestDataStore_Servers(t *testing.T) {
 				},
 			},
 		},
-		DedicatedSubnets: []*openapi.DedicatedSubnet{
+		DedicatedSubnets: []*v1.DedicatedSubnet{
 			{
-				ConfigStatus:      openapi.DedicatedSubnetConfigStatusOperational,
+				ConfigStatus:      v1.DedicatedSubnetConfigStatusOperational,
 				DedicatedSubnetId: "100000000001",
 				Firewall:          nil,
-				Ipv4: openapi.Ipv4{
+				Ipv4: v1.Ipv4{
 					BroadcastAddress:    "192.0.2.239",
 					GatewayAddress:      "192.0.2.225",
 					NetworkAddress:      "192.0.2.224",
@@ -279,29 +279,29 @@ func TestDataStore_Servers(t *testing.T) {
 				},
 				LoadBalancer: nil,
 				ServerCount:  1,
-				Service: openapi.ServiceQuiet{
+				Service: v1.ServiceQuiet{
 					Activated: time.Now(),
 					Nickname:  "global-network01",
 					ServiceId: "100000000001",
 					Tags:      nil,
 				},
-				Zone: openapi.Zone{
+				Zone: v1.Zone{
 					Region: "is",
 					ZoneId: 302,
 				},
 			},
 		},
-		PrivateNetworks: []*openapi.PrivateNetwork{
+		PrivateNetworks: []*v1.PrivateNetwork{
 			{
 				PrivateNetworkId: "100000000001",
 				ServerCount:      1,
-				Service: openapi.ServiceQuiet{
+				Service: v1.ServiceQuiet{
 					Activated: time.Now(),
 					Nickname:  "private-network01",
 					ServiceId: "100000000001",
 				},
 				VlanId: 1,
-				Zone: openapi.Zone{
+				Zone: v1.Zone{
 					Region: "is",
 					ZoneId: 302,
 				},
@@ -310,7 +310,7 @@ func TestDataStore_Servers(t *testing.T) {
 	}
 
 	t.Run("select all", func(t *testing.T) {
-		servers, err := ds.ListServers(openapi.ListServersParams{})
+		servers, err := ds.ListServers(v1.ListServersParams{})
 		require.NoError(t, err)
 		require.Equal(t, len(ds.Servers), servers.Meta.Count)
 		require.Len(t, servers.Servers, len(ds.Servers))
@@ -329,7 +329,7 @@ func TestDataStore_Servers(t *testing.T) {
 	})
 
 	t.Run("os install", func(t *testing.T) {
-		err := ds.OSInstall("100000000002", openapi.OsInstallParameter{
+		err := ds.OSInstall("100000000002", v1.OsInstallParameter{
 			ManualPartition: true,
 			OsImageId:       "usacloud2",
 			Password:        "passw0rd",
@@ -350,7 +350,7 @@ func TestDataStore_Servers(t *testing.T) {
 	})
 
 	t.Run("update server port", func(t *testing.T) {
-		_, err := ds.UpdateServerPort("100000000002", 2002, openapi.UpdateServerPortParameter{
+		_, err := ds.UpdateServerPort("100000000002", 2002, v1.UpdateServerPortParameter{
 			Nickname: "server02-port01-upd",
 		})
 		require.NoError(t, err)
@@ -365,7 +365,7 @@ func TestDataStore_Servers(t *testing.T) {
 		require.NoError(t, err)
 		require.False(t, before.Enabled)
 
-		_, err = ds.EnableServerPort("100000000002", 2002, openapi.EnableServerPortParameter{Enable: true})
+		_, err = ds.EnableServerPort("100000000002", 2002, v1.EnableServerPortParameter{Enable: true})
 		require.NoError(t, err)
 
 		after, err := ds.ReadServerPort("100000000002", 2002)
@@ -375,111 +375,111 @@ func TestDataStore_Servers(t *testing.T) {
 
 	t.Run("assign network", func(t *testing.T) {
 		t.Run("to common global", func(t *testing.T) {
-			internetType := openapi.AssignNetworkParameterInternetTypeCommonSubnet
-			_, err := ds.ServerAssignNetwork("100000000002", 2002, openapi.AssignNetworkParameter{
+			internetType := v1.AssignNetworkParameterInternetTypeCommonSubnet
+			_, err := ds.ServerAssignNetwork("100000000002", 2002, v1.AssignNetworkParameter{
 				InternetType: &internetType,
-				Mode:         openapi.AssignNetworkParameterModeAccess,
+				Mode:         v1.AssignNetworkParameterModeAccess,
 			})
 			require.NoError(t, err)
 
 			port, err := ds.ReadServerPort("100000000002", 2002)
 			require.NoError(t, err)
-			require.Equal(t, *port.Mode, openapi.InterfacePortModeAccess)
-			require.Equal(t, port.Internet.SubnetType, openapi.InternetSubnetTypeCommonSubnet)
+			require.Equal(t, *port.Mode, v1.InterfacePortModeAccess)
+			require.Equal(t, port.Internet.SubnetType, v1.InternetSubnetTypeCommonSubnet)
 		})
 
 		t.Run("to dedicated subnet", func(t *testing.T) {
-			internetType := openapi.AssignNetworkParameterInternetTypeDedicatedSubnet
+			internetType := v1.AssignNetworkParameterInternetTypeDedicatedSubnet
 			subnetId := "100000000001"
-			_, err := ds.ServerAssignNetwork("100000000002", 2002, openapi.AssignNetworkParameter{
+			_, err := ds.ServerAssignNetwork("100000000002", 2002, v1.AssignNetworkParameter{
 				InternetType:      &internetType,
-				Mode:              openapi.AssignNetworkParameterModeAccess,
+				Mode:              v1.AssignNetworkParameterModeAccess,
 				DedicatedSubnetId: &subnetId,
 			})
 			require.NoError(t, err)
 
 			port, err := ds.ReadServerPort("100000000002", 2002)
 			require.NoError(t, err)
-			require.Equal(t, *port.Mode, openapi.InterfacePortModeAccess)
-			require.Equal(t, port.Internet.SubnetType, openapi.InternetSubnetTypeDedicatedSubnet)
+			require.Equal(t, *port.Mode, v1.InterfacePortModeAccess)
+			require.Equal(t, port.Internet.SubnetType, v1.InternetSubnetTypeDedicatedSubnet)
 		})
 
 		t.Run("to private subnet", func(t *testing.T) {
 			privateNetworkIds := []string{"100000000001"}
-			_, err := ds.ServerAssignNetwork("100000000002", 2002, openapi.AssignNetworkParameter{
-				Mode:              openapi.AssignNetworkParameterModeAccess,
+			_, err := ds.ServerAssignNetwork("100000000002", 2002, v1.AssignNetworkParameter{
+				Mode:              v1.AssignNetworkParameterModeAccess,
 				PrivateNetworkIds: &privateNetworkIds,
 			})
 			require.NoError(t, err)
 
 			port, err := ds.ReadServerPort("100000000002", 2002)
 			require.NoError(t, err)
-			require.Equal(t, *port.Mode, openapi.InterfacePortModeAccess)
+			require.Equal(t, *port.Mode, v1.InterfacePortModeAccess)
 			require.Nil(t, port.Internet)
 			require.NotEmpty(t, port.PrivateNetworks)
 		})
 
 		t.Run("trunk port", func(t *testing.T) {
-			internetType := openapi.AssignNetworkParameterInternetTypeCommonSubnet
+			internetType := v1.AssignNetworkParameterInternetTypeCommonSubnet
 			privateNetworkIds := []string{"100000000001"}
-			_, err := ds.ServerAssignNetwork("100000000002", 2002, openapi.AssignNetworkParameter{
+			_, err := ds.ServerAssignNetwork("100000000002", 2002, v1.AssignNetworkParameter{
 				InternetType:      &internetType,
-				Mode:              openapi.AssignNetworkParameterModeTrunk,
+				Mode:              v1.AssignNetworkParameterModeTrunk,
 				PrivateNetworkIds: &privateNetworkIds,
 			})
 			require.NoError(t, err)
 
 			port, err := ds.ReadServerPort("100000000002", 2002)
 			require.NoError(t, err)
-			require.Equal(t, *port.Mode, openapi.InterfacePortModeTrunk)
-			require.Equal(t, port.Internet.SubnetType, openapi.InternetSubnetTypeCommonSubnet)
+			require.Equal(t, *port.Mode, v1.InterfacePortModeTrunk)
+			require.Equal(t, port.Internet.SubnetType, v1.InternetSubnetTypeCommonSubnet)
 			require.NotEmpty(t, port.PrivateNetworks)
 		})
 
 		t.Run("disconnect", func(t *testing.T) {
-			_, err := ds.ServerAssignNetwork("100000000002", 2002, openapi.AssignNetworkParameter{
-				Mode: openapi.AssignNetworkParameterModeAccess,
+			_, err := ds.ServerAssignNetwork("100000000002", 2002, v1.AssignNetworkParameter{
+				Mode: v1.AssignNetworkParameterModeAccess,
 			})
 			require.NoError(t, err)
 
 			port, err := ds.ReadServerPort("100000000002", 2002)
 			require.NoError(t, err)
-			require.Equal(t, *port.Mode, openapi.InterfacePortModeAccess)
+			require.Equal(t, *port.Mode, v1.InterfacePortModeAccess)
 			require.Nil(t, port.Internet)
 			require.Empty(t, port.PrivateNetworks)
 		})
 	})
 
 	t.Run("power control", func(t *testing.T) {
-		err := ds.ServerPowerControl("100000000002", openapi.PowerControlParameter{Operation: "reset"})
+		err := ds.ServerPowerControl("100000000002", v1.PowerControlParameter{Operation: "reset"})
 		require.NoError(t, err)
 		time.Sleep(ds.actionInterval() * 10) // 反映されるまで少し待つ
 
 		powerStatus, err := ds.ReadServerPowerStatus("100000000002")
 		require.NoError(t, err)
-		require.Equal(t, openapi.ServerPowerStatusStatusOn, powerStatus.Status)
+		require.Equal(t, v1.ServerPowerStatusStatusOn, powerStatus.Status)
 
-		err = ds.ServerPowerControl("100000000002", openapi.PowerControlParameter{Operation: "off"})
+		err = ds.ServerPowerControl("100000000002", v1.PowerControlParameter{Operation: "off"})
 		require.NoError(t, err)
 		time.Sleep(ds.actionInterval() * 10) // 反映されるまで少し待つ
 
 		powerStatus, err = ds.ReadServerPowerStatus("100000000002")
 		require.NoError(t, err)
-		require.Equal(t, openapi.ServerPowerStatusStatusOff, powerStatus.Status)
+		require.Equal(t, v1.ServerPowerStatusStatusOff, powerStatus.Status)
 	})
 
 	t.Run("read RAID status", func(t *testing.T) {
-		status, err := ds.ReadRAIDStatus("100000000002", openapi.ReadRAIDStatusParams{Refresh: nil})
+		status, err := ds.ReadRAIDStatus("100000000002", v1.ReadRAIDStatusParams{Refresh: nil})
 		require.NoError(t, err)
 		require.NotNil(t, status.OverallStatus)
-		require.Equal(t, *status.OverallStatus, openapi.RaidStatusOverallStatusOk)
+		require.Equal(t, *status.OverallStatus, v1.RaidStatusOverallStatusOk)
 	})
 
 	// 副作用(portIdが変わる)があるため最後に実施
 	t.Run("configure bonding", func(t *testing.T) {
 		t.Run("LACP", func(t *testing.T) {
-			pc, err := ds.ServerConfigureBonding("100000000002", 1002, openapi.ConfigureBondingParameter{
-				BondingType:   openapi.BondingTypeLacp,
+			pc, err := ds.ServerConfigureBonding("100000000002", 1002, v1.ConfigureBondingParameter{
+				BondingType:   v1.BondingTypeLacp,
 				PortNicknames: nil,
 			})
 			require.NoError(t, err)
@@ -489,8 +489,8 @@ func TestDataStore_Servers(t *testing.T) {
 			require.Len(t, server.Server.Ports, 1)
 		})
 		t.Run("Single", func(t *testing.T) {
-			pc, err := ds.ServerConfigureBonding("100000000002", 1002, openapi.ConfigureBondingParameter{
-				BondingType:   openapi.BondingTypeSingle,
+			pc, err := ds.ServerConfigureBonding("100000000002", 1002, v1.ConfigureBondingParameter{
+				BondingType:   v1.BondingTypeSingle,
 				PortNicknames: nil,
 			})
 			require.NoError(t, err)

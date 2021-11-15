@@ -18,18 +18,18 @@ import (
 	"fmt"
 
 	"github.com/getlantern/deepcopy"
-	"github.com/sacloud/phy-go/openapi"
+	v1 "github.com/sacloud/phy-go/apis/v1"
 )
 
 // ListPrivateNetworks ローカルネットワーク 一覧
 // (GET /private_networks/)
-func (engine *Engine) ListPrivateNetworks(params openapi.ListPrivateNetworksParams) (*openapi.PrivateNetworks, error) {
+func (engine *Engine) ListPrivateNetworks(params v1.ListPrivateNetworksParams) (*v1.PrivateNetworks, error) {
 	defer engine.rLock()()
 
 	// TODO 検索条件の処理を実装
 
-	return &openapi.PrivateNetworks{
-		Meta: openapi.PaginateMeta{
+	return &v1.PrivateNetworks{
+		Meta: v1.PaginateMeta{
 			Count: len(engine.PrivateNetworks),
 		},
 		PrivateNetworks: engine.privateNetworks(),
@@ -38,13 +38,13 @@ func (engine *Engine) ListPrivateNetworks(params openapi.ListPrivateNetworksPara
 
 // ReadPrivateNetwork ローカルネットワーク 詳細
 // (GET /private_networks/{private_network_id}/)
-func (engine *Engine) ReadPrivateNetwork(privateNetworkId openapi.PrivateNetworkId) (*openapi.PrivateNetwork, error) {
+func (engine *Engine) ReadPrivateNetwork(privateNetworkId v1.PrivateNetworkId) (*v1.PrivateNetwork, error) {
 	defer engine.rLock()()
 
 	pn := engine.getPrivateNetworkById(privateNetworkId)
 	if pn != nil {
 		// パッケージ外に返す時はディープコピーしたものを返す
-		var network openapi.PrivateNetwork
+		var network v1.PrivateNetwork
 		if err := deepcopy.Copy(&network, pn); err != nil {
 			return nil, err
 		}
@@ -53,16 +53,16 @@ func (engine *Engine) ReadPrivateNetwork(privateNetworkId openapi.PrivateNetwork
 	return nil, fmt.Errorf("private network %q not found", privateNetworkId)
 }
 
-// privateNetworks []*openapi.PrivateNetworkから[]openapi.PrivateNetworkに変換して返す
-func (engine *Engine) privateNetworks() []openapi.PrivateNetwork {
-	var results []openapi.PrivateNetwork
+// privateNetworks []*v1.PrivateNetworkから[]v1.PrivateNetworkに変換して返す
+func (engine *Engine) privateNetworks() []v1.PrivateNetwork {
+	var results []v1.PrivateNetwork
 	for _, p := range engine.PrivateNetworks {
 		results = append(results, *p)
 	}
 	return results
 }
 
-func (engine *Engine) getPrivateNetworkById(privateNetworkId openapi.PrivateNetworkId) *openapi.PrivateNetwork {
+func (engine *Engine) getPrivateNetworkById(privateNetworkId v1.PrivateNetworkId) *v1.PrivateNetwork {
 	for _, p := range engine.PrivateNetworks {
 		if p.PrivateNetworkId == string(privateNetworkId) {
 			return p

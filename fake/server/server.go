@@ -19,8 +19,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	v1 "github.com/sacloud/phy-go/apis/v1"
 	"github.com/sacloud/phy-go/fake"
-	"github.com/sacloud/phy-go/openapi"
 )
 
 // Server PHY APIのFakeサーバ実装
@@ -38,7 +38,7 @@ func (s *Server) Handler() http.Handler {
 	router.GET("/ping", func(c *gin.Context) {
 		c.String(200, "pong")
 	})
-	return openapi.RegisterHandlers(router, s)
+	return v1.RegisterHandlers(router, s)
 }
 
 func (s *Server) handleError(c *gin.Context, err error) {
@@ -49,13 +49,13 @@ func (s *Server) handleError(c *gin.Context, err error) {
 	if engineErr, ok := err.(*fake.Error); ok {
 		switch engineErr.Type {
 		case fake.ErrorTypeInvalidRequest:
-			c.JSON(http.StatusBadRequest, &openapi.ProblemDetails400{
+			c.JSON(http.StatusBadRequest, &v1.ProblemDetails400{
 				Detail: engineErr.Error(),
 				Status: http.StatusBadRequest,
-				Title:  openapi.ProblemDetails400TitleInvalid, // この実装ではinvalid固定
+				Title:  v1.ProblemDetails400TitleInvalid, // この実装ではinvalid固定
 				Type:   "about:blank",
-				InvalidParameters: &openapi.InvalidParameter{
-					NonFieldErrors: &openapi.InvalidParameterDetails{
+				InvalidParameters: &v1.InvalidParameter{
+					NonFieldErrors: &v1.InvalidParameterDetails{
 						{
 							Code:    "xxx",
 							Message: engineErr.Error(),
@@ -64,17 +64,17 @@ func (s *Server) handleError(c *gin.Context, err error) {
 				},
 			})
 		case fake.ErrorTypeNotFound:
-			c.JSON(http.StatusNotFound, &openapi.ProblemDetails404{
+			c.JSON(http.StatusNotFound, &v1.ProblemDetails404{
 				Detail: engineErr.Error(),
 				Status: http.StatusNotFound,
-				Title:  openapi.ProblemDetails404TitleNotFound,
+				Title:  v1.ProblemDetails404TitleNotFound,
 				Type:   "about:blank",
 			})
 		case fake.ErrorTypeConflict:
-			c.JSON(http.StatusConflict, &openapi.ProblemDetails409{
+			c.JSON(http.StatusConflict, &v1.ProblemDetails409{
 				Detail: engineErr.Error(),
 				Status: http.StatusConflict,
-				Title:  openapi.ProblemDetails409TitleConflict,
+				Title:  v1.ProblemDetails409TitleConflict,
 				Type:   "about:blank",
 			})
 		}

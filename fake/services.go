@@ -18,18 +18,18 @@ import (
 	"fmt"
 
 	"github.com/getlantern/deepcopy"
-	"github.com/sacloud/phy-go/openapi"
+	v1 "github.com/sacloud/phy-go/apis/v1"
 )
 
 // ListServices サービス一覧
 // (GET /services/)
-func (engine *Engine) ListServices(_ openapi.ListServicesParams) (*openapi.Services, error) {
+func (engine *Engine) ListServices(_ v1.ListServicesParams) (*v1.Services, error) {
 	defer engine.rLock()()
 
 	// TODO 検索条件の処理を実装
 
-	return &openapi.Services{
-		Meta: openapi.PaginateMeta{
+	return &v1.Services{
+		Meta: v1.PaginateMeta{
 			Count: len(engine.Services),
 		},
 		Services: engine.services(),
@@ -38,12 +38,12 @@ func (engine *Engine) ListServices(_ openapi.ListServicesParams) (*openapi.Servi
 
 // ReadService サービス 詳細
 // (GET /services/{service_id}/)
-func (engine *Engine) ReadService(serviceId openapi.ServiceId) (*openapi.Service, error) {
+func (engine *Engine) ReadService(serviceId v1.ServiceId) (*v1.Service, error) {
 	defer engine.rLock()()
 	s := engine.getServiceById(serviceId)
 	if s != nil {
 		// パッケージ外に返す時はディープコピーしたものを返す
-		var service openapi.Service
+		var service v1.Service
 		if err := deepcopy.Copy(&service, s); err != nil {
 			return nil, err
 		}
@@ -54,13 +54,13 @@ func (engine *Engine) ReadService(serviceId openapi.ServiceId) (*openapi.Service
 
 // UpdateService サービスの名称・説明の変更
 // (PATCH /services/{service_id}/)
-func (engine *Engine) UpdateService(serviceId openapi.ServiceId, body openapi.UpdateServiceParameter) (*openapi.Service, error) {
+func (engine *Engine) UpdateService(serviceId v1.ServiceId, body v1.UpdateServiceParameter) (*v1.Service, error) {
 	defer engine.lock()()
 	service := engine.getServiceById(serviceId)
 	if service != nil {
 		service.Nickname = body.Nickname
 		service.Description = body.Description
-		var svc openapi.Service
+		var svc v1.Service
 		if err := deepcopy.Copy(&svc, service); err != nil {
 			return nil, err
 		}
@@ -69,16 +69,16 @@ func (engine *Engine) UpdateService(serviceId openapi.ServiceId, body openapi.Up
 	return nil, fmt.Errorf("service %q not found", serviceId)
 }
 
-// services []*openapi.Serviceから[]openapi.Serviceに変換して返す
-func (engine *Engine) services() []openapi.Service {
-	var results []openapi.Service
+// services []*v1.Serviceから[]v1.Serviceに変換して返す
+func (engine *Engine) services() []v1.Service {
+	var results []v1.Service
 	for _, s := range engine.Services {
 		results = append(results, *s)
 	}
 	return results
 }
 
-func (engine *Engine) getServiceById(serviceId openapi.ServiceId) *openapi.Service {
+func (engine *Engine) getServiceById(serviceId v1.ServiceId) *v1.Service {
 	for _, s := range engine.Services {
 		if s.ServiceId == string(serviceId) {
 			return s

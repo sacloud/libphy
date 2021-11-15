@@ -1,5 +1,0 @@
-output: openapi/zz_types_gen.go
-#templates: openapi/spec/codegen/templates
-generate:
-  - types
-package: openapi

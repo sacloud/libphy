@@ -18,18 +18,18 @@ import (
 	"fmt"
 
 	"github.com/getlantern/deepcopy"
-	"github.com/sacloud/phy-go/openapi"
+	v1 "github.com/sacloud/phy-go/apis/v1"
 )
 
 // ListDedicatedSubnets 専用グローバルネットワーク 一覧
 // (GET /dedicated_subnets/)
-func (engine *Engine) ListDedicatedSubnets(params openapi.ListDedicatedSubnetsParams) (*openapi.DedicatedSubnets, error) {
+func (engine *Engine) ListDedicatedSubnets(params v1.ListDedicatedSubnetsParams) (*v1.DedicatedSubnets, error) {
 	defer engine.rLock()()
 
 	// TODO 検索条件の処理を実装
 
-	return &openapi.DedicatedSubnets{
-		Meta: openapi.PaginateMeta{
+	return &v1.DedicatedSubnets{
+		Meta: v1.PaginateMeta{
 			Count: len(engine.DedicatedSubnets),
 		},
 		DedicatedSubnets: engine.dedicatedSubnets(),
@@ -39,13 +39,13 @@ func (engine *Engine) ListDedicatedSubnets(params openapi.ListDedicatedSubnetsPa
 // ReadDedicatedSubnet 専用グローバルネットワーク
 // (GET /dedicated_subnets/{dedicated_subnet_id}/)
 // Note: paramの処理は未実装
-func (engine *Engine) ReadDedicatedSubnet(dedicatedSubnetId openapi.DedicatedSubnetId, _ openapi.ReadDedicatedSubnetParams) (*openapi.DedicatedSubnet, error) {
+func (engine *Engine) ReadDedicatedSubnet(dedicatedSubnetId v1.DedicatedSubnetId, _ v1.ReadDedicatedSubnetParams) (*v1.DedicatedSubnet, error) {
 	defer engine.rLock()()
 
 	d := engine.getDedicatedSubnetById(dedicatedSubnetId)
 	if d != nil {
 		// パッケージ外に返す時はディープコピーしたものを返す
-		var subnet openapi.DedicatedSubnet
+		var subnet v1.DedicatedSubnet
 		if err := deepcopy.Copy(&subnet, d); err != nil {
 			return nil, err
 		}
@@ -54,16 +54,16 @@ func (engine *Engine) ReadDedicatedSubnet(dedicatedSubnetId openapi.DedicatedSub
 	return nil, fmt.Errorf("dedicated subnet %q not found", dedicatedSubnetId)
 }
 
-// dedicatedSubnets []*openapi.DedicatedSubnetから[]openapi.DedicatedSubnetに変換して返す
-func (engine *Engine) dedicatedSubnets() []openapi.DedicatedSubnet {
-	var results []openapi.DedicatedSubnet
+// dedicatedSubnets []*v1.DedicatedSubnetから[]v1.DedicatedSubnetに変換して返す
+func (engine *Engine) dedicatedSubnets() []v1.DedicatedSubnet {
+	var results []v1.DedicatedSubnet
 	for _, d := range engine.DedicatedSubnets {
 		results = append(results, *d)
 	}
 	return results
 }
 
-func (engine *Engine) getDedicatedSubnetById(dedicatedSubnetId openapi.DedicatedSubnetId) *openapi.DedicatedSubnet {
+func (engine *Engine) getDedicatedSubnetById(dedicatedSubnetId v1.DedicatedSubnetId) *v1.DedicatedSubnet {
 	for _, d := range engine.DedicatedSubnets {
 		if d.DedicatedSubnetId == string(dedicatedSubnetId) {
 			return d

@@ -16,25 +16,25 @@ package fake
 
 import (
 	"github.com/getlantern/deepcopy"
-	"github.com/sacloud/phy-go/openapi"
+	v1 "github.com/sacloud/phy-go/apis/v1"
 )
 
 type Server struct {
-	Server       *openapi.Server
-	RaidStatus   *openapi.RaidStatus
-	OSImages     []*openapi.OsImage
-	PowerStatus  *openapi.ServerPowerStatus
-	TrafficGraph *openapi.TrafficGraph
+	Server       *v1.Server
+	RaidStatus   *v1.RaidStatus
+	OSImages     []*v1.OsImage
+	PowerStatus  *v1.ServerPowerStatus
+	TrafficGraph *v1.TrafficGraph
 }
 
 func (s *Server) Id() string {
 	return s.Server.ServerId
 }
 
-func (s *Server) getPortChannelById(portChannelId openapi.PortChannelId) (*openapi.PortChannel, error) {
+func (s *Server) getPortChannelById(portChannelId v1.PortChannelId) (*v1.PortChannel, error) {
 	for _, portChannel := range s.Server.PortChannels {
 		if portChannel.PortChannelId == int(portChannelId) {
-			var channel openapi.PortChannel
+			var channel v1.PortChannel
 			if err := deepcopy.Copy(&channel, &portChannel); err != nil {
 				return nil, err
 			}
@@ -44,10 +44,10 @@ func (s *Server) getPortChannelById(portChannelId openapi.PortChannelId) (*opena
 	return nil, NewError(ErrorTypeNotFound, "port-channel", portChannelId, "server[%s]", s.Id())
 }
 
-func (s *Server) getPortById(portId openapi.PortId) (*openapi.InterfacePort, error) {
+func (s *Server) getPortById(portId v1.PortId) (*v1.InterfacePort, error) {
 	for _, port := range s.Server.Ports {
 		if port.PortId == int(portId) {
-			var pt openapi.InterfacePort
+			var pt v1.InterfacePort
 			if err := deepcopy.Copy(&pt, &port); err != nil {
 				return nil, err
 			}
@@ -57,7 +57,7 @@ func (s *Server) getPortById(portId openapi.PortId) (*openapi.InterfacePort, err
 	return nil, NewError(ErrorTypeNotFound, "port", portId, "server[%s]", s.Id())
 }
 
-func (s *Server) updatePortChannel(portChannel *openapi.PortChannel) {
+func (s *Server) updatePortChannel(portChannel *v1.PortChannel) {
 	for i, pc := range s.Server.PortChannels {
 		if pc.PortChannelId == portChannel.PortChannelId {
 			s.Server.PortChannels[i] = *portChannel
@@ -66,7 +66,7 @@ func (s *Server) updatePortChannel(portChannel *openapi.PortChannel) {
 	}
 }
 
-func (s *Server) updatePort(port *openapi.InterfacePort) {
+func (s *Server) updatePort(port *v1.InterfacePort) {
 	for i, p := range s.Server.Ports {
 		if p.PortId == port.PortId {
 			s.Server.Ports[i] = *port

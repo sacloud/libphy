@@ -24,42 +24,42 @@ import (
 	"testing"
 	"time"
 
+	v1 "github.com/sacloud/phy-go/apis/v1"
 	"github.com/sacloud/phy-go/fake"
-	"github.com/sacloud/phy-go/openapi"
 	"github.com/sacloud/phy-go/pointer"
 	"github.com/stretchr/testify/require"
 )
 
 var server = func() *Server {
-	raidOverallStatus := openapi.RaidStatusOverallStatusOk
+	raidOverallStatus := v1.RaidStatusOverallStatusOk
 	return &Server{
 		Engine: &fake.Engine{
 			Servers: []*fake.Server{
 				{
-					Server: &openapi.Server{
-						CachedPowerStatus: &openapi.CachedPowerStatus{
-							Status: openapi.CachedPowerStatusStatusOn,
+					Server: &v1.Server{
+						CachedPowerStatus: &v1.CachedPowerStatus{
+							Status: v1.CachedPowerStatusStatusOn,
 							Stored: time.Now(),
 						},
-						Ipv4: &openapi.ServerIpv4Global{
+						Ipv4: &v1.ServerIpv4Global{
 							GatewayAddress: "192.0.2.1",
 							IpAddress:      "192.0.2.11",
 							NameServers:    []string{"198.51.100.1", "198.51.100.2"},
 							NetworkAddress: "192.0.2.0",
 							PrefixLength:   24,
-							Type:           openapi.ServerIpv4GlobalTypeCommonIpAddress,
+							Type:           v1.ServerIpv4GlobalTypeCommonIpAddress,
 						},
 						LockStatus: nil,
-						PortChannels: []openapi.PortChannel{
+						PortChannels: []v1.PortChannel{
 							{
-								BondingType:   openapi.BondingTypeLacp,
-								LinkSpeedType: openapi.PortChannelLinkSpeedTypeN1gbe,
+								BondingType:   v1.BondingTypeLacp,
+								LinkSpeedType: v1.PortChannelLinkSpeedTypeN1gbe,
 								Locked:        false,
 								PortChannelId: 1001,
 								Ports:         []int{2001},
 							},
 						},
-						Ports: []openapi.InterfacePort{
+						Ports: []v1.InterfacePort{
 							{
 								Enabled:             true,
 								GlobalBandwidthMbps: nil,
@@ -73,14 +73,14 @@ var server = func() *Server {
 							},
 						},
 						ServerId: "100000000001",
-						Service: openapi.ServiceQuiet{
+						Service: v1.ServiceQuiet{
 							Activated:   time.Now(),
 							Description: nil,
 							Nickname:    "server01",
 							ServiceId:   "100000000001",
 							Tags:        nil,
 						},
-						Spec: openapi.ServerSpec{
+						Spec: v1.ServerSpec{
 							CpuClockSpeed:         3,
 							CpuCoreCount:          4,
 							CpuCount:              1,
@@ -88,46 +88,46 @@ var server = func() *Server {
 							MemorySize:            8,
 							PortChannel10gbeCount: 0,
 							PortChannel1gbeCount:  1,
-							Storages: []openapi.Storage{
+							Storages: []v1.Storage{
 								{
-									BusType:     openapi.StorageBusTypeSata,
+									BusType:     v1.StorageBusTypeSata,
 									DeviceCount: 2,
-									MediaType:   openapi.StorageMediaTypeSsd,
+									MediaType:   v1.StorageMediaTypeSsd,
 									Size:        1000,
 								},
 							},
 							TotalStorageDeviceCount: 1,
 						},
-						Zone: openapi.Zone{
+						Zone: v1.Zone{
 							Region: "is",
 							ZoneId: 302,
 						},
 					},
-					RaidStatus: &openapi.RaidStatus{
-						LogicalVolumes: []openapi.RaidLogicalVolume{
+					RaidStatus: &v1.RaidStatus{
+						LogicalVolumes: []v1.RaidLogicalVolume{
 							{
 								PhysicalDeviceIds: []string{"0", "1"},
 								RaidLevel:         "1",
-								Status:            openapi.RaidLogicalVolumeStatusOk,
+								Status:            v1.RaidLogicalVolumeStatusOk,
 								VolumeId:          "0",
 							},
 						},
 						Monitored:     time.Now(),
 						OverallStatus: &raidOverallStatus,
-						PhysicalDevices: []openapi.RaidPhysicalDevice{
+						PhysicalDevices: []v1.RaidPhysicalDevice{
 							{
 								DeviceId: "0",
 								Slot:     0,
-								Status:   openapi.RaidPhysicalDeviceStatusOk,
+								Status:   v1.RaidPhysicalDeviceStatusOk,
 							},
 							{
 								DeviceId: "1",
 								Slot:     1,
-								Status:   openapi.RaidPhysicalDeviceStatusOk,
+								Status:   v1.RaidPhysicalDeviceStatusOk,
 							},
 						},
 					},
-					OSImages: []*openapi.OsImage{
+					OSImages: []*v1.OsImage{
 						{
 							ManualPartition: true,
 							Name:            "Usacloud Linux",
@@ -136,17 +136,17 @@ var server = func() *Server {
 							SuperuserName:   "root",
 						},
 					},
-					PowerStatus: &openapi.ServerPowerStatus{
-						Status: openapi.ServerPowerStatusStatusOn,
+					PowerStatus: &v1.ServerPowerStatus{
+						Status: v1.ServerPowerStatusStatusOn,
 					},
-					TrafficGraph: &openapi.TrafficGraph{
-						Receive: []openapi.TrafficGraphData{
+					TrafficGraph: &v1.TrafficGraph{
+						Receive: []v1.TrafficGraphData{
 							{
 								Timestamp: time.Now(),
 								Value:     1,
 							},
 						},
-						Transmit: []openapi.TrafficGraphData{
+						Transmit: []v1.TrafficGraphData{
 							{
 								Timestamp: time.Now(),
 								Value:     1,
@@ -155,30 +155,30 @@ var server = func() *Server {
 					},
 				},
 				{
-					Server: &openapi.Server{
-						CachedPowerStatus: &openapi.CachedPowerStatus{
-							Status: openapi.CachedPowerStatusStatusOn,
+					Server: &v1.Server{
+						CachedPowerStatus: &v1.CachedPowerStatus{
+							Status: v1.CachedPowerStatusStatusOn,
 							Stored: time.Now(),
 						},
-						Ipv4: &openapi.ServerIpv4Global{
+						Ipv4: &v1.ServerIpv4Global{
 							GatewayAddress: "192.0.2.1",
 							IpAddress:      "192.0.2.11",
 							NameServers:    []string{"198.51.100.1", "198.51.100.2"},
 							NetworkAddress: "192.0.2.0",
 							PrefixLength:   24,
-							Type:           openapi.ServerIpv4GlobalTypeCommonIpAddress,
+							Type:           v1.ServerIpv4GlobalTypeCommonIpAddress,
 						},
 						LockStatus: nil,
-						PortChannels: []openapi.PortChannel{
+						PortChannels: []v1.PortChannel{
 							{
-								BondingType:   openapi.BondingTypeLacp,
-								LinkSpeedType: openapi.PortChannelLinkSpeedTypeN1gbe,
+								BondingType:   v1.BondingTypeLacp,
+								LinkSpeedType: v1.PortChannelLinkSpeedTypeN1gbe,
 								Locked:        false,
 								PortChannelId: 1002,
 								Ports:         []int{2002},
 							},
 						},
-						Ports: []openapi.InterfacePort{
+						Ports: []v1.InterfacePort{
 							{
 								Enabled:             false,
 								GlobalBandwidthMbps: nil,
@@ -192,14 +192,14 @@ var server = func() *Server {
 							},
 						},
 						ServerId: "100000000002",
-						Service: openapi.ServiceQuiet{
+						Service: v1.ServiceQuiet{
 							Activated:   time.Now(),
 							Description: nil,
 							Nickname:    "server02",
 							ServiceId:   "100000000002",
 							Tags:        nil,
 						},
-						Spec: openapi.ServerSpec{
+						Spec: v1.ServerSpec{
 							CpuClockSpeed:         3,
 							CpuCoreCount:          4,
 							CpuCount:              1,
@@ -207,46 +207,46 @@ var server = func() *Server {
 							MemorySize:            8,
 							PortChannel10gbeCount: 0,
 							PortChannel1gbeCount:  1,
-							Storages: []openapi.Storage{
+							Storages: []v1.Storage{
 								{
-									BusType:     openapi.StorageBusTypeSata,
+									BusType:     v1.StorageBusTypeSata,
 									DeviceCount: 2,
-									MediaType:   openapi.StorageMediaTypeSsd,
+									MediaType:   v1.StorageMediaTypeSsd,
 									Size:        1000,
 								},
 							},
 							TotalStorageDeviceCount: 1,
 						},
-						Zone: openapi.Zone{
+						Zone: v1.Zone{
 							Region: "is",
 							ZoneId: 302,
 						},
 					},
-					RaidStatus: &openapi.RaidStatus{
-						LogicalVolumes: []openapi.RaidLogicalVolume{
+					RaidStatus: &v1.RaidStatus{
+						LogicalVolumes: []v1.RaidLogicalVolume{
 							{
 								PhysicalDeviceIds: []string{"0", "1"},
 								RaidLevel:         "1",
-								Status:            openapi.RaidLogicalVolumeStatusOk,
+								Status:            v1.RaidLogicalVolumeStatusOk,
 								VolumeId:          "0",
 							},
 						},
 						Monitored:     time.Now(),
 						OverallStatus: &raidOverallStatus,
-						PhysicalDevices: []openapi.RaidPhysicalDevice{
+						PhysicalDevices: []v1.RaidPhysicalDevice{
 							{
 								DeviceId: "0",
 								Slot:     0,
-								Status:   openapi.RaidPhysicalDeviceStatusOk,
+								Status:   v1.RaidPhysicalDeviceStatusOk,
 							},
 							{
 								DeviceId: "1",
 								Slot:     1,
-								Status:   openapi.RaidPhysicalDeviceStatusOk,
+								Status:   v1.RaidPhysicalDeviceStatusOk,
 							},
 						},
 					},
-					OSImages: []*openapi.OsImage{
+					OSImages: []*v1.OsImage{
 						{
 							ManualPartition: true,
 							Name:            "Usacloud Linux2",
@@ -255,17 +255,17 @@ var server = func() *Server {
 							SuperuserName:   "root",
 						},
 					},
-					PowerStatus: &openapi.ServerPowerStatus{
-						Status: openapi.ServerPowerStatusStatusOn,
+					PowerStatus: &v1.ServerPowerStatus{
+						Status: v1.ServerPowerStatusStatusOn,
 					},
-					TrafficGraph: &openapi.TrafficGraph{
-						Receive: []openapi.TrafficGraphData{
+					TrafficGraph: &v1.TrafficGraph{
+						Receive: []v1.TrafficGraphData{
 							{
 								Timestamp: time.Now(),
 								Value:     1,
 							},
 						},
-						Transmit: []openapi.TrafficGraphData{
+						Transmit: []v1.TrafficGraphData{
 							{
 								Timestamp: time.Now(),
 								Value:     1,
@@ -274,12 +274,12 @@ var server = func() *Server {
 					},
 				},
 			},
-			DedicatedSubnets: []*openapi.DedicatedSubnet{
+			DedicatedSubnets: []*v1.DedicatedSubnet{
 				{
-					ConfigStatus:      openapi.DedicatedSubnetConfigStatusOperational,
+					ConfigStatus:      v1.DedicatedSubnetConfigStatusOperational,
 					DedicatedSubnetId: "100000000001",
 					Firewall:          nil,
-					Ipv4: openapi.Ipv4{
+					Ipv4: v1.Ipv4{
 						BroadcastAddress:    "192.0.2.239",
 						GatewayAddress:      "192.0.2.225",
 						NetworkAddress:      "192.0.2.224",
@@ -288,47 +288,47 @@ var server = func() *Server {
 					},
 					LoadBalancer: nil,
 					ServerCount:  1,
-					Service: openapi.ServiceQuiet{
+					Service: v1.ServiceQuiet{
 						Activated: time.Now(),
 						Nickname:  "global-network01",
 						ServiceId: "100000000001",
 						Tags:      nil,
 					},
-					Zone: openapi.Zone{
+					Zone: v1.Zone{
 						Region: "is",
 						ZoneId: 302,
 					},
 				},
 			},
-			PrivateNetworks: []*openapi.PrivateNetwork{
+			PrivateNetworks: []*v1.PrivateNetwork{
 				{
 					PrivateNetworkId: "100000000001",
 					ServerCount:      1,
-					Service: openapi.ServiceQuiet{
+					Service: v1.ServiceQuiet{
 						Activated: time.Now(),
 						Nickname:  "private-network01",
 						ServiceId: "100000000001",
 					},
 					VlanId: 1,
-					Zone: openapi.Zone{
+					Zone: v1.Zone{
 						Region: "is",
 						ZoneId: 302,
 					},
 				},
 			},
-			Services: []*openapi.Service{
+			Services: []*v1.Service{
 				{
 					Activated:   time.Now(),
 					Description: pointer.String("description1"),
 					Nickname:    "nickname1",
 					OptionPlans: nil,
-					Plan: &openapi.ServicePlan{
+					Plan: &v1.ServicePlan{
 						Name:   "plan-01",
 						PlanId: "maker-series-spec-region-01",
 					},
-					ProductCategory: openapi.ServiceProductCategoryServer,
+					ProductCategory: v1.ServiceProductCategoryServer,
 					ServiceId:       "100000000001",
-					Tags: []openapi.Tag{
+					Tags: []v1.Tag{
 						{
 							Color: pointer.String("ffffff"),
 							Label: "label",
@@ -375,7 +375,7 @@ func TestServer_ListServices(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	var services openapi.Services
+	var services v1.Services
 	if err := json.Unmarshal(body, &services); err != nil {
 		t.Fatal(err)
 	}
@@ -410,7 +410,7 @@ func TestServer_ServerPowerControl(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	var status openapi.ServerPowerStatus
+	var status v1.ServerPowerStatus
 	if err := json.Unmarshal(body, &status); err != nil {
 		t.Fatal(err)
 	}

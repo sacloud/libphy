@@ -19,18 +19,18 @@ import (
 	"time"
 
 	"github.com/getlantern/deepcopy"
-	"github.com/sacloud/phy-go/openapi"
+	v1 "github.com/sacloud/phy-go/apis/v1"
 )
 
 // ListServers サーバー一覧
 // (GET /servers/)
-func (engine *Engine) ListServers(params openapi.ListServersParams) (*openapi.Servers, error) {
+func (engine *Engine) ListServers(params v1.ListServersParams) (*v1.Servers, error) {
 	defer engine.rLock()()
 
 	// TODO 検索条件の処理を実装
 
-	return &openapi.Servers{
-		Meta: openapi.PaginateMeta{
+	return &v1.Servers{
+		Meta: v1.PaginateMeta{
 			Count: len(engine.Servers),
 		},
 		Servers: engine.servers(),
@@ -39,12 +39,12 @@ func (engine *Engine) ListServers(params openapi.ListServersParams) (*openapi.Se
 
 // ReadServer サーバー
 // (GET /servers/{server_id}/)
-func (engine *Engine) ReadServer(serverId openapi.ServerId) (*openapi.Server, error) {
+func (engine *Engine) ReadServer(serverId v1.ServerId) (*v1.Server, error) {
 	defer engine.rLock()()
 
 	s := engine.getServerById(serverId)
 	if s != nil {
-		var server openapi.Server
+		var server v1.Server
 		if err := deepcopy.Copy(&server, s.Server); err != nil {
 			return nil, err
 		}
@@ -55,12 +55,12 @@ func (engine *Engine) ReadServer(serverId openapi.ServerId) (*openapi.Server, er
 
 // ListOSImages インストール可能OS一覧
 // (GET /servers/{server_id}/os_images/)
-func (engine *Engine) ListOSImages(serverId openapi.ServerId) ([]*openapi.OsImage, error) {
+func (engine *Engine) ListOSImages(serverId v1.ServerId) ([]*v1.OsImage, error) {
 	defer engine.rLock()()
 
 	s := engine.getServerById(serverId)
 	if s != nil {
-		var images []*openapi.OsImage
+		var images []*v1.OsImage
 		if err := deepcopy.Copy(&images, s.OSImages); err != nil {
 			return nil, err
 		}
@@ -71,7 +71,7 @@ func (engine *Engine) ListOSImages(serverId openapi.ServerId) ([]*openapi.OsImag
 
 // OSInstall OSインストールの実行
 // (POST /servers/{server_id}/os_install/)
-func (engine *Engine) OSInstall(serverId openapi.ServerId, params openapi.OsInstallParameter) error {
+func (engine *Engine) OSInstall(serverId v1.ServerId, params v1.OsInstallParameter) error {
 	defer engine.rLock()()
 
 	s := engine.getServerById(serverId)
@@ -92,7 +92,7 @@ func (engine *Engine) OSInstall(serverId openapi.ServerId, params openapi.OsInst
 
 // ReadServerPortChannel ポートチャネル状態取得
 // (GET /servers/{server_id}/port_channels/{port_channel_id}/)
-func (engine *Engine) ReadServerPortChannel(serverId openapi.ServerId, portChannelId openapi.PortChannelId) (*openapi.PortChannel, error) {
+func (engine *Engine) ReadServerPortChannel(serverId v1.ServerId, portChannelId v1.PortChannelId) (*v1.PortChannel, error) {
 	defer engine.rLock()()
 
 	s := engine.getServerById(serverId)
@@ -106,7 +106,7 @@ func (engine *Engine) ReadServerPortChannel(serverId openapi.ServerId, portChann
 // (POST /servers/{server_id}/port_channels/{port_channel_id}/configure_bonding/)
 //
 // この実装では排他ロックをかけて同期的に処理するため対象ポートチャネルのLockedは更新しない
-func (engine *Engine) ServerConfigureBonding(serverId openapi.ServerId, portChannelId openapi.PortChannelId, params openapi.ConfigureBondingParameter) (*openapi.PortChannel, error) {
+func (engine *Engine) ServerConfigureBonding(serverId v1.ServerId, portChannelId v1.PortChannelId, params v1.ConfigureBondingParameter) (*v1.PortChannel, error) {
 	defer engine.lock()() // ここで同期的に更新処理を行うため書き込みロック
 
 	s := engine.getServerById(serverId)
@@ -117,11 +117,11 @@ func (engine *Engine) ServerConfigureBonding(serverId openapi.ServerId, portChan
 		}
 		// BondingTypeとserver.spec.{port_channel_1gbe_count, port_channel_10gbe_count}に応じて
 		// 必要な数だけportを作成
-		var ports []openapi.InterfacePort
+		var ports []v1.InterfacePort
 		var portIds []int
 
 		switch params.BondingType {
-		case openapi.BondingTypeLacp, openapi.BondingTypeStatic:
+		case v1.BondingTypeLacp, v1.BondingTypeStatic:
 			if params.PortNicknames != nil && len(*params.PortNicknames) != 1 {
 				return nil, NewError(ErrorTypeInvalidRequest, "port-channel", portChannelId, "invalid PortNicknames")
 			}
@@ -132,7 +132,7 @@ func (engine *Engine) ServerConfigureBonding(serverId openapi.ServerId, portChan
 					name = names[0]
 				}
 			}
-			port := openapi.InterfacePort{
+			port := v1.InterfacePort{
 				Enabled:       true,
 				Nickname:      name,
 				PortChannelId: portChannel.PortChannelId,
@@ -141,7 +141,7 @@ func (engine *Engine) ServerConfigureBonding(serverId openapi.ServerId, portChan
 
 			ports = append(ports, port)
 			portIds = append(portIds, port.PortId)
-		case openapi.BondingTypeSingle:
+		case v1.BondingTypeSingle:
 			if params.PortNicknames != nil && len(*params.PortNicknames) != 2 {
 				return nil, NewError(ErrorTypeInvalidRequest, "port-channel", portChannelId, "invalid PortNicknames")
 			}
@@ -152,7 +152,7 @@ func (engine *Engine) ServerConfigureBonding(serverId openapi.ServerId, portChan
 				names = *params.PortNicknames
 			}
 			for _, name := range names {
-				port := openapi.InterfacePort{
+				port := v1.InterfacePort{
 					Enabled:       true,
 					Nickname:      name,
 					PortChannelId: portChannel.PortChannelId,
@@ -173,7 +173,7 @@ func (engine *Engine) ServerConfigureBonding(serverId openapi.ServerId, portChan
 
 // ReadServerPort ポート情報取得
 // (GET /servers/{server_id}/ports/{port_id}/)
-func (engine *Engine) ReadServerPort(serverId openapi.ServerId, portId openapi.PortId) (*openapi.InterfacePort, error) {
+func (engine *Engine) ReadServerPort(serverId v1.ServerId, portId v1.PortId) (*v1.InterfacePort, error) {
 	defer engine.rLock()()
 
 	s := engine.getServerById(serverId)
@@ -185,7 +185,7 @@ func (engine *Engine) ReadServerPort(serverId openapi.ServerId, portId openapi.P
 
 // UpdateServerPort ポート名称設定
 // (PATCH /servers/{server_id}/ports/{port_id}/)
-func (engine *Engine) UpdateServerPort(serverId openapi.ServerId, portId openapi.PortId, params openapi.UpdateServerPortParameter) (*openapi.InterfacePort, error) {
+func (engine *Engine) UpdateServerPort(serverId v1.ServerId, portId v1.PortId, params v1.UpdateServerPortParameter) (*v1.InterfacePort, error) {
 	defer engine.lock()()
 
 	s := engine.getServerById(serverId)
@@ -207,7 +207,7 @@ func (engine *Engine) UpdateServerPort(serverId openapi.ServerId, portId openapi
 //
 // Note: この実装では本来不可能な複数のインターネット接続(がされたポート)を許容している。
 // 必要に応じて利用者側で適切にハンドリングすること。
-func (engine *Engine) ServerAssignNetwork(serverId openapi.ServerId, portId openapi.PortId, params openapi.AssignNetworkParameter) (*openapi.InterfacePort, error) {
+func (engine *Engine) ServerAssignNetwork(serverId v1.ServerId, portId v1.PortId, params v1.AssignNetworkParameter) (*v1.InterfacePort, error) {
 	defer engine.lock()()
 
 	s := engine.getServerById(serverId)
@@ -224,31 +224,31 @@ func (engine *Engine) ServerAssignNetwork(serverId openapi.ServerId, portId open
 		port.GlobalBandwidthMbps = nil
 		port.LocalBandwidthMbps = nil
 
-		var internet *openapi.Internet
+		var internet *v1.Internet
 		if params.InternetType != nil {
 			switch *params.InternetType {
-			case openapi.AssignNetworkParameterInternetTypeCommonSubnet:
+			case v1.AssignNetworkParameterInternetTypeCommonSubnet:
 				// TODO 共用グローバルネットをどこかに定義しておく
-				internet = &openapi.Internet{
+				internet = &v1.Internet{
 					NetworkAddress: "203.0.113.0",
 					PrefixLength:   24,
-					SubnetType:     openapi.InternetSubnetTypeCommonSubnet,
+					SubnetType:     v1.InternetSubnetTypeCommonSubnet,
 				}
 				mbps := 100
 				port.GlobalBandwidthMbps = &mbps
-			case openapi.AssignNetworkParameterInternetTypeDedicatedSubnet:
-				subnet := engine.getDedicatedSubnetById(openapi.DedicatedSubnetId(*params.DedicatedSubnetId))
+			case v1.AssignNetworkParameterInternetTypeDedicatedSubnet:
+				subnet := engine.getDedicatedSubnetById(v1.DedicatedSubnetId(*params.DedicatedSubnetId))
 				if subnet == nil {
 					return nil, NewError(ErrorTypeInvalidRequest, "port", portId, "invalid dedicated subnet id: %s", params.DedicatedSubnetId)
 				}
-				internet = &openapi.Internet{
-					DedicatedSubnet: &openapi.AttachedDedicatedSubnet{
+				internet = &v1.Internet{
+					DedicatedSubnet: &v1.AttachedDedicatedSubnet{
 						DedicatedSubnetId: subnet.DedicatedSubnetId,
 						Nickname:          subnet.Service.Nickname,
 					},
 					NetworkAddress: subnet.Ipv4.NetworkAddress,
 					PrefixLength:   subnet.Ipv4.PrefixLength,
-					SubnetType:     openapi.InternetSubnetTypeDedicatedSubnet,
+					SubnetType:     v1.InternetSubnetTypeDedicatedSubnet,
 				}
 				mbps := 500
 				port.GlobalBandwidthMbps = &mbps
@@ -259,21 +259,21 @@ func (engine *Engine) ServerAssignNetwork(serverId openapi.ServerId, portId open
 		port.Internet = internet
 
 		switch params.Mode {
-		case openapi.AssignNetworkParameterModeAccess:
-			v := openapi.InterfacePortModeAccess
+		case v1.AssignNetworkParameterModeAccess:
+			v := v1.InterfacePortModeAccess
 			port.Mode = &v
-		case openapi.AssignNetworkParameterModeTrunk:
-			v := openapi.InterfacePortModeTrunk
+		case v1.AssignNetworkParameterModeTrunk:
+			v := v1.InterfacePortModeTrunk
 			port.Mode = &v
 		}
 
 		if params.PrivateNetworkIds != nil {
 			for _, id := range *params.PrivateNetworkIds {
-				pn := engine.getPrivateNetworkById(openapi.PrivateNetworkId(id))
+				pn := engine.getPrivateNetworkById(v1.PrivateNetworkId(id))
 				if pn == nil {
 					return nil, NewError(ErrorTypeInvalidRequest, "port", portId, "invalid private network id: %s", id)
 				}
-				port.PrivateNetworks = append(port.PrivateNetworks, openapi.AttachedPrivateNetwork{
+				port.PrivateNetworks = append(port.PrivateNetworks, v1.AttachedPrivateNetwork{
 					Nickname:         pn.Service.Nickname,
 					PrivateNetworkId: pn.PrivateNetworkId,
 				})
@@ -291,7 +291,7 @@ func (engine *Engine) ServerAssignNetwork(serverId openapi.ServerId, portId open
 
 // EnableServerPort ポート有効/無効設定
 // (POST /servers/{server_id}/ports/{port_id}/enable/)
-func (engine *Engine) EnableServerPort(serverId openapi.ServerId, portId openapi.PortId, params openapi.EnableServerPortParameter) (*openapi.InterfacePort, error) {
+func (engine *Engine) EnableServerPort(serverId v1.ServerId, portId v1.PortId, params v1.EnableServerPortParameter) (*v1.InterfacePort, error) {
 	defer engine.lock()()
 
 	s := engine.getServerById(serverId)
@@ -312,13 +312,13 @@ func (engine *Engine) EnableServerPort(serverId openapi.ServerId, portId openapi
 // (GET /servers/{server_id}/ports/{port_id}/traffic_graph/)
 //
 // Note: この実装では対象サーバが存在する場合は固定のレスポンスを返すのみ
-func (engine *Engine) ReadServerTrafficByPort(serverId openapi.ServerId, portId openapi.PortId, params openapi.ReadServerTrafficByPortParams) (*openapi.TrafficGraph, error) {
+func (engine *Engine) ReadServerTrafficByPort(serverId v1.ServerId, portId v1.PortId, params v1.ReadServerTrafficByPortParams) (*v1.TrafficGraph, error) {
 	defer engine.rLock()()
 
 	s := engine.getServerById(serverId)
 	if s != nil {
-		return &openapi.TrafficGraph{
-			Receive: []openapi.TrafficGraphData{
+		return &v1.TrafficGraph{
+			Receive: []v1.TrafficGraphData{
 				{
 					Timestamp: time.Now(),
 					Value:     1,
@@ -328,7 +328,7 @@ func (engine *Engine) ReadServerTrafficByPort(serverId openapi.ServerId, portId 
 					Value:     2,
 				},
 			},
-			Transmit: []openapi.TrafficGraphData{
+			Transmit: []v1.TrafficGraphData{
 				{
 					Timestamp: time.Now(),
 					Value:     1,
@@ -345,7 +345,7 @@ func (engine *Engine) ReadServerTrafficByPort(serverId openapi.ServerId, portId 
 
 // ServerPowerControl サーバーの電源操作
 // (POST /servers/{server_id}/power_control/)
-func (engine *Engine) ServerPowerControl(serverId openapi.ServerId, params openapi.PowerControlParameter) error {
+func (engine *Engine) ServerPowerControl(serverId v1.ServerId, params v1.PowerControlParameter) error {
 	defer engine.rLock()()
 
 	s := engine.getServerById(serverId)
@@ -362,7 +362,7 @@ func (engine *Engine) ServerPowerControl(serverId openapi.ServerId, params opena
 
 // ReadServerPowerStatus サーバーの電源情報を取得する
 // (GET /servers/{server_id}/power_status/)
-func (engine *Engine) ReadServerPowerStatus(serverId openapi.ServerId) (*openapi.ServerPowerStatus, error) {
+func (engine *Engine) ReadServerPowerStatus(serverId v1.ServerId) (*v1.ServerPowerStatus, error) {
 	defer engine.rLock()()
 
 	s := engine.getServerById(serverId)
@@ -376,7 +376,7 @@ func (engine *Engine) ReadServerPowerStatus(serverId openapi.ServerId) (*openapi
 // (GET /servers/{server_id}/raid_status/)
 //
 // Note: この実装ではrefreshパラメータは無視される
-func (engine *Engine) ReadRAIDStatus(serverId openapi.ServerId, params openapi.ReadRAIDStatusParams) (*openapi.RaidStatus, error) {
+func (engine *Engine) ReadRAIDStatus(serverId v1.ServerId, params v1.ReadRAIDStatusParams) (*v1.RaidStatus, error) {
 	defer engine.rLock()()
 
 	s := engine.getServerById(serverId)
@@ -386,16 +386,16 @@ func (engine *Engine) ReadRAIDStatus(serverId openapi.ServerId, params openapi.R
 	return nil, NewError(ErrorTypeNotFound, "server", serverId)
 }
 
-// servers []*ServerDataから[]openapi.Serverに変換して返す
-func (engine *Engine) servers() []openapi.Server {
-	var results []openapi.Server
+// servers []*ServerDataから[]v1.Serverに変換して返す
+func (engine *Engine) servers() []v1.Server {
+	var results []v1.Server
 	for _, s := range engine.Servers {
 		results = append(results, *s.Server)
 	}
 	return results
 }
 
-func (engine *Engine) getServerById(serverId openapi.ServerId) *Server {
+func (engine *Engine) getServerById(serverId v1.ServerId) *Server {
 	for _, s := range engine.Servers {
 		if s.Id() == string(serverId) {
 			return s
@@ -407,7 +407,7 @@ func (engine *Engine) getServerById(serverId openapi.ServerId) *Server {
 func (engine *Engine) startOSInstall(server *Server) {
 	go engine.startUpdateAction(func() {
 		//start
-		status := openapi.ServerLockStatusOsInstall
+		status := v1.ServerLockStatusOsInstall
 		server.Server.LockStatus = &status
 
 		// finish
@@ -417,23 +417,23 @@ func (engine *Engine) startOSInstall(server *Server) {
 	})
 }
 
-func (engine *Engine) startServerPowerControl(server *Server, params openapi.PowerControlParameter) {
-	var powerStates openapi.ServerPowerStatusStatus
-	var cachedPowerStatus openapi.CachedPowerStatusStatus
+func (engine *Engine) startServerPowerControl(server *Server, params v1.PowerControlParameter) {
+	var powerStates v1.ServerPowerStatusStatus
+	var cachedPowerStatus v1.CachedPowerStatusStatus
 	switch string(params.Operation) {
 	case "on", "reset":
-		powerStates = openapi.ServerPowerStatusStatusOn
-		cachedPowerStatus = openapi.CachedPowerStatusStatusOn
+		powerStates = v1.ServerPowerStatusStatusOn
+		cachedPowerStatus = v1.CachedPowerStatusStatusOn
 	case "soft", "off":
-		powerStates = openapi.ServerPowerStatusStatusOff
-		cachedPowerStatus = openapi.CachedPowerStatusStatusOff
+		powerStates = v1.ServerPowerStatusStatusOff
+		cachedPowerStatus = v1.CachedPowerStatusStatusOff
 	}
 
 	go engine.startUpdateAction(func() {
-		server.PowerStatus = &openapi.ServerPowerStatus{
+		server.PowerStatus = &v1.ServerPowerStatus{
 			Status: powerStates,
 		}
-		server.Server.CachedPowerStatus = &openapi.CachedPowerStatus{
+		server.Server.CachedPowerStatus = &v1.CachedPowerStatus{
 			Status: cachedPowerStatus,
 			Stored: time.Now(),
 		}
