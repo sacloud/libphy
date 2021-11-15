@@ -1,4 +1,4 @@
-// Copyright 2021 The phy-go authors
+// Copyright 2021 The sacloud Authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,30 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package fake
+package phy
 
-import (
-	"io"
-	"net/http"
-	"net/http/httptest"
-	"testing"
-
-	"github.com/stretchr/testify/require"
+var (
+	// Version app version
+	Version = "v0.0.1"
+	// Revision git commit short commithash
+	Revision = "xxxxxx" // set on build time
 )
-
-func TestServer(t *testing.T) {
-	server := httptest.NewServer((&Server{}).Hander())
-	defer server.Close()
-
-	resp, err := http.Get(server.URL + "/ping")
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	require.Equal(t, "pong", string(body))
-}

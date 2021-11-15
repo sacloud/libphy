@@ -17,7 +17,6 @@ package server
 import (
 	"fmt"
 	"net/http"
-	"net/http/httptest"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sacloud/phy-go/fake"
@@ -31,27 +30,15 @@ import (
 //  異常系のテストをしたい場合は代わりにstubパッケージを利用してください。
 type Server struct {
 	Engine *fake.Engine
-
-	httpServer *httptest.Server
 }
 
-// Start テスト用のHTTPサーバを起動し、クリーンアップ用のfuncを返す
-func (s *Server) Start() func() {
+func (s *Server) Handler() http.Handler {
 	router := gin.Default()
 
 	router.GET("/ping", func(c *gin.Context) {
 		c.String(200, "pong")
 	})
-	s.httpServer = httptest.NewServer(openapi.RegisterHandlers(router, s))
-	return s.httpServer.Close
-}
-
-// URL テスト用サーバのURLを返す
-func (s *Server) URL() string {
-	if s.httpServer != nil {
-		return s.httpServer.URL
-	}
-	panic("http server is not started")
+	return openapi.RegisterHandlers(router, s)
 }
 
 func (s *Server) handleError(c *gin.Context, err error) {

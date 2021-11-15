@@ -15,15 +15,13 @@
 package fake
 
 import (
-	"net/http/httptest"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/sacloud/phy-go/openapi"
 )
 
 type Server struct {
-	httpServer *httptest.Server
-
 	// ListDedicatedSubnetsFunc 専用グローバルネットワーク 一覧
 	// (GET /dedicated_subnets/)
 	ListDedicatedSubnetsFunc func(c *gin.Context, params openapi.ListDedicatedSubnetsParams)
@@ -109,23 +107,14 @@ type Server struct {
 	UpdateServiceFunc func(c *gin.Context, serviceId openapi.ServiceId, params openapi.UpdateServiceParams)
 }
 
-// Start テスト用のHTTPサーバを起動し、クリーンアップ用のfuncを返す
-func (s *Server) Start() func() {
+// Handler 構築済みのhttp.Handlerを返す
+func (s *Server) Hander() http.Handler {
 	router := gin.Default()
 
 	router.GET("/ping", func(c *gin.Context) {
 		c.String(200, "pong")
 	})
-	s.httpServer = httptest.NewServer(openapi.RegisterHandlers(router, s))
-	return s.httpServer.Close
-}
-
-// URL テスト用サーバのURLを返す
-func (s *Server) URL() string {
-	if s.httpServer != nil {
-		return s.httpServer.URL
-	}
-	panic("http server is not started")
+	return openapi.RegisterHandlers(router, s)
 }
 
 // ListDedicatedSubnets 専用グローバルネットワーク 一覧
