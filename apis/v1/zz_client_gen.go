@@ -2048,13 +2048,11 @@ func (r ListDedicatedSubnetsResponse) StatusCode() int {
 type ReadDedicatedSubnetResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *struct {
-		DedicatedSubnet *DedicatedSubnet `json:"dedicated_subnet,omitempty"`
-	}
-	JSON401 *ProblemDetails401
-	JSON404 *ProblemDetails404
-	JSON429 *ProblemDetails429
-	JSON503 *ProblemDetails503
+	JSON200      *ResponseBodyDedicatedSubnet
+	JSON401      *ProblemDetails401
+	JSON404      *ProblemDetails404
+	JSON429      *ProblemDetails429
+	JSON503      *ProblemDetails503
 }
 
 // Status returns HTTPResponse.Status
@@ -2101,12 +2099,10 @@ func (r ListPrivateNetworksResponse) StatusCode() int {
 type ReadPrivateNetworkResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *struct {
-		PrivateNetwork *PrivateNetwork `json:"private_network,omitempty"`
-	}
-	JSON401 *ProblemDetails401
-	JSON404 *ProblemDetails404
-	JSON429 *ProblemDetails429
+	JSON200      *ResponseBodyPrivateNetwork
+	JSON401      *ProblemDetails401
+	JSON404      *ProblemDetails404
+	JSON429      *ProblemDetails429
 }
 
 // Status returns HTTPResponse.Status
@@ -2154,12 +2150,10 @@ func (r ListServersResponse) StatusCode() int {
 type ReadServerResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *struct {
-		Server *Server `json:"server,omitempty"`
-	}
-	JSON401 *ProblemDetails401
-	JSON404 *ProblemDetails404
-	JSON429 *ProblemDetails429
+	JSON200      *ResponseBodyServer
+	JSON401      *ProblemDetails401
+	JSON404      *ProblemDetails404
+	JSON429      *ProblemDetails429
 }
 
 // Status returns HTTPResponse.Status
@@ -2181,12 +2175,10 @@ func (r ReadServerResponse) StatusCode() int {
 type ListOSImagesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *struct {
-		OsImages *[]OsImage `json:"os_images,omitempty"`
-	}
-	JSON401 *ProblemDetails401
-	JSON404 *ProblemDetails404
-	JSON429 *ProblemDetails429
+	JSON200      *ResponseBodyOsImages
+	JSON401      *ProblemDetails401
+	JSON404      *ProblemDetails404
+	JSON429      *ProblemDetails429
 }
 
 // Status returns HTTPResponse.Status
@@ -2234,15 +2226,12 @@ func (r OSInstallResponse) StatusCode() int {
 type ReadServerPortChannelResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *struct {
-		// ネットワークインターフェース ポートチャネル情報
-		PortChannel *PortChannel `json:"port_channel,omitempty"`
-	}
-	JSON401 *ProblemDetails401
-	JSON404 *ProblemDetails404
-	JSON409 *ProblemDetails409
-	JSON429 *ProblemDetails429
-	JSON503 *ProblemDetails503
+	JSON200      *ResponseBodyPortChannel
+	JSON401      *ProblemDetails401
+	JSON404      *ProblemDetails404
+	JSON409      *ProblemDetails409
+	JSON429      *ProblemDetails429
+	JSON503      *ProblemDetails503
 }
 
 // Status returns HTTPResponse.Status
@@ -2264,7 +2253,7 @@ func (r ReadServerPortChannelResponse) StatusCode() int {
 type ServerConfigureBondingResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *PortChannel
+	JSON200      *ResponseBodyPortChannel
 	JSON400      *struct {
 		// Embedded struct due to allOf(#/components/schemas/problem_details_400)
 		ProblemDetails400 `yaml:",inline"`
@@ -2295,14 +2284,11 @@ func (r ServerConfigureBondingResponse) StatusCode() int {
 type ReadServerPortResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *struct {
-		// ネットワークインターフェースの接続ポート情報
-		Port *InterfacePort `json:"port,omitempty"`
-	}
-	JSON401 *ProblemDetails401
-	JSON404 *ProblemDetails404
-	JSON429 *ProblemDetails429
-	JSON503 *ProblemDetails503
+	JSON200      *ResponseBodyPort
+	JSON401      *ProblemDetails401
+	JSON404      *ProblemDetails404
+	JSON429      *ProblemDetails429
+	JSON503      *ProblemDetails503
 }
 
 // Status returns HTTPResponse.Status
@@ -2324,14 +2310,11 @@ func (r ReadServerPortResponse) StatusCode() int {
 type UpdateServerPortResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *struct {
-		// ネットワークインターフェースの接続ポート情報
-		Port InterfacePort `json:"port"`
-	}
-	JSON400 *ProblemDetails400
-	JSON401 *ProblemDetails401
-	JSON404 *ProblemDetails404
-	JSON429 *ProblemDetails429
+	JSON200      *ResponseBodyPort
+	JSON400      *ProblemDetails400
+	JSON401      *ProblemDetails401
+	JSON404      *ProblemDetails404
+	JSON429      *ProblemDetails429
 }
 
 // Status returns HTTPResponse.Status
@@ -2353,11 +2336,8 @@ func (r UpdateServerPortResponse) StatusCode() int {
 type ServerAssignNetworkResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *struct {
-		// ネットワークインターフェースの接続ポート情報
-		Port *InterfacePort `json:"port,omitempty"`
-	}
-	JSON400 *struct {
+	JSON200      *ResponseBodyPort
+	JSON400      *struct {
 		// Embedded struct due to allOf(#/components/schemas/problem_details_400)
 		ProblemDetails400 `yaml:",inline"`
 		// Embedded fields due to inline allOf schema
@@ -2387,15 +2367,12 @@ func (r ServerAssignNetworkResponse) StatusCode() int {
 type EnableServerPortResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *struct {
-		// ネットワークインターフェースの接続ポート情報
-		Port *InterfacePort `json:"port,omitempty"`
-	}
-	JSON400 *ProblemDetails400
-	JSON401 *ProblemDetails401
-	JSON404 *ProblemDetails404
-	JSON409 *ProblemDetails409
-	JSON429 *ProblemDetails429
+	JSON200      *ResponseBodyPort
+	JSON400      *ProblemDetails400
+	JSON401      *ProblemDetails401
+	JSON404      *ProblemDetails404
+	JSON409      *ProblemDetails409
+	JSON429      *ProblemDetails429
 }
 
 // Status returns HTTPResponse.Status
@@ -2468,13 +2445,11 @@ func (r ServerPowerControlResponse) StatusCode() int {
 type ReadServerPowerStatusResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *struct {
-		PowerStatus *ServerPowerStatus `json:"power_status,omitempty"`
-	}
-	JSON401 *ProblemDetails401
-	JSON404 *ProblemDetails404
-	JSON429 *ProblemDetails429
-	JSON503 *ProblemDetails503
+	JSON200      *ResponseBodyServerPowerStatus
+	JSON401      *ProblemDetails401
+	JSON404      *ProblemDetails404
+	JSON429      *ProblemDetails429
+	JSON503      *ProblemDetails503
 }
 
 // Status returns HTTPResponse.Status
@@ -2496,13 +2471,11 @@ func (r ReadServerPowerStatusResponse) StatusCode() int {
 type ReadRAIDStatusResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *struct {
-		RaidStatus *RaidStatus `json:"raid_status,omitempty"`
-	}
-	JSON401 *ProblemDetails401
-	JSON404 *ProblemDetails404
-	JSON429 *ProblemDetails429
-	JSON503 *ProblemDetails503
+	JSON200      *ResponseBodyRaidStatus
+	JSON401      *ProblemDetails401
+	JSON404      *ProblemDetails404
+	JSON429      *ProblemDetails429
+	JSON503      *ProblemDetails503
 }
 
 // Status returns HTTPResponse.Status
@@ -2548,12 +2521,10 @@ func (r ListServicesResponse) StatusCode() int {
 type ReadServiceResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *struct {
-		Service *Service `json:"service,omitempty"`
-	}
-	JSON401 *ProblemDetails401
-	JSON404 *ProblemDetails404
-	JSON429 *ProblemDetails429
+	JSON200      *ResponseBodyService
+	JSON401      *ProblemDetails401
+	JSON404      *ProblemDetails404
+	JSON429      *ProblemDetails429
 }
 
 // Status returns HTTPResponse.Status
@@ -2575,13 +2546,11 @@ func (r ReadServiceResponse) StatusCode() int {
 type UpdateServiceResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *struct {
-		Service *Service `json:"service,omitempty"`
-	}
-	JSON400 *ProblemDetails400
-	JSON401 *ProblemDetails401
-	JSON404 *ProblemDetails404
-	JSON429 *ProblemDetails429
+	JSON200      *ResponseBodyService
+	JSON400      *ProblemDetails400
+	JSON401      *ProblemDetails401
+	JSON404      *ProblemDetails404
+	JSON429      *ProblemDetails429
 }
 
 // Status returns HTTPResponse.Status
@@ -2907,9 +2876,7 @@ func ParseReadDedicatedSubnetResponse(rsp *http.Response) (*ReadDedicatedSubnetR
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest struct {
-			DedicatedSubnet *DedicatedSubnet `json:"dedicated_subnet,omitempty"`
-		}
+		var dest ResponseBodyDedicatedSubnet
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -3010,9 +2977,7 @@ func ParseReadPrivateNetworkResponse(rsp *http.Response) (*ReadPrivateNetworkRes
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest struct {
-			PrivateNetwork *PrivateNetwork `json:"private_network,omitempty"`
-		}
+		var dest ResponseBodyPrivateNetwork
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -3113,9 +3078,7 @@ func ParseReadServerResponse(rsp *http.Response) (*ReadServerResponse, error) {
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest struct {
-			Server *Server `json:"server,omitempty"`
-		}
+		var dest ResponseBodyServer
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -3162,9 +3125,7 @@ func ParseListOSImagesResponse(rsp *http.Response) (*ListOSImagesResponse, error
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest struct {
-			OsImages *[]OsImage `json:"os_images,omitempty"`
-		}
+		var dest ResponseBodyOsImages
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -3265,10 +3226,7 @@ func ParseReadServerPortChannelResponse(rsp *http.Response) (*ReadServerPortChan
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest struct {
-			// ネットワークインターフェース ポートチャネル情報
-			PortChannel *PortChannel `json:"port_channel,omitempty"`
-		}
+		var dest ResponseBodyPortChannel
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -3329,7 +3287,7 @@ func ParseServerConfigureBondingResponse(rsp *http.Response) (*ServerConfigureBo
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest PortChannel
+		var dest ResponseBodyPortChannel
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -3394,10 +3352,7 @@ func ParseReadServerPortResponse(rsp *http.Response) (*ReadServerPortResponse, e
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest struct {
-			// ネットワークインターフェースの接続ポート情報
-			Port *InterfacePort `json:"port,omitempty"`
-		}
+		var dest ResponseBodyPort
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -3451,10 +3406,7 @@ func ParseUpdateServerPortResponse(rsp *http.Response) (*UpdateServerPortRespons
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest struct {
-			// ネットワークインターフェースの接続ポート情報
-			Port InterfacePort `json:"port"`
-		}
+		var dest ResponseBodyPort
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -3508,10 +3460,7 @@ func ParseServerAssignNetworkResponse(rsp *http.Response) (*ServerAssignNetworkR
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest struct {
-			// ネットワークインターフェースの接続ポート情報
-			Port *InterfacePort `json:"port,omitempty"`
-		}
+		var dest ResponseBodyPort
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -3576,10 +3525,7 @@ func ParseEnableServerPortResponse(rsp *http.Response) (*EnableServerPortRespons
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest struct {
-			// ネットワークインターフェースの接続ポート情報
-			Port *InterfacePort `json:"port,omitempty"`
-		}
+		var dest ResponseBodyPort
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -3741,9 +3687,7 @@ func ParseReadServerPowerStatusResponse(rsp *http.Response) (*ReadServerPowerSta
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest struct {
-			PowerStatus *ServerPowerStatus `json:"power_status,omitempty"`
-		}
+		var dest ResponseBodyServerPowerStatus
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -3797,9 +3741,7 @@ func ParseReadRAIDStatusResponse(rsp *http.Response) (*ReadRAIDStatusResponse, e
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest struct {
-			RaidStatus *RaidStatus `json:"raid_status,omitempty"`
-		}
+		var dest ResponseBodyRaidStatus
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -3893,9 +3835,7 @@ func ParseReadServiceResponse(rsp *http.Response) (*ReadServiceResponse, error) 
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest struct {
-			Service *Service `json:"service,omitempty"`
-		}
+		var dest ResponseBodyService
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -3942,9 +3882,7 @@ func ParseUpdateServiceResponse(rsp *http.Response) (*UpdateServiceResponse, err
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest struct {
-			Service *Service `json:"service,omitempty"`
-		}
+		var dest ResponseBodyService
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}

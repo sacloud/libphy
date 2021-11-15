@@ -928,6 +928,53 @@ type RaidStatus struct {
 // `failed > degraded > rebuilding > ok` の順でより深刻なものが選択される
 type RaidStatusOverallStatus string
 
+// ResponseBodyDedicatedSubnet defines model for response_body_dedicated_subnet.
+type ResponseBodyDedicatedSubnet struct {
+	DedicatedSubnet DedicatedSubnet `json:"dedicated_subnet"`
+}
+
+// ResponseBodyOsImages defines model for response_body_os_images.
+type ResponseBodyOsImages struct {
+	OsImages []OsImage `json:"os_images"`
+}
+
+// ResponseBodyPort defines model for response_body_port.
+type ResponseBodyPort struct {
+	// ネットワークインターフェースの接続ポート情報
+	Port InterfacePort `json:"port"`
+}
+
+// ResponseBodyPortChannel defines model for response_body_port_channel.
+type ResponseBodyPortChannel struct {
+	// ネットワークインターフェース ポートチャネル情報
+	PortChannel PortChannel `json:"port_channel"`
+}
+
+// ResponseBodyPrivateNetwork defines model for response_body_private_network.
+type ResponseBodyPrivateNetwork struct {
+	PrivateNetwork PrivateNetwork `json:"private_network"`
+}
+
+// ResponseBodyRaidStatus defines model for response_body_raid_status.
+type ResponseBodyRaidStatus struct {
+	RaidStatus RaidStatus `json:"raid_status"`
+}
+
+// ResponseBodyServer defines model for response_body_server.
+type ResponseBodyServer struct {
+	Server Server `json:"server"`
+}
+
+// ResponseBodyServerPowerStatus defines model for response_body_server_power_status.
+type ResponseBodyServerPowerStatus struct {
+	PowerStatus ServerPowerStatus `json:"power_status"`
+}
+
+// ResponseBodyService defines model for response_body_service.
+type ResponseBodyService struct {
+	Service Service `json:"service"`
+}
+
 // Server defines model for server.
 type Server struct {
 	// キャッシュされた電源状態(未キャッシュならば`null`)
