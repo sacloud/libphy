@@ -189,7 +189,9 @@ func (s *Server) ReadServerTrafficByPort(c *gin.Context, serverId v1.ServerId, p
 		s.handleError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, traffic)
+	c.JSON(http.StatusOK, &v1.ResponseBodyTrafficGraph{
+		TrafficGraph: *traffic,
+	})
 }
 
 // ServerPowerControl サーバーの電源操作

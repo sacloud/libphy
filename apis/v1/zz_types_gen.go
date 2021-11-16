@@ -975,6 +975,11 @@ type ResponseBodyService struct {
 	Service Service `json:"service"`
 }
 
+// ResponseBodyTrafficGraph defines model for response_body_traffic_graph.
+type ResponseBodyTrafficGraph struct {
+	TrafficGraph TrafficGraph `json:"traffic_graph"`
+}
+
 // Server defines model for server.
 type Server struct {
 	// キャッシュされた電源状態(未キャッシュならば`null`)

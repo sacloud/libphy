@@ -2464,7 +2464,7 @@ func (r EnableServerPortResponse) Result() (*ResponseBodyPort, error) {
 type ReadServerTrafficByPortResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	JSON200      *TrafficGraph
+	JSON200      *ResponseBodyTrafficGraph
 	JSON401      *ProblemDetails401
 	JSON404      *ProblemDetails404
 	JSON429      *ProblemDetails429
@@ -2487,7 +2487,7 @@ func (r ReadServerTrafficByPortResponse) StatusCode() int {
 }
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
-func (r ReadServerTrafficByPortResponse) Result() (*TrafficGraph, error) {
+func (r ReadServerTrafficByPortResponse) Result() (*ResponseBodyTrafficGraph, error) {
 	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSON429)
 }
 
@@ -3691,7 +3691,7 @@ func ParseReadServerTrafficByPortResponse(rsp *http.Response) (*ReadServerTraffi
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest TrafficGraph
+		var dest ResponseBodyTrafficGraph
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
