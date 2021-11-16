@@ -91,3 +91,9 @@ lint-go:
 
 lint-def:
 	docker run --rm -v $$PWD:$$PWD -w $$PWD stoplight/spectral:latest lint -F warn apis/v1/spec/swagger.yaml
+
+.PHONY: godoc
+godoc:
+	echo "URL: http://localhost:6060/pkg/github.com/sacloud/phy-go/"
+	godoc -http=localhost:6060
+

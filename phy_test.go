@@ -27,7 +27,7 @@ import (
 	"github.com/sacloud/phy-go/pointer"
 )
 
-var testServerURL = defaultAPIRootURL
+var testServerURL = DefaultAPIRootURL
 
 func TestMain(m *testing.M) {
 	if !isAcceptanceTest() {

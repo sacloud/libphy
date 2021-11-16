@@ -27,7 +27,8 @@ import (
 	v1 "github.com/sacloud/phy-go/apis/v1"
 )
 
-const defaultAPIRootURL = "https://secure.sakura.ad.jp/cloud/api/dedicated-phy/1.0/"
+// DefaultAPIRootURL デフォルトのAPIルートURL
+const DefaultAPIRootURL = "https://secure.sakura.ad.jp/cloud/api/dedicated-phy/1.0/"
 
 // UserAgent APIリクエスト時のユーザーエージェント
 var UserAgent = fmt.Sprintf(
@@ -66,7 +67,7 @@ type Client struct {
 }
 
 func (c *Client) serverURL() string {
-	v := defaultAPIRootURL
+	v := DefaultAPIRootURL
 	if c.APIRootURL != "" {
 		v = c.APIRootURL
 	}
