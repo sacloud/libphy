@@ -16,12 +16,15 @@ package phy
 
 import (
 	"context"
+	"net/http"
+	"net/http/httptest"
 	"testing"
 	"time"
 
-	"github.com/sacloud/phy-go/pointer"
-
+	"github.com/gin-gonic/gin"
 	v1 "github.com/sacloud/phy-go/apis/v1"
+	"github.com/sacloud/phy-go/pointer"
+	"github.com/sacloud/phy-go/stub"
 	"github.com/stretchr/testify/require"
 )
 
@@ -151,4 +154,28 @@ func TestServiceOp_UpdateService(t *testing.T) {
 			require.EqualValues(t, tt.want, got)
 		})
 	}
+}
+
+func TestService_ErrorHandling(t *testing.T) {
+	onlyUnitTest(t)
+
+	stubServer := &stub.Server{
+		ReadServiceFunc: func(c *gin.Context, serviceId v1.ServiceId) {
+			c.JSON(http.StatusNotFound, &v1.ProblemDetails404{
+				Detail: "not found detail",
+				Status: http.StatusNotFound,
+				Title:  v1.ProblemDetails404TitleNotFound,
+				Type:   "about:blank",
+			})
+		},
+	}
+	httpServer := httptest.NewServer(stubServer.Handler())
+	client := testClient(t)
+	client.APIRootURL = httpServer.URL
+
+	serviceOp := NewServiceOp(client)
+
+	got, err := serviceOp.Read(context.Background(), v1.ServiceId("100000000001"))
+	require.Nil(t, got)
+	require.Error(t, err)
 }
