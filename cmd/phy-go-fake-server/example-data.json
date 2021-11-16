@@ -1,0 +1,235 @@
+{
+  "Services": [
+    {
+      "activated": "2021-11-15T00:00:00.000000+09:00",
+      "description": "description1",
+      "nickname": "server01",
+      "plan": {
+        "name": "plan-01",
+        "plan_id": "maker-series-spec-region-01"
+      },
+      "product_category": "server",
+      "service_id": "100000000001",
+      "tags": [
+        {
+          "color": "ffffff",
+          "label": "label",
+          "tag_id": 1
+        }
+      ]
+    },
+    {
+      "activated": "2021-11-15T00:00:00.000000+09:00",
+      "description": "description1",
+      "nickname": "global-network01",
+      "plan": null,
+      "product_category": "dedicated_subnet",
+      "service_id": "200000000001",
+      "tags": [
+        {
+          "color": "ffffff",
+          "label": "label",
+          "tag_id": 1
+        }
+      ]
+    },
+    {
+      "activated": "2021-11-15T00:00:00.000000+09:00",
+      "description": "description1",
+      "nickname": "private-network01",
+      "plan": null,
+      "product_category": "dedicated_subnet",
+      "service_id": "300000000001",
+      "tags": [
+        {
+          "color": "ffffff",
+          "label": "label",
+          "tag_id": 1
+        }
+      ]
+    }
+  ],
+  "Servers": [
+    {
+      "Server": {
+        "cached_power_status": {
+          "status": "on",
+          "stored": "2021-11-15T00:00:00.000000+09:00"
+        },
+        "ipv4": {
+          "gateway_address": "192.0.2.1",
+          "ip_address": "192.0.2.11",
+          "name_servers": [
+            "198.51.100.1",
+            "198.51.100.2"
+          ],
+          "network_address": "192.0.2.0",
+          "prefix_length": 24,
+          "type": "common_ip_address"
+        },
+        "lock_status": null,
+        "port_channels": [
+          {
+            "bonding_type": "lacp",
+            "link_speed_type": "1gbe",
+            "locked": false,
+            "port_channel_id": 1001,
+            "ports": [
+              2001
+            ]
+          }
+        ],
+        "ports": [
+          {
+            "enabled": true,
+            "global_bandwidth_mbps": null,
+            "internet": null,
+            "local_bandwidth_mbps": null,
+            "mode": null,
+            "nickname": "server01-port01",
+            "port_channel_id": 1001,
+            "port_id": 2001,
+            "private_networks": null
+          }
+        ],
+        "server_id": "100000000001",
+        "service": {
+          "activated": "2021-11-15T00:00:00.000000+09:00",
+          "description": null,
+          "nickname": "server01",
+          "service_id": "100000000001"
+        },
+        "spec": {
+          "cpu_clock_speed": 3,
+          "cpu_core_count": 4,
+          "cpu_count": 1,
+          "cpu_model_name": "E3-1220 v6",
+          "memory_size": 8,
+          "port_channel_10gbe_count": 0,
+          "port_channel_1gbe_count": 1,
+          "storages": [
+            {
+              "bus_type": "sata",
+              "device_count": 2,
+              "media_type": "ssd",
+              "size": 1000
+            }
+          ],
+          "total_storage_device_count": 1
+        },
+        "zone": {
+          "region": "is",
+          "zone_id": 302
+        }
+      },
+      "RaidStatus": {
+        "logical_volumes": [
+          {
+            "physical_device_ids": [
+              "0",
+              "1"
+            ],
+            "raid_level": "1",
+            "status": "ok",
+            "volume_id": "0"
+          }
+        ],
+        "monitored": "2021-11-15T00:00:00.000000+09:00",
+        "overall_status": "ok",
+        "physical_devices": [
+          {
+            "device_id": "0",
+            "slot": 0,
+            "status": "ok"
+          },
+          {
+            "device_id": "1",
+            "slot": 1,
+            "status": "ok"
+          }
+        ]
+      },
+      "OSImages": [
+        {
+          "manual_partition": true,
+          "name": "Usacloud Linux",
+          "os_image_id": "usacloud",
+          "require_password": true,
+          "superuser_name": "root"
+        }
+      ],
+      "PowerStatus": {
+        "status": "on"
+      },
+      "TrafficGraph": {
+        "receive": [
+          {
+            "timestamp": "2021-11-15T00:00:00.000000+09:00",
+            "value": 1
+          }
+        ],
+        "transmit": [
+          {
+            "timestamp": "2021-11-15T00:00:00.000000+09:00",
+            "value": 1
+          }
+        ]
+      }
+    }
+  ],
+  "DedicatedSubnets": [
+    {
+      "config_status": "operational",
+      "dedicated_subnet_id": "200000000001",
+      "firewall": null,
+      "ipv4": {
+        "broadcast_address": "192.0.2.239",
+        "gateway_address": "192.0.2.225",
+        "network_address": "192.0.2.224",
+        "prefix_length": 28
+      },
+      "ipv6": {
+        "broadcast_address": "",
+        "enabled": false,
+        "gateway_address": "",
+        "network_address": "",
+        "prefix_length": 0
+      },
+      "load_balancer": null,
+      "server_count": 1,
+      "service": {
+        "activated": "2021-11-15T00:00:00.000000+09:00",
+        "description": null,
+        "nickname": "global-network01",
+        "service_id": "200000000001"
+      },
+      "zone": {
+        "region": "is",
+        "zone_id": 302
+      }
+    }
+  ],
+  "PrivateNetworks": [
+    {
+      "hybrid": {
+        "destinations": null,
+        "service_id": ""
+      },
+      "private_network_id": "300000000001",
+      "server_count": 1,
+      "service": {
+        "activated": "2021-11-15T00:00:00.000000+09:00",
+        "description": null,
+        "nickname": "private-network01",
+        "service_id": "300000000001"
+      },
+      "vlan_id": 1,
+      "zone": {
+        "region": "is",
+        "zone_id": 302
+      }
+    }
+  ],
+  "ActionInterval": 0,
+  "GeneratedID": 0
+}
