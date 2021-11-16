@@ -24,7 +24,6 @@ import (
 	"syscall"
 
 	"github.com/sacloud/phy-go"
-
 	"github.com/sacloud/phy-go/fake"
 	"github.com/sacloud/phy-go/fake/server"
 	"github.com/spf13/cobra"

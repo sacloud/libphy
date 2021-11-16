@@ -707,7 +707,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/traffic_graph'
+                $ref: '#/components/schemas/response_body_traffic_graph'
         '401':
           $ref: '#/components/responses/generic_401'
         '404':
@@ -1294,6 +1294,14 @@ components:
           $ref: '#/components/schemas/private_network'
       required:
         - private_network
+    response_body_traffic_graph:
+      type: object
+      properties:
+        traffic_graph:
+          $ref: '#/components/schemas/traffic_graph'
+      required:
+          - traffic_graph
+
     # services
     services:
       type: object

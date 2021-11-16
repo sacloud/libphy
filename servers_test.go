@@ -362,7 +362,7 @@ func TestServerOp_EnablePort(t *testing.T) {
 	type args struct {
 		serverId v1.ServerId
 		portId   v1.PortId
-		params   v1.EnableServerPortParameter
+		enable   bool
 	}
 	tests := []struct {
 		name    string
@@ -375,9 +375,7 @@ func TestServerOp_EnablePort(t *testing.T) {
 			args: args{
 				serverId: v1.ServerId(testValueServer01.Id()),
 				portId:   v1.PortId(port.PortId),
-				params: v1.EnableServerPortParameter{
-					Enable: false,
-				},
+				enable:   false,
 			},
 			want: &v1.InterfacePort{
 				Enabled:             false,
@@ -398,7 +396,7 @@ func TestServerOp_EnablePort(t *testing.T) {
 			op := &ServerOp{
 				client: testClient(t),
 			}
-			got, err := op.EnablePort(context.Background(), tt.args.serverId, tt.args.portId, tt.args.params)
+			got, err := op.EnablePort(context.Background(), tt.args.serverId, tt.args.portId, tt.args.enable)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("EnablePort() error = %v, wantErr %v", err, tt.wantErr)
 				return
@@ -454,8 +452,8 @@ func TestServerOp_PowerControl(t *testing.T) {
 	onlyUnitTest(t)
 
 	type args struct {
-		serverId v1.ServerId
-		params   v1.PowerControlParameter
+		serverId  v1.ServerId
+		operation v1.ServerPowerOperations
 	}
 	tests := []struct {
 		name    string
@@ -465,10 +463,8 @@ func TestServerOp_PowerControl(t *testing.T) {
 		{
 			name: "minimum",
 			args: args{
-				serverId: v1.ServerId(testValueServer01.Id()),
-				params: v1.PowerControlParameter{
-					Operation: v1.ServerPowerOperationsReset,
-				},
+				serverId:  v1.ServerId(testValueServer01.Id()),
+				operation: v1.ServerPowerOperationsReset,
 			},
 			wantErr: false,
 		},
@@ -478,7 +474,7 @@ func TestServerOp_PowerControl(t *testing.T) {
 			op := &ServerOp{
 				client: testClient(t),
 			}
-			if err := op.PowerControl(context.Background(), tt.args.serverId, tt.args.params); (err != nil) != tt.wantErr {
+			if err := op.PowerControl(context.Background(), tt.args.serverId, tt.args.operation); (err != nil) != tt.wantErr {
 				t.Errorf("PowerControl() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
@@ -519,7 +515,7 @@ func TestServerOp_ReadPowerStatus(t *testing.T) {
 func TestServerOp_ReadRAIDStatus(t *testing.T) {
 	type args struct {
 		serverId v1.ServerId
-		params   v1.ReadRAIDStatusParams
+		refresh  bool
 	}
 	tests := []struct {
 		name    string
@@ -531,7 +527,7 @@ func TestServerOp_ReadRAIDStatus(t *testing.T) {
 			name: "minimum",
 			args: args{
 				serverId: v1.ServerId(testValueServer01.Id()),
-				params:   v1.ReadRAIDStatusParams{},
+				refresh:  false,
 			},
 			want:    testValueServer01.RaidStatus,
 			wantErr: false,
@@ -542,7 +538,7 @@ func TestServerOp_ReadRAIDStatus(t *testing.T) {
 			op := &ServerOp{
 				client: testClient(t),
 			}
-			got, err := op.ReadRAIDStatus(context.Background(), tt.args.serverId, tt.args.params)
+			got, err := op.ReadRAIDStatus(context.Background(), tt.args.serverId, tt.args.refresh)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("ReadRAIDStatus() error = %v, wantErr %v", err, tt.wantErr)
 				return

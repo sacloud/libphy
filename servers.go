@@ -29,12 +29,12 @@ type ServerAPI interface {
 	ConfigureBonding(ctx context.Context, serverId v1.ServerId, portChannelId v1.PortChannelId, params v1.ConfigureBondingParameter) (*v1.PortChannel, error)
 	ReadPort(ctx context.Context, serverId v1.ServerId, portId v1.PortId) (*v1.InterfacePort, error)
 	UpdatePort(ctx context.Context, serverId v1.ServerId, portId v1.PortId, params v1.UpdateServerPortParameter) (*v1.InterfacePort, error)
-	EnablePort(ctx context.Context, serverId v1.ServerId, portId v1.PortId, params v1.EnableServerPortParameter) (*v1.InterfacePort, error)
+	EnablePort(ctx context.Context, serverId v1.ServerId, portId v1.PortId, enable bool) (*v1.InterfacePort, error)
 	AssignNetwork(ctx context.Context, serverId v1.ServerId, portId v1.PortId, params v1.AssignNetworkParameter) (*v1.InterfacePort, error)
 	ReadTrafficByPort(ctx context.Context, serverId v1.ServerId, portId v1.PortId, params v1.ReadServerTrafficByPortParams) (*v1.TrafficGraph, error)
-	PowerControl(ctx context.Context, serverId v1.ServerId, params v1.PowerControlParameter) error
+	PowerControl(ctx context.Context, serverId v1.ServerId, operation v1.ServerPowerOperations) error
 	ReadPowerStatus(ctx context.Context, serverId v1.ServerId) (*v1.ServerPowerStatus, error)
-	ReadRAIDStatus(ctx context.Context, serverId v1.ServerId, params v1.ReadRAIDStatusParams) (*v1.RaidStatus, error)
+	ReadRAIDStatus(ctx context.Context, serverId v1.ServerId, refresh bool) (*v1.RaidStatus, error)
 }
 
 type ServerOp struct {
@@ -146,11 +146,11 @@ func (op *ServerOp) UpdatePort(ctx context.Context, serverId v1.ServerId, portId
 	return &result.Port, nil
 }
 
-func (op *ServerOp) EnablePort(ctx context.Context, serverId v1.ServerId, portId v1.PortId, params v1.EnableServerPortParameter) (*v1.InterfacePort, error) {
+func (op *ServerOp) EnablePort(ctx context.Context, serverId v1.ServerId, portId v1.PortId, enable bool) (*v1.InterfacePort, error) {
 	headers := &v1.EnableServerPortParams{
 		XRequestedWith: v1.EnableServerPortParamsXRequestedWith(v1.XMLHttpRequest),
 	}
-	response, err := op.client.apiClient().EnableServerPortWithResponse(ctx, serverId, portId, headers, v1.EnableServerPortJSONRequestBody(params))
+	response, err := op.client.apiClient().EnableServerPortWithResponse(ctx, serverId, portId, headers, v1.EnableServerPortJSONRequestBody{Enable: enable})
 	if err != nil {
 		return nil, err
 	}
@@ -183,14 +183,18 @@ func (op *ServerOp) ReadTrafficByPort(ctx context.Context, serverId v1.ServerId,
 	if err != nil {
 		return nil, err
 	}
-	return response.Result()
+	result, err := response.Result()
+	if err != nil {
+		return nil, err
+	}
+	return &result.TrafficGraph, nil
 }
 
-func (op *ServerOp) PowerControl(ctx context.Context, serverId v1.ServerId, params v1.PowerControlParameter) error {
+func (op *ServerOp) PowerControl(ctx context.Context, serverId v1.ServerId, operation v1.ServerPowerOperations) error {
 	headers := &v1.ServerPowerControlParams{
 		XRequestedWith: v1.ServerPowerControlParamsXRequestedWith(v1.XMLHttpRequest),
 	}
-	_, err := op.client.apiClient().ServerPowerControl(ctx, serverId, headers, v1.ServerPowerControlJSONRequestBody(params))
+	_, err := op.client.apiClient().ServerPowerControl(ctx, serverId, headers, v1.ServerPowerControlJSONRequestBody{Operation: operation})
 	return err
 }
 
@@ -206,8 +210,8 @@ func (op *ServerOp) ReadPowerStatus(ctx context.Context, serverId v1.ServerId) (
 	return &result.PowerStatus, nil
 }
 
-func (op *ServerOp) ReadRAIDStatus(ctx context.Context, serverId v1.ServerId, params v1.ReadRAIDStatusParams) (*v1.RaidStatus, error) {
-	response, err := op.client.apiClient().ReadRAIDStatusWithResponse(ctx, serverId, &params)
+func (op *ServerOp) ReadRAIDStatus(ctx context.Context, serverId v1.ServerId, refresh bool) (*v1.RaidStatus, error) {
+	response, err := op.client.apiClient().ReadRAIDStatusWithResponse(ctx, serverId, &v1.ReadRAIDStatusParams{Refresh: &refresh})
 	if err != nil {
 		return nil, err
 	}

@@ -43,15 +43,21 @@ func isAcceptanceTest() bool {
 	return os.Getenv("TESTACC") != ""
 }
 
-//func onlyAcceptanceTest(t *testing.T) {
-//	if !isAcceptanceTest() {
-//		t.Skip("this test will only run when TESTACC is set")
-//	}
-//}
+func onlyAcceptanceTest(t *testing.T) {
+	if !isAcceptanceTest() {
+		t.Skip("this test will only run when 'TESTACC' is set")
+	}
+}
 
 func onlyUnitTest(t *testing.T) {
 	if isAcceptanceTest() {
-		t.Skip("this test will only run when TESTACC is not set")
+		t.Skip("this test will only run when 'TESTACC' is not set")
+	}
+}
+
+func skipIfEnvIsSet(t *testing.T, envKey string) {
+	if os.Getenv(envKey) != "" {
+		t.Skipf("environment variable %q is set, skip.", envKey)
 	}
 }
 
