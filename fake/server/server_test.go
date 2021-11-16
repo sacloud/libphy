@@ -410,10 +410,10 @@ func TestServer_ServerPowerControl(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	var status v1.ServerPowerStatus
+	var status v1.ResponseBodyServerPowerStatus
 	if err := json.Unmarshal(body, &status); err != nil {
 		t.Fatal(err)
 	}
 
-	require.Equal(t, "off", string(status.Status))
+	require.Equal(t, "off", string(status.PowerStatus.Status))
 }

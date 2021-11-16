@@ -40,7 +40,9 @@ func (s *Server) ReadService(c *gin.Context, serviceId v1.ServiceId) {
 		s.handleError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, service)
+	c.JSON(http.StatusOK, &v1.ResponseBodyService{
+		Service: *service,
+	})
 }
 
 // UpdateService サービスの名称・説明の変更
@@ -57,5 +59,7 @@ func (s *Server) UpdateService(c *gin.Context, serviceId v1.ServiceId, _ v1.Upda
 		s.handleError(c, err)
 		return
 	}
-	c.JSON(http.StatusOK, service)
+	c.JSON(http.StatusOK, &v1.ResponseBodyService{
+		Service: *service,
+	})
 }

@@ -16,7 +16,6 @@ package v1
 
 import (
 	"context"
-	"net/http"
 	"os"
 	"testing"
 )
@@ -34,11 +33,8 @@ func TestDummy(t *testing.T) {
 
 	client, err := NewClientWithResponses("https://secure.sakura.ad.jp/cloud/api/dedicated-phy/1.0", func(c *Client) error {
 		c.RequestEditors = []RequestEditorFn{
-			func(ctx context.Context, req *http.Request) error {
-				req.SetBasicAuth(os.Getenv("SAKURACLOUD_ACCESS_TOKEN"), os.Getenv("SAKURACLOUD_ACCESS_TOKEN_SECRET"))
-				req.Header.Add("X-Requested-With", "XMLHttpRequest")
-				return nil
-			},
+			PhyAuthInterceptor(token, secret),
+			PhyRequestInterceptor(),
 		}
 		return nil
 	})
