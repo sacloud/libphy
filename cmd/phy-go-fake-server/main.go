@@ -16,6 +16,8 @@ package main
 
 import (
 	"context"
+	_ "embed"
+	"encoding/json"
 	"fmt"
 	"net"
 	"net/http"
@@ -29,17 +31,25 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var listenAddr string
+var (
+	listenAddr string
+	dataFile   string
+)
+
+//go:embed example-data.json
+var defaultData []byte
 
 var cmd = &cobra.Command{
-	Use:     "phy-go-fake-server",
-	Short:   "Start the web server",
-	RunE:    run,
-	Version: phy.Version,
+	Use:          "phy-go-fake-server",
+	Short:        "Start the web server",
+	RunE:         run,
+	Version:      phy.Version,
+	SilenceUsage: true,
 }
 
 func init() {
 	cmd.Flags().StringVarP(&listenAddr, "addr", "", ":8080", "the address for the server to listen on")
+	cmd.Flags().StringVarP(&dataFile, "data", "", "", "the file path to the fake data JSON file")
 }
 
 func main() {
@@ -56,7 +66,7 @@ func run(cmd *cobra.Command, args []string) error {
 	errCh := make(chan error)
 
 	go func() {
-		errCh <- startServer(listenAddr)
+		errCh <- startServer(listenAddr, dataFile)
 	}()
 
 	select {
@@ -68,9 +78,23 @@ func run(cmd *cobra.Command, args []string) error {
 	return ctx.Err()
 }
 
-func startServer(addr string) error {
+func startServer(addr, dataFile string) error {
+	var engine fake.Engine
+	fakeData := defaultData
+
+	if dataFile != "" {
+		data, err := os.ReadFile(dataFile)
+		if err != nil {
+			return err
+		}
+		fakeData = data
+	}
+	if err := json.Unmarshal(fakeData, &engine); err != nil {
+		return err
+	}
+
 	fakeServer := server.Server{
-		Engine: &fake.Engine{},
+		Engine: &engine,
 	}
 	httpServer := &http.Server{
 		Handler: fakeServer.Handler(),
