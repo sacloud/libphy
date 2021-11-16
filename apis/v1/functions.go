@@ -14,7 +14,10 @@
 
 package v1
 
-import "reflect"
+import (
+	"net/http"
+	"reflect"
+)
 
 func eCoalesce(errs ...error) error {
 	for _, e := range errs {
@@ -23,4 +26,16 @@ func eCoalesce(errs ...error) error {
 		}
 	}
 	return nil
+}
+
+var osStatusCodes = map[int]bool{
+	http.StatusOK:        true,
+	http.StatusCreated:   true,
+	http.StatusAccepted:  true,
+	http.StatusNoContent: true,
+}
+
+func isOKStatus(httpStatusCode int) bool {
+	_, ok := osStatusCodes[httpStatusCode]
+	return ok
 }

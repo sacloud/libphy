@@ -2047,7 +2047,15 @@ func (r ListDedicatedSubnetsResponse) StatusCode() int {
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
 func (r ListDedicatedSubnetsResponse) Result() (*DedicatedSubnets, error) {
-	return r.JSON200, eCoalesce(r.JSON400, r.JSON401, r.JSON429)
+	return r.JSON200, eCoalesce(r.JSON400, r.JSON401, r.JSON429, r.UndefinedError())
+}
+
+// UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
+func (r ListDedicatedSubnetsResponse) UndefinedError() error {
+	if !isOKStatus(r.HTTPResponse.StatusCode) {
+		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
+	}
+	return nil
 }
 
 type ReadDedicatedSubnetResponse struct {
@@ -2078,7 +2086,15 @@ func (r ReadDedicatedSubnetResponse) StatusCode() int {
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
 func (r ReadDedicatedSubnetResponse) Result() (*ResponseBodyDedicatedSubnet, error) {
-	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSON429, r.JSON503)
+	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSON429, r.JSON503, r.UndefinedError())
+}
+
+// UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
+func (r ReadDedicatedSubnetResponse) UndefinedError() error {
+	if !isOKStatus(r.HTTPResponse.StatusCode) {
+		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
+	}
+	return nil
 }
 
 type ListPrivateNetworksResponse struct {
@@ -2108,7 +2124,15 @@ func (r ListPrivateNetworksResponse) StatusCode() int {
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
 func (r ListPrivateNetworksResponse) Result() (*PrivateNetworks, error) {
-	return r.JSON200, eCoalesce(r.JSON400, r.JSON401, r.JSON429)
+	return r.JSON200, eCoalesce(r.JSON400, r.JSON401, r.JSON429, r.UndefinedError())
+}
+
+// UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
+func (r ListPrivateNetworksResponse) UndefinedError() error {
+	if !isOKStatus(r.HTTPResponse.StatusCode) {
+		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
+	}
+	return nil
 }
 
 type ReadPrivateNetworkResponse struct {
@@ -2138,7 +2162,15 @@ func (r ReadPrivateNetworkResponse) StatusCode() int {
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
 func (r ReadPrivateNetworkResponse) Result() (*ResponseBodyPrivateNetwork, error) {
-	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSON429)
+	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSON429, r.UndefinedError())
+}
+
+// UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
+func (r ReadPrivateNetworkResponse) UndefinedError() error {
+	if !isOKStatus(r.HTTPResponse.StatusCode) {
+		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
+	}
+	return nil
 }
 
 type ListServersResponse struct {
@@ -2169,7 +2201,15 @@ func (r ListServersResponse) StatusCode() int {
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
 func (r ListServersResponse) Result() (*Servers, error) {
-	return r.JSON200, eCoalesce(r.JSON400, r.JSON401, r.JSON404, r.JSON429)
+	return r.JSON200, eCoalesce(r.JSON400, r.JSON401, r.JSON404, r.JSON429, r.UndefinedError())
+}
+
+// UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
+func (r ListServersResponse) UndefinedError() error {
+	if !isOKStatus(r.HTTPResponse.StatusCode) {
+		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
+	}
+	return nil
 }
 
 type ReadServerResponse struct {
@@ -2199,7 +2239,15 @@ func (r ReadServerResponse) StatusCode() int {
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
 func (r ReadServerResponse) Result() (*ResponseBodyServer, error) {
-	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSON429)
+	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSON429, r.UndefinedError())
+}
+
+// UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
+func (r ReadServerResponse) UndefinedError() error {
+	if !isOKStatus(r.HTTPResponse.StatusCode) {
+		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
+	}
+	return nil
 }
 
 type ListOSImagesResponse struct {
@@ -2229,7 +2277,15 @@ func (r ListOSImagesResponse) StatusCode() int {
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
 func (r ListOSImagesResponse) Result() (*ResponseBodyOsImages, error) {
-	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSON429)
+	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSON429, r.UndefinedError())
+}
+
+// UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
+func (r ListOSImagesResponse) UndefinedError() error {
+	if !isOKStatus(r.HTTPResponse.StatusCode) {
+		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
+	}
+	return nil
 }
 
 type OSInstallResponse struct {
@@ -2260,7 +2316,15 @@ func (r OSInstallResponse) StatusCode() int {
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
 func (r OSInstallResponse) Result() error {
-	return eCoalesce(r.JSON400, r.JSON401, r.JSON404, r.JSON409, r.JSON429)
+	return eCoalesce(r.JSON400, r.JSON401, r.JSON404, r.JSON409, r.JSON429, r.UndefinedError())
+}
+
+// UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
+func (r OSInstallResponse) UndefinedError() error {
+	if !isOKStatus(r.HTTPResponse.StatusCode) {
+		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
+	}
+	return nil
 }
 
 type ReadServerPortChannelResponse struct {
@@ -2292,7 +2356,15 @@ func (r ReadServerPortChannelResponse) StatusCode() int {
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
 func (r ReadServerPortChannelResponse) Result() (*ResponseBodyPortChannel, error) {
-	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSON409, r.JSON429, r.JSON503)
+	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSON409, r.JSON429, r.JSON503, r.UndefinedError())
+}
+
+// UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
+func (r ReadServerPortChannelResponse) UndefinedError() error {
+	if !isOKStatus(r.HTTPResponse.StatusCode) {
+		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
+	}
+	return nil
 }
 
 type ServerConfigureBondingResponse struct {
@@ -2328,7 +2400,15 @@ func (r ServerConfigureBondingResponse) StatusCode() int {
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
 func (r ServerConfigureBondingResponse) Result() (*ResponseBodyPortChannel, error) {
-	return r.JSON200, eCoalesce(r.JSON400, r.JSON401, r.JSON404, r.JSON409, r.JSON429)
+	return r.JSON200, eCoalesce(r.JSON400, r.JSON401, r.JSON404, r.JSON409, r.JSON429, r.UndefinedError())
+}
+
+// UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
+func (r ServerConfigureBondingResponse) UndefinedError() error {
+	if !isOKStatus(r.HTTPResponse.StatusCode) {
+		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
+	}
+	return nil
 }
 
 type ReadServerPortResponse struct {
@@ -2359,7 +2439,15 @@ func (r ReadServerPortResponse) StatusCode() int {
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
 func (r ReadServerPortResponse) Result() (*ResponseBodyPort, error) {
-	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSON429, r.JSON503)
+	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSON429, r.JSON503, r.UndefinedError())
+}
+
+// UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
+func (r ReadServerPortResponse) UndefinedError() error {
+	if !isOKStatus(r.HTTPResponse.StatusCode) {
+		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
+	}
+	return nil
 }
 
 type UpdateServerPortResponse struct {
@@ -2390,7 +2478,15 @@ func (r UpdateServerPortResponse) StatusCode() int {
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
 func (r UpdateServerPortResponse) Result() (*ResponseBodyPort, error) {
-	return r.JSON200, eCoalesce(r.JSON400, r.JSON401, r.JSON404, r.JSON429)
+	return r.JSON200, eCoalesce(r.JSON400, r.JSON401, r.JSON404, r.JSON429, r.UndefinedError())
+}
+
+// UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
+func (r UpdateServerPortResponse) UndefinedError() error {
+	if !isOKStatus(r.HTTPResponse.StatusCode) {
+		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
+	}
+	return nil
 }
 
 type ServerAssignNetworkResponse struct {
@@ -2426,7 +2522,15 @@ func (r ServerAssignNetworkResponse) StatusCode() int {
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
 func (r ServerAssignNetworkResponse) Result() (*ResponseBodyPort, error) {
-	return r.JSON200, eCoalesce(r.JSON400, r.JSON401, r.JSON404, r.JSON409, r.JSON429)
+	return r.JSON200, eCoalesce(r.JSON400, r.JSON401, r.JSON404, r.JSON409, r.JSON429, r.UndefinedError())
+}
+
+// UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
+func (r ServerAssignNetworkResponse) UndefinedError() error {
+	if !isOKStatus(r.HTTPResponse.StatusCode) {
+		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
+	}
+	return nil
 }
 
 type EnableServerPortResponse struct {
@@ -2458,7 +2562,15 @@ func (r EnableServerPortResponse) StatusCode() int {
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
 func (r EnableServerPortResponse) Result() (*ResponseBodyPort, error) {
-	return r.JSON200, eCoalesce(r.JSON400, r.JSON401, r.JSON404, r.JSON409, r.JSON429)
+	return r.JSON200, eCoalesce(r.JSON400, r.JSON401, r.JSON404, r.JSON409, r.JSON429, r.UndefinedError())
+}
+
+// UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
+func (r EnableServerPortResponse) UndefinedError() error {
+	if !isOKStatus(r.HTTPResponse.StatusCode) {
+		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
+	}
+	return nil
 }
 
 type ReadServerTrafficByPortResponse struct {
@@ -2488,7 +2600,15 @@ func (r ReadServerTrafficByPortResponse) StatusCode() int {
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
 func (r ReadServerTrafficByPortResponse) Result() (*ResponseBodyTrafficGraph, error) {
-	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSON429)
+	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSON429, r.UndefinedError())
+}
+
+// UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
+func (r ReadServerTrafficByPortResponse) UndefinedError() error {
+	if !isOKStatus(r.HTTPResponse.StatusCode) {
+		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
+	}
+	return nil
 }
 
 type ServerPowerControlResponse struct {
@@ -2519,7 +2639,15 @@ func (r ServerPowerControlResponse) StatusCode() int {
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
 func (r ServerPowerControlResponse) Result() error {
-	return eCoalesce(r.JSON400, r.JSON401, r.JSON404, r.JSON429, r.JSON503)
+	return eCoalesce(r.JSON400, r.JSON401, r.JSON404, r.JSON429, r.JSON503, r.UndefinedError())
+}
+
+// UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
+func (r ServerPowerControlResponse) UndefinedError() error {
+	if !isOKStatus(r.HTTPResponse.StatusCode) {
+		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
+	}
+	return nil
 }
 
 type ReadServerPowerStatusResponse struct {
@@ -2550,7 +2678,15 @@ func (r ReadServerPowerStatusResponse) StatusCode() int {
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
 func (r ReadServerPowerStatusResponse) Result() (*ResponseBodyServerPowerStatus, error) {
-	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSON429, r.JSON503)
+	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSON429, r.JSON503, r.UndefinedError())
+}
+
+// UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
+func (r ReadServerPowerStatusResponse) UndefinedError() error {
+	if !isOKStatus(r.HTTPResponse.StatusCode) {
+		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
+	}
+	return nil
 }
 
 type ReadRAIDStatusResponse struct {
@@ -2581,7 +2717,15 @@ func (r ReadRAIDStatusResponse) StatusCode() int {
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
 func (r ReadRAIDStatusResponse) Result() (*ResponseBodyRaidStatus, error) {
-	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSON429, r.JSON503)
+	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSON429, r.JSON503, r.UndefinedError())
+}
+
+// UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
+func (r ReadRAIDStatusResponse) UndefinedError() error {
+	if !isOKStatus(r.HTTPResponse.StatusCode) {
+		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
+	}
+	return nil
 }
 
 type ListServicesResponse struct {
@@ -2610,7 +2754,15 @@ func (r ListServicesResponse) StatusCode() int {
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
 func (r ListServicesResponse) Result() (*Services, error) {
-	return r.JSON200, eCoalesce(r.JSON401, r.JSON429)
+	return r.JSON200, eCoalesce(r.JSON401, r.JSON429, r.UndefinedError())
+}
+
+// UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
+func (r ListServicesResponse) UndefinedError() error {
+	if !isOKStatus(r.HTTPResponse.StatusCode) {
+		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
+	}
+	return nil
 }
 
 type ReadServiceResponse struct {
@@ -2640,7 +2792,15 @@ func (r ReadServiceResponse) StatusCode() int {
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
 func (r ReadServiceResponse) Result() (*ResponseBodyService, error) {
-	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSON429)
+	return r.JSON200, eCoalesce(r.JSON401, r.JSON404, r.JSON429, r.UndefinedError())
+}
+
+// UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
+func (r ReadServiceResponse) UndefinedError() error {
+	if !isOKStatus(r.HTTPResponse.StatusCode) {
+		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
+	}
+	return nil
 }
 
 type UpdateServiceResponse struct {
@@ -2671,7 +2831,15 @@ func (r UpdateServiceResponse) StatusCode() int {
 
 // Result JSON200の結果、もしくは発生したエラーのいずれかを返す
 func (r UpdateServiceResponse) Result() (*ResponseBodyService, error) {
-	return r.JSON200, eCoalesce(r.JSON400, r.JSON401, r.JSON404, r.JSON429)
+	return r.JSON200, eCoalesce(r.JSON400, r.JSON401, r.JSON404, r.JSON429, r.UndefinedError())
+}
+
+// UndefinedError API定義で未定義なエラーステータスコードを受け取った場合にエラーを返す
+func (r UpdateServiceResponse) UndefinedError() error {
+	if !isOKStatus(r.HTTPResponse.StatusCode) {
+		return fmt.Errorf("unknown error: code:%d, body:%s", r.HTTPResponse.StatusCode, string(r.Body))
+	}
+	return nil
 }
 
 // ListDedicatedSubnetsWithResponse request returning *ListDedicatedSubnetsResponse
