@@ -179,3 +179,22 @@ func TestService_ErrorHandling(t *testing.T) {
 	require.Nil(t, got)
 	require.Error(t, err)
 }
+
+func TestService_UnknownError(t *testing.T) {
+	onlyUnitTest(t)
+
+	stubServer := &stub.Server{
+		ReadServiceFunc: func(c *gin.Context, serviceId v1.ServiceId) {
+			c.String(http.StatusInternalServerError, "internal server error")
+		},
+	}
+	httpServer := httptest.NewServer(stubServer.Handler())
+	client := testClient(t)
+	client.APIRootURL = httpServer.URL
+
+	serviceOp := NewServiceOp(client)
+
+	got, err := serviceOp.Read(context.Background(), v1.ServiceId("100000000001"))
+	require.Nil(t, got)
+	require.Error(t, err)
+}
