@@ -1,0 +1,22 @@
+before:
+  hooks:
+    - go mod tidy
+builds:
+  - env:
+      - CGO_ENABLED=0
+    main: ./cmd/phy-go-fake-server
+    ldflags:
+      - -s -w
+      - -X github.com/sacloud/phy-go/version.Revision={{.ShortCommit}}
+    goos:
+      - windows
+      - linux
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+    binary: 'phy-go-fake-server'
+release:
+  draft: true
+changelog:
+  skip: false
