@@ -34,6 +34,7 @@ import (
 var (
 	listenAddr string
 	dataFile   string
+	outputExample bool
 )
 
 //go:embed example-data.json
@@ -50,6 +51,7 @@ var cmd = &cobra.Command{
 func init() {
 	cmd.Flags().StringVarP(&listenAddr, "addr", "", ":8080", "the address for the server to listen on")
 	cmd.Flags().StringVarP(&dataFile, "data", "", "", "the file path to the fake data JSON file")
+	cmd.Flags().BoolVarP(&outputExample, "output-example", "", false, "the flag to output a fake data JSON example")
 }
 
 func main() {
@@ -62,9 +64,15 @@ func main() {
 }
 
 func run(cmd *cobra.Command, args []string) error {
+	if outputExample {
+		fmt.Println(string(defaultData))
+		return nil
+	}
+
 	ctx := cmd.Context()
 	errCh := make(chan error)
 
+	fmt.Printf("starting fake server with %s\n", listenAddr)
 	go func() {
 		errCh <- startServer(listenAddr, dataFile)
 	}()
