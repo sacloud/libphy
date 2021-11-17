@@ -17,6 +17,6 @@ builds:
       - arm64
     binary: 'phy-go-fake-server'
 release:
-  draft: true
+  draft: false
 changelog:
   skip: false
