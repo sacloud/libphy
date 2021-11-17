@@ -13,6 +13,8 @@ PHY API: [https://manual.sakura.ad.jp/ds/phy/api/api-spec.html](https://manual.s
 [oapi-codegen](https://github.com/deepmap/oapi-codegen) によって生成されたGoのコードに加え、
 Fake/Stubサーバの実装やより簡易に使えるようにラップしたクライアントコードを提供します。
 
+:warning: phy-goは現在開発中です。v1に達するまでは後方互換性のない変更が行われる可能性があります。
+
 #### phy-goを利用したクライアントコードの例
 
 ```go
