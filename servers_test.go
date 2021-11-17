@@ -513,6 +513,8 @@ func TestServerOp_ReadPowerStatus(t *testing.T) {
 }
 
 func TestServerOp_ReadRAIDStatus(t *testing.T) {
+	onlyUnitTest(t)
+
 	type args struct {
 		serverId v1.ServerId
 		refresh  bool
@@ -549,6 +551,8 @@ func TestServerOp_ReadRAIDStatus(t *testing.T) {
 }
 
 func TestServerOp_ConfigureBonding(t *testing.T) {
+	onlyUnitTest(t)
+
 	portChannel := testValueServer01.Server.PortChannels[0]
 
 	type args struct {
