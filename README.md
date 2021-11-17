@@ -63,6 +63,61 @@ Then import the `phy` package into your own code.
 
     import "github.com/sacloud/phy-go"
 
+## Fakeサーバ(スタンドアロン)
+
+FakeサーバはGoのコード以外からでも利用できるようにスタンドアロン版を提供しています。
+
+### Fakeサーバのインストール
+
+リリースページからダウンロード or `go install`してください。
+
+リリースページ: [https://github.com/sacloud/phy-go/releases/latest](https://github.com/sacloud/phy-go/releases/latest)
+
+```bash
+go install github.com/sacloud/phy-go/cmd/phy-go-fake-server
+```
+
+### Fakeサーバの利用方法
+
+```bash
+$ phy-go-fake-server --help
+Start the web server
+
+Usage:
+  phy-go-fake-server [flags]
+
+Flags:
+      --addr string      the address for the server to listen on (default ":8080")
+      --data string      the file path to the fake data JSON file
+  -h, --help             help for phy-go-fake-server
+      --output-example   the flag to output a fake data JSON example
+  -v, --version          version for phy-go-fake-server
+```
+
+- `--addr`: Fakeサーバがリッスンするアドレス
+- `--data`: FakeデータのJSONファイルへのパス、省略した場合はデフォルトのダミーデータが利用される
+- `--output-example`: FakeデータのJSONファイルの例を出力
+
+起動したら次のようにリクエストを行えます。
+
+```bash
+# localhost:8080で起動した場合の例
+$ curl http://localhost:8080/services/
+```
+
+### Fakeデータのカスタマイズ
+
+`--output-example`でJSONファイルの雛形を出力し、編集、その後`--data`でファイルパスを指定します。
+
+```bash
+# 雛形を出力
+$ phy-go-fake-server --output-example > fake.json
+# 編集
+$ vi fake.json
+# データファイルのパスを指定して起動
+$ phy-go-fake-server --data=fake.json
+```
+
 ## License
 
 `phy-go` Copyright 2021 The phy-go authors.
