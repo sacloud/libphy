@@ -7,7 +7,7 @@ require (
 	github.com/getlantern/deepcopy v0.0.0-20160317154340-7f45deb8130a
 	github.com/gin-gonic/gin v1.7.4
 	github.com/hashicorp/go-retryablehttp v0.7.0
-	github.com/sacloud/go-http v0.0.2
+	github.com/sacloud/go-http v0.0.3
 	github.com/spf13/cobra v1.2.1
 	github.com/stretchr/testify v1.7.0
 )
