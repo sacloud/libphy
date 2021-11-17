@@ -16,6 +16,7 @@ package stub
 
 import (
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	v1 "github.com/sacloud/phy-go/apis/v1"
@@ -109,12 +110,20 @@ type Server struct {
 
 // Handler 構築済みのhttp.Handlerを返す
 func (s *Server) Handler() http.Handler {
-	router := gin.Default()
+	gin.SetMode(gin.ReleaseMode)
+	if os.Getenv("PHY_SERVER_DEBUG") != "" {
+		gin.SetMode(gin.DebugMode)
+	}
+	engine := gin.New()
+	engine.Use(gin.Recovery())
+	if os.Getenv("PHY_SERVER_LOGGING") != "" {
+		engine.Use(gin.Logger())
+	}
 
-	router.GET("/ping", func(c *gin.Context) {
+	engine.GET("/ping", func(c *gin.Context) {
 		c.String(200, "pong")
 	})
-	return v1.RegisterHandlers(router, s)
+	return v1.RegisterHandlers(engine, s)
 }
 
 // ListDedicatedSubnets 専用グローバルネットワーク 一覧
