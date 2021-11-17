@@ -12,40 +12,40 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package v1
+package v1_test
 
 import (
 	"context"
+	"fmt"
 	"os"
-	"testing"
+
+	v1 "github.com/sacloud/phy-go/apis/v1"
 )
 
-func TestDummy(t *testing.T) {
-	if os.Getenv("TESTACC") == "" {
-		t.Skip("required: environment variable 'TESTACC'")
-	}
+var serverURL = "https://secure.sakura.ad.jp/cloud/api/dedicated-phy/1.0"
 
+// Example API定義から生成されたコードを直接利用する例
+func Example() {
 	token := os.Getenv("SAKURACLOUD_ACCESS_TOKEN")
 	secret := os.Getenv("SAKURACLOUD_ACCESS_TOKEN_SECRET")
-	if token == "" || secret == "" {
-		t.Skip("required: environment variable 'SAKURACLOUD_ACCESS_TOKEN' and 'SAKURACLOUD_ACCESS_TOKEN_SECRET'")
-	}
 
-	client, err := NewClientWithResponses("https://secure.sakura.ad.jp/cloud/api/dedicated-phy/1.0", func(c *Client) error {
-		c.RequestEditors = []RequestEditorFn{
-			PhyAuthInterceptor(token, secret),
-			PhyRequestInterceptor(),
+	client, err := v1.NewClientWithResponses(serverURL, func(c *v1.Client) error {
+		c.RequestEditors = []v1.RequestEditorFn{
+			v1.PhyAuthInterceptor(token, secret),
+			v1.PhyRequestInterceptor(),
 		}
 		return nil
 	})
 	if err != nil {
-		t.Fatal(err)
+		panic(err)
 	}
 
-	servers, err := client.ListServersWithResponse(context.Background(), &ListServersParams{})
+	services, err := client.ListServicesWithResponse(context.Background(), &v1.ListServicesParams{})
 	if err != nil {
-		t.Fatal(err)
+		panic(err)
 	}
 
-	t.Log(string(servers.Body))
+	fmt.Println(services.JSON200.Services[0].Nickname)
+	// output:
+	// server01
 }

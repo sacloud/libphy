@@ -23,10 +23,13 @@ import (
 	"github.com/sacloud/phy-go/fake/server"
 )
 
-func initFakeServer() func() {
+func init() {
+	initFakeServer()
+}
+
+func initFakeServer() {
 	sv := httptest.NewServer(fakeServer.Handler())
 	serverURL = sv.URL
-	return sv.Close
 }
 
 var fakeServer = &server.Server{

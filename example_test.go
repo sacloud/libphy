@@ -26,9 +26,6 @@ import (
 var serverURL = phy.DefaultAPIRootURL
 
 func Example() {
-	// Fakeサーバの初期化(本番環境で利用する場合この処理は不要)
-	defer initFakeServer()()
-
 	token := os.Getenv("SAKURACLOUD_ACCESS_TOKEN")
 	secret := os.Getenv("SAKURACLOUD_ACCESS_TOKEN_SECRET")
 
@@ -53,9 +50,6 @@ func Example() {
 }
 
 func ExampleServerAPI() {
-	// Fakeサーバの初期化(本番環境で利用する場合この処理は不要)
-	defer initFakeServer()()
-
 	token := os.Getenv("SAKURACLOUD_ACCESS_TOKEN")
 	secret := os.Getenv("SAKURACLOUD_ACCESS_TOKEN_SECRET")
 
@@ -89,9 +83,6 @@ func ExampleServerAPI() {
 }
 
 func ExampleServiceAPI() {
-	// Fakeサーバの初期化(本番環境で利用する場合この処理は不要)
-	defer initFakeServer()()
-
 	token := os.Getenv("SAKURACLOUD_ACCESS_TOKEN")
 	secret := os.Getenv("SAKURACLOUD_ACCESS_TOKEN_SECRET")
 
