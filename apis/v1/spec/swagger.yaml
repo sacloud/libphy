@@ -1134,7 +1134,6 @@ components:
         port_nicknames:
           type: array
           nullable: true
-          default: null
           description: |-
             作成するポート名称の指定
 
@@ -1201,7 +1200,6 @@ components:
         internet_type:
           type: string
           nullable: true
-          default: null
           enum:
             - common_subnet
             - dedicated_subnet
@@ -1213,7 +1211,6 @@ components:
         dedicated_subnet_id:
           type: string
           nullable: true
-          default: null
           description: |-
             専用グローバルネットワークのサービスコード指定
             `global_network_type`が`dedicated_subnet`の場合に必須
@@ -1221,7 +1218,6 @@ components:
         private_network_ids:
           type: array
           nullable: true
-          default: null
           description: 接続先ローカルネットワークの配列
           items:
             type: string
