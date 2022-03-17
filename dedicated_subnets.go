@@ -35,7 +35,11 @@ func NewDedicatedSubnetOp(client *Client) DedicatedSubnetAPI {
 }
 
 func (op *DedicatedSubnetOp) List(ctx context.Context, params *v1.ListDedicatedSubnetsParams) (*v1.DedicatedSubnets, error) {
-	response, err := op.client.apiClient().ListDedicatedSubnetsWithResponse(ctx, params)
+	apiClient, err := op.client.apiClient()
+	if err != nil {
+		return nil, err
+	}
+	response, err := apiClient.ListDedicatedSubnetsWithResponse(ctx, params)
 	if err != nil {
 		return nil, err
 	}
@@ -43,8 +47,13 @@ func (op *DedicatedSubnetOp) List(ctx context.Context, params *v1.ListDedicatedS
 }
 
 func (op *DedicatedSubnetOp) Read(ctx context.Context, dedicatedSubnetId v1.DedicatedSubnetId, refresh bool) (*v1.DedicatedSubnet, error) {
+	apiClient, err := op.client.apiClient()
+	if err != nil {
+		return nil, err
+	}
+
 	params := &v1.ReadDedicatedSubnetParams{Refresh: &refresh}
-	response, err := op.client.apiClient().ReadDedicatedSubnetWithResponse(ctx, dedicatedSubnetId, params)
+	response, err := apiClient.ReadDedicatedSubnetWithResponse(ctx, dedicatedSubnetId, params)
 	if err != nil {
 		return nil, err
 	}

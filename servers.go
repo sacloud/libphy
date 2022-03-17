@@ -46,7 +46,11 @@ func NewServerOp(client *Client) ServerAPI {
 }
 
 func (op *ServerOp) List(ctx context.Context, params *v1.ListServersParams) (*v1.Servers, error) {
-	response, err := op.client.apiClient().ListServersWithResponse(ctx, params)
+	apiClient, err := op.client.apiClient()
+	if err != nil {
+		return nil, err
+	}
+	response, err := apiClient.ListServersWithResponse(ctx, params)
 	if err != nil {
 		return nil, err
 	}
@@ -54,7 +58,11 @@ func (op *ServerOp) List(ctx context.Context, params *v1.ListServersParams) (*v1
 }
 
 func (op *ServerOp) Read(ctx context.Context, serverId v1.ServerId) (*v1.Server, error) {
-	response, err := op.client.apiClient().ReadServerWithResponse(ctx, serverId)
+	apiClient, err := op.client.apiClient()
+	if err != nil {
+		return nil, err
+	}
+	response, err := apiClient.ReadServerWithResponse(ctx, serverId)
 	if err != nil {
 		return nil, err
 	}
@@ -66,7 +74,11 @@ func (op *ServerOp) Read(ctx context.Context, serverId v1.ServerId) (*v1.Server,
 }
 
 func (op *ServerOp) ListOSImages(ctx context.Context, serverId v1.ServerId) ([]*v1.OsImage, error) {
-	response, err := op.client.apiClient().ListOSImagesWithResponse(ctx, serverId)
+	apiClient, err := op.client.apiClient()
+	if err != nil {
+		return nil, err
+	}
+	response, err := apiClient.ListOSImagesWithResponse(ctx, serverId)
 	if err != nil {
 		return nil, err
 	}
@@ -83,15 +95,23 @@ func (op *ServerOp) ListOSImages(ctx context.Context, serverId v1.ServerId) ([]*
 }
 
 func (op *ServerOp) OSInstall(ctx context.Context, serverId v1.ServerId, params v1.OsInstallParameter) error {
+	apiClient, err := op.client.apiClient()
+	if err != nil {
+		return err
+	}
 	headers := &v1.OSInstallParams{
 		XRequestedWith: v1.OSInstallParamsXRequestedWith(v1.XMLHttpRequest),
 	}
-	_, err := op.client.apiClient().OSInstall(ctx, serverId, headers, v1.OSInstallJSONRequestBody(params))
+	_, err = apiClient.OSInstall(ctx, serverId, headers, v1.OSInstallJSONRequestBody(params))
 	return err
 }
 
 func (op *ServerOp) ReadPortChannel(ctx context.Context, serverId v1.ServerId, portChannelId v1.PortChannelId) (*v1.PortChannel, error) {
-	response, err := op.client.apiClient().ReadServerPortChannelWithResponse(ctx, serverId, portChannelId)
+	apiClient, err := op.client.apiClient()
+	if err != nil {
+		return nil, err
+	}
+	response, err := apiClient.ReadServerPortChannelWithResponse(ctx, serverId, portChannelId)
 	if err != nil {
 		return nil, err
 	}
@@ -103,10 +123,14 @@ func (op *ServerOp) ReadPortChannel(ctx context.Context, serverId v1.ServerId, p
 }
 
 func (op *ServerOp) ConfigureBonding(ctx context.Context, serverId v1.ServerId, portChannelId v1.PortChannelId, params v1.ConfigureBondingParameter) (*v1.PortChannel, error) {
+	apiClient, err := op.client.apiClient()
+	if err != nil {
+		return nil, err
+	}
 	headers := &v1.ServerConfigureBondingParams{
 		XRequestedWith: v1.ServerConfigureBondingParamsXRequestedWith(v1.XMLHttpRequest),
 	}
-	response, err := op.client.apiClient().ServerConfigureBondingWithResponse(ctx, serverId, portChannelId, headers, v1.ServerConfigureBondingJSONRequestBody(params))
+	response, err := apiClient.ServerConfigureBondingWithResponse(ctx, serverId, portChannelId, headers, v1.ServerConfigureBondingJSONRequestBody(params))
 	if err != nil {
 		return nil, err
 	}
@@ -119,7 +143,11 @@ func (op *ServerOp) ConfigureBonding(ctx context.Context, serverId v1.ServerId, 
 }
 
 func (op *ServerOp) ReadPort(ctx context.Context, serverId v1.ServerId, portId v1.PortId) (*v1.InterfacePort, error) {
-	response, err := op.client.apiClient().ReadServerPortWithResponse(ctx, serverId, portId)
+	apiClient, err := op.client.apiClient()
+	if err != nil {
+		return nil, err
+	}
+	response, err := apiClient.ReadServerPortWithResponse(ctx, serverId, portId)
 	if err != nil {
 		return nil, err
 	}
@@ -131,10 +159,14 @@ func (op *ServerOp) ReadPort(ctx context.Context, serverId v1.ServerId, portId v
 }
 
 func (op *ServerOp) UpdatePort(ctx context.Context, serverId v1.ServerId, portId v1.PortId, params v1.UpdateServerPortParameter) (*v1.InterfacePort, error) {
+	apiClient, err := op.client.apiClient()
+	if err != nil {
+		return nil, err
+	}
 	headers := &v1.UpdateServerPortParams{
 		XRequestedWith: v1.UpdateServerPortParamsXRequestedWith(v1.XMLHttpRequest),
 	}
-	response, err := op.client.apiClient().UpdateServerPortWithResponse(ctx, serverId, portId, headers, v1.UpdateServerPortJSONRequestBody(params))
+	response, err := apiClient.UpdateServerPortWithResponse(ctx, serverId, portId, headers, v1.UpdateServerPortJSONRequestBody(params))
 	if err != nil {
 		return nil, err
 	}
@@ -147,10 +179,14 @@ func (op *ServerOp) UpdatePort(ctx context.Context, serverId v1.ServerId, portId
 }
 
 func (op *ServerOp) EnablePort(ctx context.Context, serverId v1.ServerId, portId v1.PortId, enable bool) (*v1.InterfacePort, error) {
+	apiClient, err := op.client.apiClient()
+	if err != nil {
+		return nil, err
+	}
 	headers := &v1.EnableServerPortParams{
 		XRequestedWith: v1.EnableServerPortParamsXRequestedWith(v1.XMLHttpRequest),
 	}
-	response, err := op.client.apiClient().EnableServerPortWithResponse(ctx, serverId, portId, headers, v1.EnableServerPortJSONRequestBody{Enable: enable})
+	response, err := apiClient.EnableServerPortWithResponse(ctx, serverId, portId, headers, v1.EnableServerPortJSONRequestBody{Enable: enable})
 	if err != nil {
 		return nil, err
 	}
@@ -163,10 +199,14 @@ func (op *ServerOp) EnablePort(ctx context.Context, serverId v1.ServerId, portId
 }
 
 func (op *ServerOp) AssignNetwork(ctx context.Context, serverId v1.ServerId, portId v1.PortId, params v1.AssignNetworkParameter) (*v1.InterfacePort, error) {
+	apiClient, err := op.client.apiClient()
+	if err != nil {
+		return nil, err
+	}
 	headers := &v1.ServerAssignNetworkParams{
 		XRequestedWith: v1.ServerAssignNetworkParamsXRequestedWith(v1.XMLHttpRequest),
 	}
-	response, err := op.client.apiClient().ServerAssignNetworkWithResponse(ctx, serverId, portId, headers, v1.ServerAssignNetworkJSONRequestBody(params))
+	response, err := apiClient.ServerAssignNetworkWithResponse(ctx, serverId, portId, headers, v1.ServerAssignNetworkJSONRequestBody(params))
 	if err != nil {
 		return nil, err
 	}
@@ -179,7 +219,11 @@ func (op *ServerOp) AssignNetwork(ctx context.Context, serverId v1.ServerId, por
 }
 
 func (op *ServerOp) ReadTrafficByPort(ctx context.Context, serverId v1.ServerId, portId v1.PortId, params v1.ReadServerTrafficByPortParams) (*v1.TrafficGraph, error) {
-	response, err := op.client.apiClient().ReadServerTrafficByPortWithResponse(ctx, serverId, portId, &params)
+	apiClient, err := op.client.apiClient()
+	if err != nil {
+		return nil, err
+	}
+	response, err := apiClient.ReadServerTrafficByPortWithResponse(ctx, serverId, portId, &params)
 	if err != nil {
 		return nil, err
 	}
@@ -191,15 +235,23 @@ func (op *ServerOp) ReadTrafficByPort(ctx context.Context, serverId v1.ServerId,
 }
 
 func (op *ServerOp) PowerControl(ctx context.Context, serverId v1.ServerId, operation v1.ServerPowerOperations) error {
+	apiClient, err := op.client.apiClient()
+	if err != nil {
+		return err
+	}
 	headers := &v1.ServerPowerControlParams{
 		XRequestedWith: v1.ServerPowerControlParamsXRequestedWith(v1.XMLHttpRequest),
 	}
-	_, err := op.client.apiClient().ServerPowerControl(ctx, serverId, headers, v1.ServerPowerControlJSONRequestBody{Operation: operation})
+	_, err = apiClient.ServerPowerControl(ctx, serverId, headers, v1.ServerPowerControlJSONRequestBody{Operation: operation})
 	return err
 }
 
 func (op *ServerOp) ReadPowerStatus(ctx context.Context, serverId v1.ServerId) (*v1.ServerPowerStatus, error) {
-	response, err := op.client.apiClient().ReadServerPowerStatusWithResponse(ctx, serverId)
+	apiClient, err := op.client.apiClient()
+	if err != nil {
+		return nil, err
+	}
+	response, err := apiClient.ReadServerPowerStatusWithResponse(ctx, serverId)
 	if err != nil {
 		return nil, err
 	}
@@ -211,7 +263,11 @@ func (op *ServerOp) ReadPowerStatus(ctx context.Context, serverId v1.ServerId) (
 }
 
 func (op *ServerOp) ReadRAIDStatus(ctx context.Context, serverId v1.ServerId, refresh bool) (*v1.RaidStatus, error) {
-	response, err := op.client.apiClient().ReadRAIDStatusWithResponse(ctx, serverId, &v1.ReadRAIDStatusParams{Refresh: &refresh})
+	apiClient, err := op.client.apiClient()
+	if err != nil {
+		return nil, err
+	}
+	response, err := apiClient.ReadRAIDStatusWithResponse(ctx, serverId, &v1.ReadRAIDStatusParams{Refresh: &refresh})
 	if err != nil {
 		return nil, err
 	}
