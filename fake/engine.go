@@ -15,6 +15,7 @@
 package fake
 
 import (
+	"encoding/json"
 	"sync"
 	"time"
 
@@ -46,23 +47,54 @@ type Engine struct {
 
 func (engine *Engine) GetServices() []*v1.Service {
 	defer engine.rLock()()
-	return engine.Services
+	var results []*v1.Service
+	data, err := json.Marshal(engine.Services)
+	if err != nil {
+		panic(err)
+	}
+	if err := json.Unmarshal(data, &results); err != nil {
+		panic(err)
+	}
+	return results
 }
 
 func (engine *Engine) GetServers() []*Server {
 	defer engine.rLock()()
-	return engine.Servers
+	var results []*Server
+	data, err := json.Marshal(engine.Servers)
+	if err != nil {
+		panic(err)
+	}
+	if err := json.Unmarshal(data, &results); err != nil {
+		panic(err)
+	}
+	return results
 }
 
 func (engine *Engine) GetDedicatedSubnets() []*v1.DedicatedSubnet {
 	defer engine.rLock()()
-	return engine.DedicatedSubnets
+	var results []*v1.DedicatedSubnet
+	data, err := json.Marshal(engine.DedicatedSubnets)
+	if err != nil {
+		panic(err)
+	}
+	if err := json.Unmarshal(data, &results); err != nil {
+		panic(err)
+	}
+	return results
 }
 
 func (engine *Engine) GetPrivateNetworks() []*v1.PrivateNetwork {
 	defer engine.rLock()()
-	return engine.PrivateNetworks
-
+	var results []*v1.PrivateNetwork
+	data, err := json.Marshal(engine.PrivateNetworks)
+	if err != nil {
+		panic(err)
+	}
+	if err := json.Unmarshal(data, &results); err != nil {
+		panic(err)
+	}
+	return results
 }
 
 func (engine *Engine) lock() func() {
