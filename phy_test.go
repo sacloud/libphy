@@ -97,9 +97,9 @@ var testServer = &server.Server{
 
 var (
 	testValueServices = []*v1.Service{
-		testValueService01,
+		&testValueService01,
 	}
-	testValueService01 = &v1.Service{
+	testValueService01 = v1.Service{
 		Activated:   time.Date(2021, 1, 1, 0, 0, 0, 0, time.UTC),
 		Description: pointer.String("description01"),
 		Nickname:    "service01",
@@ -119,9 +119,9 @@ var (
 		},
 	}
 	testValueDedicatedSubnets = []*v1.DedicatedSubnet{
-		testValueDedicatedSubnet01,
+		&testValueDedicatedSubnet01,
 	}
-	testValueDedicatedSubnet01 = &v1.DedicatedSubnet{
+	testValueDedicatedSubnet01 = v1.DedicatedSubnet{
 		ConfigStatus:      v1.DedicatedSubnetConfigStatusOperational,
 		DedicatedSubnetId: "2000000000001",
 		Firewall:          nil,
@@ -156,9 +156,9 @@ var (
 	}
 
 	testValuePrivateNetworks = []*v1.PrivateNetwork{
-		testValuePrivateNetwork01,
+		&testValuePrivateNetwork01,
 	}
-	testValuePrivateNetwork01 = &v1.PrivateNetwork{
+	testValuePrivateNetwork01 = v1.PrivateNetwork{
 		PrivateNetworkId: "300000000001",
 		ServerCount:      1,
 		Service: v1.ServiceQuiet{
@@ -174,9 +174,9 @@ var (
 	}
 
 	testValueServers = []*fake.Server{
-		testValueServer01,
+		&testValueServer01,
 	}
-	testValueServer01 = &fake.Server{
+	testValueServer01 = fake.Server{
 		Server: &v1.Server{
 			CachedPowerStatus: &v1.CachedPowerStatus{
 				Status: v1.CachedPowerStatusStatusOn,

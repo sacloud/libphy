@@ -39,7 +39,7 @@ func TestPrivateNetworkOp_List(t *testing.T) {
 					Count: len(testValuePrivateNetworks),
 				},
 				PrivateNetworks: []v1.PrivateNetwork{
-					*testValuePrivateNetwork01,
+					testValuePrivateNetwork01,
 				},
 			},
 			wantErr: false,
@@ -72,7 +72,7 @@ func TestPrivateNetworkOp_Read(t *testing.T) {
 		{
 			name:             "minimum",
 			privateNetworkId: v1.PrivateNetworkId(testValuePrivateNetwork01.PrivateNetworkId),
-			want:             testValuePrivateNetwork01,
+			want:             &testValuePrivateNetwork01,
 			wantErr:          false,
 		},
 	}

@@ -45,7 +45,7 @@ func TestServiceOp_ListServices(t *testing.T) {
 					Count: 1,
 				},
 				Services: []v1.Service{
-					*testValueService01,
+					testValueService01,
 				},
 			},
 			wantErr: false,
@@ -78,7 +78,7 @@ func TestServiceOp_ReadService(t *testing.T) {
 		{
 			name:      "minimum",
 			serviceId: v1.ServiceId(testValueService01.ServiceId),
-			want:      testValueService01,
+			want:      &testValueService01,
 			wantErr:   false,
 		},
 	}

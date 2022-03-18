@@ -39,7 +39,7 @@ func TestDedicatedSubnetOp_List(t *testing.T) {
 					Count: len(testValueDedicatedSubnets),
 				},
 				DedicatedSubnets: []v1.DedicatedSubnet{
-					*testValueDedicatedSubnet01,
+					testValueDedicatedSubnet01,
 				},
 			},
 			wantErr: false,
@@ -79,7 +79,7 @@ func TestDedicatedSubnetOp_Read(t *testing.T) {
 				dedicatedSubnetId: v1.DedicatedSubnetId(testValueDedicatedSubnet01.DedicatedSubnetId),
 				refresh:           false,
 			},
-			want:    testValueDedicatedSubnet01,
+			want:    &testValueDedicatedSubnet01,
 			wantErr: false,
 		},
 	}
