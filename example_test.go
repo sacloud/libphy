@@ -17,7 +17,6 @@ package phy_test
 import (
 	"context"
 	"fmt"
-	"os"
 
 	"github.com/sacloud/phy-go"
 	v1 "github.com/sacloud/phy-go/apis/v1"
@@ -26,12 +25,7 @@ import (
 var serverURL = phy.DefaultAPIRootURL
 
 func Example() {
-	token := os.Getenv("SAKURACLOUD_ACCESS_TOKEN")
-	secret := os.Getenv("SAKURACLOUD_ACCESS_TOKEN_SECRET")
-
 	client := &phy.Client{
-		Token:      token,
-		Secret:     secret,
 		APIRootURL: serverURL, // 省略可
 	}
 
@@ -50,12 +44,7 @@ func Example() {
 }
 
 func ExampleServerAPI() {
-	token := os.Getenv("SAKURACLOUD_ACCESS_TOKEN")
-	secret := os.Getenv("SAKURACLOUD_ACCESS_TOKEN_SECRET")
-
 	client := &phy.Client{
-		Token:      token,
-		Secret:     secret,
 		APIRootURL: serverURL, // 省略可
 	}
 
@@ -83,12 +72,7 @@ func ExampleServerAPI() {
 }
 
 func ExampleServiceAPI() {
-	token := os.Getenv("SAKURACLOUD_ACCESS_TOKEN")
-	secret := os.Getenv("SAKURACLOUD_ACCESS_TOKEN_SECRET")
-
 	client := &phy.Client{
-		Token:      token,
-		Secret:     secret,
 		APIRootURL: serverURL, // 省略可
 	}
 

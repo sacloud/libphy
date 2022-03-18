@@ -21,6 +21,7 @@ import (
 	"testing"
 	"time"
 
+	client "github.com/sacloud/api-client-go"
 	v1 "github.com/sacloud/phy-go/apis/v1"
 	"github.com/sacloud/phy-go/fake"
 	"github.com/sacloud/phy-go/fake/server"
@@ -76,13 +77,12 @@ func testClient(t *testing.T) *Client {
 	}
 
 	return &Client{
-		Token:          token,
-		Secret:         secret,
-		AcceptLanguage: "",
-		Gzip:           false,
-		Trace:          os.Getenv("SAKURACLOUD_TRACE") != "",
-		APIRootURL:     testServerURL,
-		HTTPClient:     testHTTPClient,
+		APIRootURL: testServerURL,
+		Options: &client.Options{
+			AccessToken:       token,
+			AccessTokenSecret: secret,
+			HttpClient:        testHTTPClient,
+		},
 	}
 }
 

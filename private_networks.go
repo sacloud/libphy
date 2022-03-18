@@ -35,7 +35,11 @@ func NewPrivateNetworkOp(client *Client) PrivateNetworkAPI {
 }
 
 func (op *PrivateNetworkOp) List(ctx context.Context, params *v1.ListPrivateNetworksParams) (*v1.PrivateNetworks, error) {
-	response, err := op.client.apiClient().ListPrivateNetworksWithResponse(ctx, params)
+	apiClient, err := op.client.apiClient()
+	if err != nil {
+		return nil, err
+	}
+	response, err := apiClient.ListPrivateNetworksWithResponse(ctx, params)
 	if err != nil {
 		return nil, err
 	}
@@ -43,7 +47,11 @@ func (op *PrivateNetworkOp) List(ctx context.Context, params *v1.ListPrivateNetw
 }
 
 func (op *PrivateNetworkOp) Read(ctx context.Context, privateNetworkId v1.PrivateNetworkId) (*v1.PrivateNetwork, error) {
-	response, err := op.client.apiClient().ReadPrivateNetworkWithResponse(ctx, privateNetworkId)
+	apiClient, err := op.client.apiClient()
+	if err != nil {
+		return nil, err
+	}
+	response, err := apiClient.ReadPrivateNetworkWithResponse(ctx, privateNetworkId)
 	if err != nil {
 		return nil, err
 	}

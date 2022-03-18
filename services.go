@@ -37,7 +37,11 @@ func NewServiceOp(client *Client) ServiceAPI {
 }
 
 func (op *ServiceOp) List(ctx context.Context, params *v1.ListServicesParams) (*v1.Services, error) {
-	response, err := op.client.apiClient().ListServicesWithResponse(ctx, params)
+	apiClient, err := op.client.apiClient()
+	if err != nil {
+		return nil, err
+	}
+	response, err := apiClient.ListServicesWithResponse(ctx, params)
 	if err != nil {
 		return nil, err
 	}
@@ -45,7 +49,11 @@ func (op *ServiceOp) List(ctx context.Context, params *v1.ListServicesParams) (*
 }
 
 func (op *ServiceOp) Read(ctx context.Context, serviceId v1.ServiceId) (*v1.Service, error) {
-	response, err := op.client.apiClient().ReadServiceWithResponse(ctx, serviceId)
+	apiClient, err := op.client.apiClient()
+	if err != nil {
+		return nil, err
+	}
+	response, err := apiClient.ReadServiceWithResponse(ctx, serviceId)
 	if err != nil {
 		return nil, err
 	}
@@ -57,10 +65,14 @@ func (op *ServiceOp) Read(ctx context.Context, serviceId v1.ServiceId) (*v1.Serv
 }
 
 func (op *ServiceOp) Update(ctx context.Context, serviceId v1.ServiceId, params v1.UpdateServiceParameter) (*v1.Service, error) {
+	apiClient, err := op.client.apiClient()
+	if err != nil {
+		return nil, err
+	}
 	headers := &v1.UpdateServiceParams{
 		XRequestedWith: v1.UpdateServiceParamsXRequestedWith(v1.XMLHttpRequest),
 	}
-	response, err := op.client.apiClient().UpdateServiceWithResponse(ctx, serviceId, headers, v1.UpdateServiceJSONRequestBody(params))
+	response, err := apiClient.UpdateServiceWithResponse(ctx, serviceId, headers, v1.UpdateServiceJSONRequestBody(params))
 	if err != nil {
 		return nil, err
 	}
