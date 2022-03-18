@@ -30,6 +30,7 @@ import (
 
 func TestServiceOp_ListServices(t *testing.T) {
 	onlyUnitTest(t)
+	services := testServer.Engine.GetServices()
 
 	tests := []struct {
 		name    string
@@ -42,10 +43,10 @@ func TestServiceOp_ListServices(t *testing.T) {
 			args: &v1.ListServicesParams{},
 			want: &v1.Services{
 				Meta: v1.PaginateMeta{
-					Count: 1,
+					Count: len(services),
 				},
 				Services: []v1.Service{
-					*testValueService01,
+					*services[0],
 				},
 			},
 			wantErr: false,
@@ -68,6 +69,7 @@ func TestServiceOp_ListServices(t *testing.T) {
 
 func TestServiceOp_ReadService(t *testing.T) {
 	onlyUnitTest(t)
+	services := testServer.Engine.GetServices()
 
 	tests := []struct {
 		name      string
@@ -77,8 +79,8 @@ func TestServiceOp_ReadService(t *testing.T) {
 	}{
 		{
 			name:      "minimum",
-			serviceId: v1.ServiceId(testValueService01.ServiceId),
-			want:      testValueService01,
+			serviceId: v1.ServiceId(services[0].ServiceId),
+			want:      services[0],
 			wantErr:   false,
 		},
 	}
@@ -99,6 +101,7 @@ func TestServiceOp_ReadService(t *testing.T) {
 
 func TestServiceOp_UpdateService(t *testing.T) {
 	onlyUnitTest(t)
+	services := testServer.Engine.GetServices()
 
 	type args struct {
 		serviceId v1.ServiceId
@@ -113,7 +116,7 @@ func TestServiceOp_UpdateService(t *testing.T) {
 		{
 			name: "minimum",
 			args: args{
-				serviceId: v1.ServiceId(testValueService01.ServiceId),
+				serviceId: v1.ServiceId(services[0].ServiceId),
 				params: v1.UpdateServiceParameter{
 					Description: pointer.String("description01-upd"),
 					Nickname:    "service01-upd",

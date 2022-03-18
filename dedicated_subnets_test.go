@@ -25,6 +25,7 @@ import (
 func TestDedicatedSubnetOp_List(t *testing.T) {
 	onlyUnitTest(t)
 
+	subnets := testServer.Engine.GetDedicatedSubnets()
 	tests := []struct {
 		name    string
 		params  *v1.ListDedicatedSubnetsParams
@@ -36,10 +37,10 @@ func TestDedicatedSubnetOp_List(t *testing.T) {
 			params: &v1.ListDedicatedSubnetsParams{},
 			want: &v1.DedicatedSubnets{
 				Meta: v1.PaginateMeta{
-					Count: len(testValueDedicatedSubnets),
+					Count: len(subnets),
 				},
 				DedicatedSubnets: []v1.DedicatedSubnet{
-					*testValueDedicatedSubnet01,
+					*subnets[0],
 				},
 			},
 			wantErr: false,
@@ -63,6 +64,7 @@ func TestDedicatedSubnetOp_List(t *testing.T) {
 func TestDedicatedSubnetOp_Read(t *testing.T) {
 	onlyUnitTest(t)
 
+	ds := testServer.Engine.GetDedicatedSubnets()[0]
 	type args struct {
 		dedicatedSubnetId v1.DedicatedSubnetId
 		refresh           bool
@@ -76,10 +78,10 @@ func TestDedicatedSubnetOp_Read(t *testing.T) {
 		{
 			name: "minimum",
 			args: args{
-				dedicatedSubnetId: v1.DedicatedSubnetId(testValueDedicatedSubnet01.DedicatedSubnetId),
+				dedicatedSubnetId: v1.DedicatedSubnetId(ds.DedicatedSubnetId),
 				refresh:           false,
 			},
-			want:    testValueDedicatedSubnet01,
+			want:    ds,
 			wantErr: false,
 		},
 	}

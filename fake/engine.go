@@ -25,7 +25,8 @@ const defaultActionInterval = 100 * time.Millisecond
 
 // Engine Fakeサーバであつかうダミーデータを表す
 //
-// Serverに渡した後はDataStore内のデータを外部から操作しないこと
+// Serverに渡した後は各フィールドを外部から操作しないこと
+// 各フィールドの値を参照したい場合はGetxxx()を用いること
 type Engine struct {
 	Services         []*v1.Service
 	Servers          []*Server
@@ -41,6 +42,27 @@ type Engine struct {
 	GeneratedID int
 
 	mu sync.RWMutex
+}
+
+func (engine *Engine) GetServices() []*v1.Service {
+	defer engine.rLock()()
+	return engine.Services
+}
+
+func (engine *Engine) GetServers() []*Server {
+	defer engine.rLock()()
+	return engine.Servers
+}
+
+func (engine *Engine) GetDedicatedSubnets() []*v1.DedicatedSubnet {
+	defer engine.rLock()()
+	return engine.DedicatedSubnets
+}
+
+func (engine *Engine) GetPrivateNetworks() []*v1.PrivateNetwork {
+	defer engine.rLock()()
+	return engine.PrivateNetworks
+
 }
 
 func (engine *Engine) lock() func() {
