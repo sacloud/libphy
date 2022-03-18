@@ -24,6 +24,7 @@ import (
 
 func TestPrivateNetworkOp_List(t *testing.T) {
 	onlyUnitTest(t)
+	networks := testServer.Engine.GetPrivateNetworks()
 
 	tests := []struct {
 		name    string
@@ -36,10 +37,10 @@ func TestPrivateNetworkOp_List(t *testing.T) {
 			params: &v1.ListPrivateNetworksParams{},
 			want: &v1.PrivateNetworks{
 				Meta: v1.PaginateMeta{
-					Count: len(testValuePrivateNetworks),
+					Count: len(networks),
 				},
 				PrivateNetworks: []v1.PrivateNetwork{
-					*testValuePrivateNetwork01,
+					*networks[0],
 				},
 			},
 			wantErr: false,
@@ -62,6 +63,7 @@ func TestPrivateNetworkOp_List(t *testing.T) {
 
 func TestPrivateNetworkOp_Read(t *testing.T) {
 	onlyUnitTest(t)
+	networks := testServer.Engine.GetPrivateNetworks()
 
 	tests := []struct {
 		name             string
@@ -71,8 +73,8 @@ func TestPrivateNetworkOp_Read(t *testing.T) {
 	}{
 		{
 			name:             "minimum",
-			privateNetworkId: v1.PrivateNetworkId(testValuePrivateNetwork01.PrivateNetworkId),
-			want:             testValuePrivateNetwork01,
+			privateNetworkId: v1.PrivateNetworkId(networks[0].PrivateNetworkId),
+			want:             networks[0],
 			wantErr:          false,
 		},
 	}

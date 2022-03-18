@@ -25,6 +25,7 @@ import (
 
 func TestServerOp_List(t *testing.T) {
 	onlyUnitTest(t)
+	servers := testServer.Engine.GetServers()
 
 	tests := []struct {
 		name    string
@@ -40,7 +41,7 @@ func TestServerOp_List(t *testing.T) {
 					Count: 1,
 				},
 				Servers: []v1.Server{
-					*testValueServer01.Server,
+					*servers[0].Server,
 				},
 			},
 			wantErr: false,
@@ -63,6 +64,7 @@ func TestServerOp_List(t *testing.T) {
 
 func TestServerOp_Read(t *testing.T) {
 	onlyUnitTest(t)
+	servers := testServer.Engine.GetServers()
 
 	tests := []struct {
 		name     string
@@ -72,8 +74,8 @@ func TestServerOp_Read(t *testing.T) {
 	}{
 		{
 			name:     "minimum",
-			serverId: v1.ServerId(testValueServer01.Id()),
-			want:     testValueServer01.Server,
+			serverId: v1.ServerId(servers[0].Id()),
+			want:     servers[0].Server,
 			wantErr:  false,
 		},
 	}
@@ -94,6 +96,7 @@ func TestServerOp_Read(t *testing.T) {
 
 func TestServerOp_ListOSImages(t *testing.T) {
 	onlyUnitTest(t)
+	servers := testServer.Engine.GetServers()
 
 	tests := []struct {
 		name     string
@@ -103,8 +106,8 @@ func TestServerOp_ListOSImages(t *testing.T) {
 	}{
 		{
 			name:     "minimum",
-			serverId: v1.ServerId(testValueServer01.Id()),
-			want:     testValueServer01.OSImages,
+			serverId: v1.ServerId(servers[0].Id()),
+			want:     servers[0].OSImages,
 			wantErr:  false,
 		},
 	}
@@ -125,6 +128,7 @@ func TestServerOp_ListOSImages(t *testing.T) {
 
 func TestServerOp_OSInstall(t *testing.T) {
 	onlyUnitTest(t)
+	servers := testServer.Engine.GetServers()
 
 	type args struct {
 		serverId v1.ServerId
@@ -138,7 +142,7 @@ func TestServerOp_OSInstall(t *testing.T) {
 		{
 			name: "minimum",
 			args: args{
-				serverId: v1.ServerId(testValueServer01.Id()),
+				serverId: v1.ServerId(servers[0].Id()),
 				params: v1.OsInstallParameter{
 					ManualPartition: true,
 					OsImageId:       "usacloud",
@@ -162,6 +166,7 @@ func TestServerOp_OSInstall(t *testing.T) {
 
 func TestServerOp_ReadPortChannel(t *testing.T) {
 	onlyUnitTest(t)
+	servers := testServer.Engine.GetServers()
 
 	type args struct {
 		serverId      v1.ServerId
@@ -176,10 +181,10 @@ func TestServerOp_ReadPortChannel(t *testing.T) {
 		{
 			name: "minimum",
 			args: args{
-				serverId:      v1.ServerId(testValueServer01.Id()),
+				serverId:      v1.ServerId(servers[0].Id()),
 				portChannelId: 1001,
 			},
-			want:    &testValueServer01.Server.PortChannels[0],
+			want:    &servers[0].Server.PortChannels[0],
 			wantErr: false,
 		},
 	}
@@ -200,6 +205,7 @@ func TestServerOp_ReadPortChannel(t *testing.T) {
 
 func TestServerOp_ReadPort(t *testing.T) {
 	onlyUnitTest(t)
+	servers := testServer.Engine.GetServers()
 
 	type args struct {
 		serverId v1.ServerId
@@ -214,10 +220,10 @@ func TestServerOp_ReadPort(t *testing.T) {
 		{
 			name: "minimum",
 			args: args{
-				serverId: v1.ServerId(testValueServer01.Id()),
+				serverId: v1.ServerId(servers[0].Id()),
 				portId:   2001,
 			},
-			want:    &testValueServer01.Server.Ports[0],
+			want:    &servers[0].Server.Ports[0],
 			wantErr: false,
 		},
 	}
@@ -238,8 +244,9 @@ func TestServerOp_ReadPort(t *testing.T) {
 
 func TestServerOp_UpdatePort(t *testing.T) {
 	onlyUnitTest(t)
+	servers := testServer.Engine.GetServers()
 
-	port := testValueServer01.Server.Ports[0]
+	port := servers[0].Server.Ports[0]
 	type args struct {
 		serverId v1.ServerId
 		portId   v1.PortId
@@ -254,7 +261,7 @@ func TestServerOp_UpdatePort(t *testing.T) {
 		{
 			name: "minimum",
 			args: args{
-				serverId: v1.ServerId(testValueServer01.Id()),
+				serverId: v1.ServerId(servers[0].Id()),
 				portId:   2001,
 				params: v1.UpdateServerPortParameter{
 					Nickname: "server01-port01-upd",
@@ -291,10 +298,12 @@ func TestServerOp_UpdatePort(t *testing.T) {
 
 func TestServerOp_AssignNetwork(t *testing.T) {
 	onlyUnitTest(t)
+	servers := testServer.Engine.GetServers()
+	subnets := testServer.Engine.GetDedicatedSubnets()
 
 	var internetType = v1.AssignNetworkParameterInternetTypeDedicatedSubnet
 	var mode = v1.InterfacePortModeAccess
-	port := testValueServer01.Server.Ports[0]
+	port := servers[0].Server.Ports[0]
 
 	type args struct {
 		serverId v1.ServerId
@@ -310,10 +319,10 @@ func TestServerOp_AssignNetwork(t *testing.T) {
 		{
 			name: "minimum",
 			args: args{
-				serverId: v1.ServerId(testValueServer01.Id()),
+				serverId: v1.ServerId(servers[0].Id()),
 				portId:   v1.PortId(port.PortId),
 				params: v1.AssignNetworkParameter{
-					DedicatedSubnetId: pointer.String(testValueDedicatedSubnet01.DedicatedSubnetId),
+					DedicatedSubnetId: pointer.String(subnets[0].DedicatedSubnetId),
 					InternetType:      &internetType,
 					Mode:              v1.AssignNetworkParameterModeAccess,
 				},
@@ -323,11 +332,11 @@ func TestServerOp_AssignNetwork(t *testing.T) {
 				GlobalBandwidthMbps: pointer.Int(500),
 				Internet: &v1.Internet{
 					DedicatedSubnet: &v1.AttachedDedicatedSubnet{
-						DedicatedSubnetId: testValueDedicatedSubnet01.DedicatedSubnetId,
-						Nickname:          testValueDedicatedSubnet01.Service.Nickname,
+						DedicatedSubnetId: subnets[0].DedicatedSubnetId,
+						Nickname:          subnets[0].Service.Nickname,
 					},
-					NetworkAddress: testValueDedicatedSubnet01.Ipv4.NetworkAddress,
-					PrefixLength:   testValueDedicatedSubnet01.Ipv4.PrefixLength,
+					NetworkAddress: subnets[0].Ipv4.NetworkAddress,
+					PrefixLength:   subnets[0].Ipv4.PrefixLength,
 					SubnetType:     v1.InternetSubnetTypeDedicatedSubnet,
 				},
 				PrivateNetworks:    nil,
@@ -357,8 +366,9 @@ func TestServerOp_AssignNetwork(t *testing.T) {
 
 func TestServerOp_EnablePort(t *testing.T) {
 	onlyUnitTest(t)
+	servers := testServer.Engine.GetServers()
 
-	port := testValueServer01.Server.Ports[0]
+	port := servers[0].Server.Ports[0]
 	type args struct {
 		serverId v1.ServerId
 		portId   v1.PortId
@@ -373,7 +383,7 @@ func TestServerOp_EnablePort(t *testing.T) {
 		{
 			name: "minimum",
 			args: args{
-				serverId: v1.ServerId(testValueServer01.Id()),
+				serverId: v1.ServerId(servers[0].Id()),
 				portId:   v1.PortId(port.PortId),
 				enable:   false,
 			},
@@ -408,8 +418,9 @@ func TestServerOp_EnablePort(t *testing.T) {
 
 func TestServerOp_ReadTrafficByPort(t *testing.T) {
 	onlyUnitTest(t)
+	servers := testServer.Engine.GetServers()
 
-	port := testValueServer01.Server.Ports[0]
+	port := servers[0].Server.Ports[0]
 	type args struct {
 		serverId v1.ServerId
 		portId   v1.PortId
@@ -423,7 +434,7 @@ func TestServerOp_ReadTrafficByPort(t *testing.T) {
 		{
 			name: "minimum",
 			args: args{
-				serverId: v1.ServerId(testValueServer01.Id()),
+				serverId: v1.ServerId(servers[0].Id()),
 				portId:   v1.PortId(port.PortId),
 				params:   v1.ReadServerTrafficByPortParams{},
 			},
@@ -450,6 +461,7 @@ func TestServerOp_ReadTrafficByPort(t *testing.T) {
 
 func TestServerOp_PowerControl(t *testing.T) {
 	onlyUnitTest(t)
+	servers := testServer.Engine.GetServers()
 
 	type args struct {
 		serverId  v1.ServerId
@@ -463,7 +475,7 @@ func TestServerOp_PowerControl(t *testing.T) {
 		{
 			name: "minimum",
 			args: args{
-				serverId:  v1.ServerId(testValueServer01.Id()),
+				serverId:  v1.ServerId(servers[0].Id()),
 				operation: v1.ServerPowerOperationsReset,
 			},
 			wantErr: false,
@@ -483,6 +495,7 @@ func TestServerOp_PowerControl(t *testing.T) {
 
 func TestServerOp_ReadPowerStatus(t *testing.T) {
 	onlyUnitTest(t)
+	servers := testServer.Engine.GetServers()
 
 	tests := []struct {
 		name     string
@@ -492,8 +505,8 @@ func TestServerOp_ReadPowerStatus(t *testing.T) {
 	}{
 		{
 			name:     "minimum",
-			serverId: v1.ServerId(testValueServer01.Id()),
-			want:     testValueServer01.PowerStatus,
+			serverId: v1.ServerId(servers[0].Id()),
+			want:     servers[0].PowerStatus,
 			wantErr:  false,
 		},
 	}
@@ -514,6 +527,7 @@ func TestServerOp_ReadPowerStatus(t *testing.T) {
 
 func TestServerOp_ReadRAIDStatus(t *testing.T) {
 	onlyUnitTest(t)
+	servers := testServer.Engine.GetServers()
 
 	type args struct {
 		serverId v1.ServerId
@@ -528,10 +542,10 @@ func TestServerOp_ReadRAIDStatus(t *testing.T) {
 		{
 			name: "minimum",
 			args: args{
-				serverId: v1.ServerId(testValueServer01.Id()),
+				serverId: v1.ServerId(servers[0].Id()),
 				refresh:  false,
 			},
-			want:    testValueServer01.RaidStatus,
+			want:    servers[0].RaidStatus,
 			wantErr: false,
 		},
 	}
@@ -552,8 +566,8 @@ func TestServerOp_ReadRAIDStatus(t *testing.T) {
 
 func TestServerOp_ConfigureBonding(t *testing.T) {
 	onlyUnitTest(t)
-
-	portChannel := testValueServer01.Server.PortChannels[0]
+	servers := testServer.Engine.GetServers()
+	portChannel := servers[0].Server.PortChannels[0]
 
 	type args struct {
 		serverId      v1.ServerId
@@ -569,7 +583,7 @@ func TestServerOp_ConfigureBonding(t *testing.T) {
 		{
 			name: "minimum",
 			args: args{
-				serverId:      v1.ServerId(testValueServer01.Id()),
+				serverId:      v1.ServerId(servers[0].Id()),
 				portChannelId: v1.PortChannelId(portChannel.PortChannelId),
 				params: v1.ConfigureBondingParameter{
 					BondingType:   v1.BondingTypeLacp,
