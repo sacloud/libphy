@@ -1,8 +1,8 @@
-# phy-go 
+# phy-api-go 
 
-[![Go Reference](https://pkg.go.dev/badge/github.com/sacloud/phy-go.svg)](https://pkg.go.dev/github.com/sacloud/phy-go)
-[![Tests](https://github.com/sacloud/phy-go/workflows/Tests/badge.svg)](https://github.com/sacloud/phy-go/actions/workflows/tests.yaml)
-[![Go Report Card](https://goreportcard.com/badge/github.com/sacloud/phy-go)](https://goreportcard.com/report/github.com/sacloud/phy-go)
+[![Go Reference](https://pkg.go.dev/badge/github.com/sacloud/phy-api-go.svg)](https://pkg.go.dev/github.com/sacloud/phy-api-go)
+[![Tests](https://github.com/sacloud/phy-api-go/workflows/Tests/badge.svg)](https://github.com/sacloud/phy-api-go/actions/workflows/tests.yaml)
+[![Go Report Card](https://goreportcard.com/badge/github.com/sacloud/phy-api-go)](https://goreportcard.com/report/github.com/sacloud/phy-api-go)
 
 Library for PHY API / [さくらの専用サーバPHY](https://server.sakura.ad.jp) の [API](https://manual.sakura.ad.jp/ds/phy/api/api-spec.html) をGo言語から扱うためのライブラリ
 
@@ -13,9 +13,9 @@ PHY API: [https://manual.sakura.ad.jp/ds/phy/api/api-spec.html](https://manual.s
 [oapi-codegen](https://github.com/deepmap/oapi-codegen) によって生成されたGoのコードに加え、
 Fake/Stubサーバの実装やより簡易に使えるようにラップしたクライアントコードを提供します。
 
-:warning: phy-goは現在開発中です。v1に達するまでは後方互換性のない変更が行われる可能性があります。
+:warning: phy-api-goは現在開発中です。v1に達するまでは後方互換性のない変更が行われる可能性があります。
 
-#### phy-goを利用したクライアントコードの例
+#### phy-api-goを利用したクライアントコードの例
 
 ```go
 package main
@@ -26,8 +26,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/sacloud/phy-go"
-	v1 "github.com/sacloud/phy-go/apis/v1"
+	"github.com/sacloud/phy-api-go"
+	v1 "github.com/sacloud/phy-api-go/apis/v1"
 )
 
 func main() {
@@ -57,11 +57,11 @@ func main() {
 
 Use go get.
 
-    go get github.com/sacloud/phy-go
+    go get github.com/sacloud/phy-api-go
 
 Then import the `phy` package into your own code.
 
-    import "github.com/sacloud/phy-go"
+    import "github.com/sacloud/phy-api-go"
 
 ## Fakeサーバ(スタンドアロン)
 
@@ -71,27 +71,27 @@ FakeサーバはGoのコード以外からでも利用できるようにスタ�
 
 リリースページからダウンロード or `go install`してください。
 
-リリースページ: [https://github.com/sacloud/phy-go/releases/latest](https://github.com/sacloud/phy-go/releases/latest)
+リリースページ: [https://github.com/sacloud/phy-api-go/releases/latest](https://github.com/sacloud/phy-api-go/releases/latest)
 
 ```bash
-go install github.com/sacloud/phy-go/cmd/phy-go-fake-server
+go install github.com/sacloud/phy-api-go/cmd/phy-api-go-fake-server
 ```
 
 ### Fakeサーバの利用方法
 
 ```bash
-$ phy-go-fake-server --help
+$ phy-api-go-fake-server --help
 Start the web server
 
 Usage:
-  phy-go-fake-server [flags]
+  phy-api-go-fake-server [flags]
 
 Flags:
       --addr string      the address for the server to listen on (default ":8080")
       --data string      the file path to the fake data JSON file
-  -h, --help             help for phy-go-fake-server
+  -h, --help             help for phy-api-go-fake-server
       --output-example   the flag to output a fake data JSON example
-  -v, --version          version for phy-go-fake-server
+  -v, --version          version for phy-api-go-fake-server
 ```
 
 - `--addr`: Fakeサーバがリッスンするアドレス
@@ -111,15 +111,15 @@ $ curl http://localhost:8080/services/
 
 ```bash
 # 雛形を出力
-$ phy-go-fake-server --output-example > fake.json
+$ phy-api-go-fake-server --output-example > fake.json
 # 編集
 $ vi fake.json
 # データファイルのパスを指定して起動
-$ phy-go-fake-server --data=fake.json
+$ phy-api-go-fake-server --data=fake.json
 ```
 
 ## License
 
-`phy-go` Copyright 2021-2022 The phy-go authors.
+`phy-api-go` Copyright 2021-2022 The phy-api-go authors.
 
 This project is published under [Apache 2.0 License](LICENSE).

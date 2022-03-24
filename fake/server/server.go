@@ -1,4 +1,4 @@
-// Copyright 2021-2022 The phy-go authors
+// Copyright 2021-2022 The phy-api-go authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,8 +20,8 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
-	v1 "github.com/sacloud/phy-go/apis/v1"
-	"github.com/sacloud/phy-go/fake"
+	v1 "github.com/sacloud/phy-api-go/apis/v1"
+	"github.com/sacloud/phy-api-go/fake"
 )
 
 // Server PHY APIのFakeサーバ実装
@@ -72,6 +72,7 @@ func (s *Server) handleError(c *gin.Context, err error) {
 					},
 				},
 			})
+			return
 		case fake.ErrorTypeNotFound:
 			c.JSON(http.StatusNotFound, &v1.ProblemDetails404{
 				Detail: engineErr.Error(),
@@ -79,6 +80,7 @@ func (s *Server) handleError(c *gin.Context, err error) {
 				Title:  v1.ProblemDetails404TitleNotFound,
 				Type:   "about:blank",
 			})
+			return
 		case fake.ErrorTypeConflict:
 			c.JSON(http.StatusConflict, &v1.ProblemDetails409{
 				Detail: engineErr.Error(),
@@ -86,6 +88,7 @@ func (s *Server) handleError(c *gin.Context, err error) {
 				Title:  v1.ProblemDetails409TitleConflict,
 				Type:   "about:blank",
 			})
+			return
 		}
 	}
 

@@ -1,4 +1,4 @@
-// Copyright 2021-2022 The phy-go authors
+// Copyright 2021-2022 The phy-api-go authors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ import (
 	"testing"
 	"time"
 
-	v1 "github.com/sacloud/phy-go/apis/v1"
+	v1 "github.com/sacloud/phy-api-go/apis/v1"
 	"github.com/stretchr/testify/require"
 )
 
