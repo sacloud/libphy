@@ -1,5 +1,5 @@
 #
-# Copyright 2021-2022 The phy-go authors
+# Copyright 2021-2022 The phy-api-go authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,17 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-AUTHOR          ?="The phy-go authors"
+AUTHOR          ?="The phy-api-go authors"
 COPYRIGHT_YEAR  ?="2021-2022"
 COPYRIGHT_FILES ?=$$(find . -name "*.go" -print | grep -v "/vendor/")
 
 default: gen fmt set-license goimports lint test
 
 .PHONY: all
-all: dist/phy-go-fake-server
+all: dist/phy-api-go-fake-server
 
-dist/phy-go-fake-server: *.go
-	go build -o dist/phy-go-fake-server cmd/phy-go-fake-server/*.go
+dist/phy-api-go-fake-server: *.go
+	go build -o dist/phy-api-go-fake-server cmd/phy-api-go-fake-server/*.go
 
 .PHONY: test
 test:
@@ -95,6 +95,6 @@ lint-def:
 
 .PHONY: godoc
 godoc:
-	echo "URL: http://localhost:6060/pkg/github.com/sacloud/phy-go/"
+	echo "URL: http://localhost:6060/pkg/github.com/sacloud/phy-api-go/"
 	godoc -http=localhost:6060
 

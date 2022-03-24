@@ -4,10 +4,10 @@ before:
 builds:
   - env:
       - CGO_ENABLED=0
-    main: ./cmd/phy-go-fake-server
+    main: ./cmd/phy-api-go-fake-server
     ldflags:
       - -s -w
-      - -X github.com/sacloud/phy-go/version.Revision={{.ShortCommit}}
+      - -X github.com/sacloud/phy-api-go/version.Revision={{.ShortCommit}}
     goos:
       - windows
       - linux
@@ -15,7 +15,7 @@ builds:
     goarch:
       - amd64
       - arm64
-    binary: 'phy-go-fake-server'
+    binary: 'phy-api-go-fake-server'
 release:
   draft: false
 changelog:
