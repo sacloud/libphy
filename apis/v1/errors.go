@@ -16,6 +16,54 @@ package v1
 
 import "fmt"
 
+func IsError400(err error) bool {
+	if err == nil {
+		return false
+	}
+	_, ok := err.(*ProblemDetails400)
+	return ok
+}
+
+func IsError401(err error) bool {
+	if err == nil {
+		return false
+	}
+	_, ok := err.(*ProblemDetails401)
+	return ok
+}
+
+func IsError404(err error) bool {
+	if err == nil {
+		return false
+	}
+	_, ok := err.(*ProblemDetails404)
+	return ok
+}
+
+func IsError409(err error) bool {
+	if err == nil {
+		return false
+	}
+	_, ok := err.(*ProblemDetails409)
+	return ok
+}
+
+func IsError429(err error) bool {
+	if err == nil {
+		return false
+	}
+	_, ok := err.(*ProblemDetails429)
+	return ok
+}
+
+func IsError503(err error) bool {
+	if err == nil {
+		return false
+	}
+	_, ok := err.(*ProblemDetails503)
+	return ok
+}
+
 func (e ProblemDetails400) Error() string {
 	return fmt.Sprintf("status: %d, title: %v, detail: %v", e.Status, e.Title, e.Detail)
 }
