@@ -15,8 +15,6 @@
 package fake
 
 import (
-	"fmt"
-
 	"github.com/getlantern/deepcopy"
 	v1 "github.com/sacloud/phy-api-go/apis/v1"
 )
@@ -51,7 +49,7 @@ func (engine *Engine) ReadDedicatedSubnet(dedicatedSubnetId v1.DedicatedSubnetId
 		}
 		return &subnet, nil
 	}
-	return nil, fmt.Errorf("dedicated subnet %q not found", dedicatedSubnetId)
+	return nil, NewError(ErrorTypeNotFound, "dedicated-subnet", dedicatedSubnetId)
 }
 
 // dedicatedSubnets []*v1.DedicatedSubnetから[]v1.DedicatedSubnetに変換して返す

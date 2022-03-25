@@ -15,8 +15,6 @@
 package fake
 
 import (
-	"fmt"
-
 	"github.com/getlantern/deepcopy"
 	v1 "github.com/sacloud/phy-api-go/apis/v1"
 )
@@ -50,7 +48,7 @@ func (engine *Engine) ReadPrivateNetwork(privateNetworkId v1.PrivateNetworkId) (
 		}
 		return &network, nil
 	}
-	return nil, fmt.Errorf("private network %q not found", privateNetworkId)
+	return nil, NewError(ErrorTypeNotFound, "private-network", privateNetworkId)
 }
 
 // privateNetworks []*v1.PrivateNetworkから[]v1.PrivateNetworkに変換して返す
