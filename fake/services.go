@@ -15,8 +15,6 @@
 package fake
 
 import (
-	"fmt"
-
 	"github.com/getlantern/deepcopy"
 	v1 "github.com/sacloud/phy-api-go/apis/v1"
 )
@@ -48,7 +46,7 @@ func (engine *Engine) ReadService(serviceId v1.ServiceId) (*v1.Service, error) {
 		}
 		return &service, nil
 	}
-	return nil, fmt.Errorf("service %q not found", serviceId)
+	return nil, NewError(ErrorTypeNotFound, "service", serviceId)
 }
 
 // UpdateService サービスの名称・説明の変更
@@ -65,7 +63,7 @@ func (engine *Engine) UpdateService(serviceId v1.ServiceId, body v1.UpdateServic
 		}
 		return &svc, nil
 	}
-	return nil, fmt.Errorf("service %q not found", serviceId)
+	return nil, NewError(ErrorTypeNotFound, "service", serviceId)
 }
 
 // services []*v1.Serviceから[]v1.Serviceに変換して返す
