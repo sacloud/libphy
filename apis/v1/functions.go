@@ -28,7 +28,7 @@ func eCoalesce(errs ...error) error {
 	return nil
 }
 
-var osStatusCodes = map[int]bool{
+var okStatusCodes = map[int]bool{
 	http.StatusOK:        true,
 	http.StatusCreated:   true,
 	http.StatusAccepted:  true,
@@ -36,6 +36,6 @@ var osStatusCodes = map[int]bool{
 }
 
 func isOKStatus(httpStatusCode int) bool {
-	_, ok := osStatusCodes[httpStatusCode]
+	_, ok := okStatusCodes[httpStatusCode]
 	return ok
 }
