@@ -44,7 +44,7 @@ var cmd = &cobra.Command{
 	Use:          "phy-api-go-fake-server",
 	Short:        "Start the web server",
 	RunE:         run,
-	Version:      phy.Version,
+	Version:      "v" + phy.Version,
 	SilenceUsage: true,
 }
 

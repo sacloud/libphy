@@ -29,7 +29,7 @@ const DefaultAPIRootURL = "https://secure.sakura.ad.jp/cloud/api/dedicated-phy/1
 
 // UserAgent APIリクエスト時のユーザーエージェント
 var UserAgent = fmt.Sprintf(
-	"phy-api-go/%s (%s/%s; +https://github.com/sacloud/phy-api-go) %s",
+	"phy-api-go/v%s (%s/%s; +https://github.com/sacloud/phy-api-go) %s",
 	Version,
 	runtime.GOOS,
 	runtime.GOARCH,
