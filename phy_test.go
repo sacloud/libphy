@@ -37,7 +37,7 @@ func TestMain(m *testing.M) {
 
 		testServerURL = sv.URL
 	}
-	os.Exit(m.Run())
+	m.Run()
 }
 
 func isAcceptanceTest() bool {

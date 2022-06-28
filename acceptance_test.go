@@ -33,7 +33,7 @@ const (
 	EnvNameDisableServerAPI          = "PHY_TEST_DISABLE_SERVER_API"
 )
 
-var serverPowerControlWaitDuration = time.Duration(1 * time.Minute)
+var serverPowerControlWaitDuration = 1 * time.Minute
 
 // TestAcc_ServiceAPI サービスAPIのテスト
 //
@@ -291,5 +291,4 @@ func TestAcc_ServerAPI(t *testing.T) {
 		}
 		require.NoError(t, serverOp.PowerControl(ctx, serverId, operation))
 	})
-
 }
