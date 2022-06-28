@@ -3,7 +3,7 @@
 オリジナルの定義ファイルは以下のサイトで公開されています。
 [https://manual.sakura.ad.jp/ds/phy/api/api-spec.html](https://manual.sakura.ad.jp/ds/phy/api/api-spec.html)
 
-公開されている定義ファイルのままでは https://github.com/deepmap/oapi-codegen でコード生成した際にコンパイルエラーが出るため、手作業で修正を行っています。
+公開されている定義ファイルのままでは https://github.com/deepmap/oapi-codegen でコード生成した際にコンパイルエラーが出るため、手作業で修正しています。  
 修正は以下のように行っています。
 
 - オリジナルの定義ファイルをダウンロード、`original-swagger.json`として保存
