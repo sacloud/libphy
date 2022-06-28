@@ -406,7 +406,7 @@ func (engine *Engine) getServerById(serverId v1.ServerId) *Server {
 
 func (engine *Engine) startOSInstall(server *Server) {
 	go engine.startUpdateAction(func() {
-		//start
+		// start
 		status := v1.ServerLockStatusOsInstall
 		server.Server.LockStatus = &status
 

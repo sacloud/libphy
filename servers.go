@@ -88,8 +88,8 @@ func (op *ServerOp) ListOSImages(ctx context.Context, serverId v1.ServerId) ([]*
 	}
 
 	var images []*v1.OsImage
-	for _, v := range result.OsImages {
-		images = append(images, &v)
+	for i := range result.OsImages {
+		images = append(images, &result.OsImages[i])
 	}
 	return images, nil
 }
