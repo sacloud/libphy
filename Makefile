@@ -25,12 +25,12 @@ include includes/go/common.mk
 include includes/go/single.mk
 #====================
 
-default: $(DEFAULT_GOALS)
+default: gen $(DEFAULT_GOALS)
 
 .PHONY: tools
 tools: dev-tools
 	npm install -g @apidevtools/swagger-cli
-	go install github.com/deepmap/oapi-codegen/cmd/oapi-codegen@v1.9.0
+	go install github.com/deepmap/oapi-codegen/cmd/oapi-codegen@v1.11.0
 
 
 .PHONY: clean-all
@@ -53,13 +53,13 @@ apis/v1/spec/swagger.json: apis/v1/spec/swagger.yaml
 	swagger-cli bundle apis/v1/spec/swagger.yaml -o apis/v1/spec/swagger.json --type json
 
 apis/v1/zz_types_gen.go: apis/v1/spec/swagger.yaml apis/v1/spec/codegen/types.yaml
-	oapi-codegen -config apis/v1/spec/codegen/types.yaml apis/v1/spec/swagger.yaml
+	oapi-codegen --old-config-style -config apis/v1/spec/codegen/types.yaml apis/v1/spec/swagger.yaml
 
 apis/v1/zz_client_gen.go: apis/v1/spec/swagger.yaml apis/v1/spec/codegen/client.yaml
-	oapi-codegen -config apis/v1/spec/codegen/client.yaml apis/v1/spec/swagger.yaml
+	oapi-codegen --old-config-style -config apis/v1/spec/codegen/client.yaml apis/v1/spec/swagger.yaml
 
 apis/v1/zz_server_gen.go: apis/v1/spec/swagger.yaml apis/v1/spec/codegen/gin.yaml
-	oapi-codegen -config apis/v1/spec/codegen/gin.yaml apis/v1/spec/swagger.yaml
+	oapi-codegen --old-config-style -config apis/v1/spec/codegen/gin.yaml apis/v1/spec/swagger.yaml
 
 lint-def:
 	docker run --rm -v $$PWD:$$PWD -w $$PWD stoplight/spectral:latest lint -F warn apis/v1/spec/swagger.yaml
