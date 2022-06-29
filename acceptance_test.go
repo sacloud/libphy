@@ -48,7 +48,7 @@ func TestAcc_ServiceAPI(t *testing.T) {
 	ctx := context.Background()
 
 	// List
-	limit := v1.Limit(1)
+	limit := 1
 	found, err := serviceOp.List(ctx, &v1.ListServicesParams{
 		Limit: &limit,
 	})
@@ -57,7 +57,7 @@ func TestAcc_ServiceAPI(t *testing.T) {
 	require.Equal(t, 1, len(found.Services))
 
 	// Read
-	serviceId := v1.ServiceId(found.Services[0].ServiceId)
+	serviceId := found.Services[0].ServiceId
 	read, err := serviceOp.Read(ctx, serviceId)
 	require.NoError(t, err)
 	require.NotNil(t, read)
@@ -98,14 +98,14 @@ func TestAcc_PrivateNetworkAPI(t *testing.T) {
 	ctx := context.Background()
 
 	// List
-	limit := v1.Limit(1)
+	limit := 1
 	found, err := privateNetworkOp.List(ctx, &v1.ListPrivateNetworksParams{
 		Limit: &limit,
 	})
 	require.NoError(t, err)
 	require.Len(t, found.PrivateNetworks, 1)
 
-	privateNetworkId := v1.PrivateNetworkId(found.PrivateNetworks[0].PrivateNetworkId)
+	privateNetworkId := found.PrivateNetworks[0].PrivateNetworkId
 
 	// Read
 	read, err := privateNetworkOp.Read(ctx, privateNetworkId)
@@ -126,14 +126,14 @@ func TestAcc_DedicatedSubnetAPI(t *testing.T) {
 	ctx := context.Background()
 
 	// List
-	limit := v1.Limit(1)
+	limit := 1
 	found, err := dedicatedSubnetOp.List(ctx, &v1.ListDedicatedSubnetsParams{
 		Limit: &limit,
 	})
 	require.NoError(t, err)
 	require.Len(t, found.DedicatedSubnets, 1)
 
-	id := v1.DedicatedSubnetId(found.DedicatedSubnets[0].DedicatedSubnetId)
+	id := found.DedicatedSubnets[0].DedicatedSubnetId
 
 	// Read
 	read, err := dedicatedSubnetOp.Read(ctx, id, false)
@@ -157,7 +157,7 @@ func TestAcc_ServerAPI(t *testing.T) {
 	if envId == "" {
 		t.Skip("environment variable 'PHY_TEST_SERVER_ID' is not set. skip")
 	}
-	serverId := v1.ServerId(envId)
+	serverId := envId
 
 	client := testClient(t)
 	serverOp := NewServerOp(client)
@@ -169,7 +169,7 @@ func TestAcc_ServerAPI(t *testing.T) {
 	var currentPowerStatus v1.ServerPowerStatusStatus
 
 	t.Run("List", func(t *testing.T) {
-		limit := v1.Limit(1)
+		limit := 1
 		found, err := serverOp.List(ctx, &v1.ListServersParams{
 			Limit: &limit,
 		})
@@ -183,8 +183,8 @@ func TestAcc_ServerAPI(t *testing.T) {
 		require.NotNil(t, read)
 
 		// 後のテストのためにIDを保持しておく
-		portChannelId = v1.PortChannelId(read.PortChannels[0].PortChannelId)
-		portId = v1.PortId(read.Ports[0].PortId)
+		portChannelId = read.PortChannels[0].PortChannelId
+		portId = read.Ports[0].PortId
 	})
 
 	t.Run("ListOSImages", func(t *testing.T) {

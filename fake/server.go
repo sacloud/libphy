@@ -34,7 +34,7 @@ func (s *Server) Id() string {
 func (s *Server) getPortChannelById(portChannelId v1.PortChannelId) (*v1.PortChannel, error) {
 	for i := range s.Server.PortChannels {
 		portChannel := s.Server.PortChannels[i]
-		if portChannel.PortChannelId == int(portChannelId) {
+		if portChannel.PortChannelId == portChannelId {
 			var channel v1.PortChannel
 			if err := deepcopy.Copy(&channel, &portChannel); err != nil {
 				return nil, err
@@ -48,7 +48,7 @@ func (s *Server) getPortChannelById(portChannelId v1.PortChannelId) (*v1.PortCha
 func (s *Server) getPortById(portId v1.PortId) (*v1.InterfacePort, error) {
 	for i := range s.Server.Ports {
 		port := s.Server.Ports[i]
-		if port.PortId == int(portId) {
+		if port.PortId == portId {
 			var pt v1.InterfacePort
 			if err := deepcopy.Copy(&pt, &port); err != nil {
 				return nil, err

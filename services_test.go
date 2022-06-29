@@ -79,7 +79,7 @@ func TestServiceOp_ReadService(t *testing.T) {
 	}{
 		{
 			name:      "minimum",
-			serviceId: v1.ServiceId(services[0].ServiceId),
+			serviceId: services[0].ServiceId,
 			want:      services[0],
 			wantErr:   false,
 		},
@@ -116,7 +116,7 @@ func TestServiceOp_UpdateService(t *testing.T) {
 		{
 			name: "minimum",
 			args: args{
-				serviceId: v1.ServiceId(services[0].ServiceId),
+				serviceId: services[0].ServiceId,
 				params: v1.UpdateServiceParameter{
 					Description: pointer.String("description01-upd"),
 					Nickname:    "service01-upd",
@@ -178,7 +178,7 @@ func TestService_ErrorHandling(t *testing.T) {
 
 	serviceOp := NewServiceOp(client)
 
-	got, err := serviceOp.Read(context.Background(), v1.ServiceId("100000000001"))
+	got, err := serviceOp.Read(context.Background(), "100000000001")
 	require.Nil(t, got)
 	require.Error(t, err)
 }
@@ -197,7 +197,7 @@ func TestService_UnknownError(t *testing.T) {
 
 	serviceOp := NewServiceOp(client)
 
-	got, err := serviceOp.Read(context.Background(), v1.ServiceId("100000000001"))
+	got, err := serviceOp.Read(context.Background(), "100000000001")
 	require.Nil(t, got)
 	require.Error(t, err)
 }

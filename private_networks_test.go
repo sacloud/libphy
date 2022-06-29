@@ -73,7 +73,7 @@ func TestPrivateNetworkOp_Read(t *testing.T) {
 	}{
 		{
 			name:             "minimum",
-			privateNetworkId: v1.PrivateNetworkId(networks[0].PrivateNetworkId),
+			privateNetworkId: networks[0].PrivateNetworkId,
 			want:             networks[0],
 			wantErr:          false,
 		},

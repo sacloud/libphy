@@ -60,7 +60,7 @@ func ExampleServerAPI() {
 	for _, sv := range found.Servers {
 		if sv.CachedPowerStatus.Status == v1.CachedPowerStatusStatusOn {
 			// v1.ServerPowerOperationsSoft == ACPIシャットダウン
-			if err := serverOp.PowerControl(ctx, v1.ServerId(sv.ServerId), v1.ServerPowerOperationsSoft); err != nil {
+			if err := serverOp.PowerControl(ctx, sv.ServerId, v1.ServerPowerOperationsSoft); err != nil {
 				panic(err)
 			}
 			fmt.Printf("shutting down: %s\n", sv.Service.Nickname)

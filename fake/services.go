@@ -77,7 +77,7 @@ func (engine *Engine) services() []v1.Service {
 
 func (engine *Engine) getServiceById(serviceId v1.ServiceId) *v1.Service {
 	for _, s := range engine.Services {
-		if s.ServiceId == string(serviceId) {
+		if s.ServiceId == serviceId {
 			return s
 		}
 	}
