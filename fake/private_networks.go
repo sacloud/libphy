@@ -62,7 +62,7 @@ func (engine *Engine) privateNetworks() []v1.PrivateNetwork {
 
 func (engine *Engine) getPrivateNetworkById(privateNetworkId v1.PrivateNetworkId) *v1.PrivateNetwork {
 	for _, p := range engine.PrivateNetworks {
-		if p.PrivateNetworkId == string(privateNetworkId) {
+		if p.PrivateNetworkId == privateNetworkId {
 			return p
 		}
 	}

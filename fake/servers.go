@@ -50,7 +50,7 @@ func (engine *Engine) ReadServer(serverId v1.ServerId) (*v1.Server, error) {
 		}
 		return &server, nil
 	}
-	return nil, NewError(ErrorTypeNotFound, "server", string(serverId))
+	return nil, NewError(ErrorTypeNotFound, "server", serverId)
 }
 
 // ListOSImages インストール可能OS一覧
@@ -66,7 +66,7 @@ func (engine *Engine) ListOSImages(serverId v1.ServerId) ([]*v1.OsImage, error) 
 		}
 		return images, nil
 	}
-	return nil, NewError(ErrorTypeNotFound, "server", string(serverId))
+	return nil, NewError(ErrorTypeNotFound, "server", serverId)
 }
 
 // OSInstall OSインストールの実行
@@ -77,7 +77,7 @@ func (engine *Engine) OSInstall(serverId v1.ServerId, params v1.OsInstallParamet
 	s := engine.getServerById(serverId)
 	if s != nil {
 		if s.Server.LockStatus != nil {
-			return NewError(ErrorTypeConflict, "server", string(serverId))
+			return NewError(ErrorTypeConflict, "server", serverId)
 		}
 		for _, image := range s.OSImages {
 			if image.OsImageId == params.OsImageId {
@@ -237,7 +237,7 @@ func (engine *Engine) ServerAssignNetwork(serverId v1.ServerId, portId v1.PortId
 				mbps := 100
 				port.GlobalBandwidthMbps = &mbps
 			case v1.AssignNetworkParameterInternetTypeDedicatedSubnet:
-				subnet := engine.getDedicatedSubnetById(v1.DedicatedSubnetId(*params.DedicatedSubnetId))
+				subnet := engine.getDedicatedSubnetById(*params.DedicatedSubnetId)
 				if subnet == nil {
 					return nil, NewError(ErrorTypeInvalidRequest, "port", portId, "invalid dedicated subnet id: %s", params.DedicatedSubnetId)
 				}
@@ -269,7 +269,7 @@ func (engine *Engine) ServerAssignNetwork(serverId v1.ServerId, portId v1.PortId
 
 		if params.PrivateNetworkIds != nil {
 			for _, id := range *params.PrivateNetworkIds {
-				pn := engine.getPrivateNetworkById(v1.PrivateNetworkId(id))
+				pn := engine.getPrivateNetworkById(id)
 				if pn == nil {
 					return nil, NewError(ErrorTypeInvalidRequest, "port", portId, "invalid private network id: %s", id)
 				}
@@ -351,7 +351,7 @@ func (engine *Engine) ServerPowerControl(serverId v1.ServerId, params v1.PowerCo
 	s := engine.getServerById(serverId)
 	if s != nil {
 		if s.Server.LockStatus != nil {
-			return NewError(ErrorTypeConflict, "server", string(serverId))
+			return NewError(ErrorTypeConflict, "server", serverId)
 		}
 
 		engine.startServerPowerControl(s, params)
@@ -397,7 +397,7 @@ func (engine *Engine) servers() []v1.Server {
 
 func (engine *Engine) getServerById(serverId v1.ServerId) *Server {
 	for _, s := range engine.Servers {
-		if s.Id() == string(serverId) {
+		if s.Id() == serverId {
 			return s
 		}
 	}

@@ -72,7 +72,7 @@ func (op *ServiceOp) Update(ctx context.Context, serviceId v1.ServiceId, params 
 	headers := &v1.UpdateServiceParams{
 		XRequestedWith: v1.UpdateServiceParamsXRequestedWith(v1.XMLHttpRequest),
 	}
-	response, err := apiClient.UpdateServiceWithResponse(ctx, serviceId, headers, v1.UpdateServiceJSONRequestBody(params))
+	response, err := apiClient.UpdateServiceWithResponse(ctx, serviceId, headers, params)
 	if err != nil {
 		return nil, err
 	}

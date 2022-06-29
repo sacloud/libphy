@@ -74,7 +74,7 @@ func TestServerOp_Read(t *testing.T) {
 	}{
 		{
 			name:     "minimum",
-			serverId: v1.ServerId(servers[0].Id()),
+			serverId: servers[0].Id(),
 			want:     servers[0].Server,
 			wantErr:  false,
 		},
@@ -106,7 +106,7 @@ func TestServerOp_ListOSImages(t *testing.T) {
 	}{
 		{
 			name:     "minimum",
-			serverId: v1.ServerId(servers[0].Id()),
+			serverId: servers[0].Id(),
 			want:     servers[0].OSImages,
 			wantErr:  false,
 		},
@@ -142,7 +142,7 @@ func TestServerOp_OSInstall(t *testing.T) {
 		{
 			name: "minimum",
 			args: args{
-				serverId: v1.ServerId(servers[0].Id()),
+				serverId: servers[0].Id(),
 				params: v1.OsInstallParameter{
 					ManualPartition: true,
 					OsImageId:       "usacloud",
@@ -181,7 +181,7 @@ func TestServerOp_ReadPortChannel(t *testing.T) {
 		{
 			name: "minimum",
 			args: args{
-				serverId:      v1.ServerId(servers[0].Id()),
+				serverId:      servers[0].Id(),
 				portChannelId: 1001,
 			},
 			want:    &servers[0].Server.PortChannels[0],
@@ -220,7 +220,7 @@ func TestServerOp_ReadPort(t *testing.T) {
 		{
 			name: "minimum",
 			args: args{
-				serverId: v1.ServerId(servers[0].Id()),
+				serverId: servers[0].Id(),
 				portId:   2001,
 			},
 			want:    &servers[0].Server.Ports[0],
@@ -261,7 +261,7 @@ func TestServerOp_UpdatePort(t *testing.T) {
 		{
 			name: "minimum",
 			args: args{
-				serverId: v1.ServerId(servers[0].Id()),
+				serverId: servers[0].Id(),
 				portId:   2001,
 				params: v1.UpdateServerPortParameter{
 					Nickname: "server01-port01-upd",
@@ -319,8 +319,8 @@ func TestServerOp_AssignNetwork(t *testing.T) {
 		{
 			name: "minimum",
 			args: args{
-				serverId: v1.ServerId(servers[0].Id()),
-				portId:   v1.PortId(port.PortId),
+				serverId: servers[0].Id(),
+				portId:   port.PortId,
 				params: v1.AssignNetworkParameter{
 					DedicatedSubnetId: pointer.String(subnets[0].DedicatedSubnetId),
 					InternetType:      &internetType,
@@ -383,8 +383,8 @@ func TestServerOp_EnablePort(t *testing.T) {
 		{
 			name: "minimum",
 			args: args{
-				serverId: v1.ServerId(servers[0].Id()),
-				portId:   v1.PortId(port.PortId),
+				serverId: servers[0].Id(),
+				portId:   port.PortId,
 				enable:   false,
 			},
 			want: &v1.InterfacePort{
@@ -434,8 +434,8 @@ func TestServerOp_ReadTrafficByPort(t *testing.T) {
 		{
 			name: "minimum",
 			args: args{
-				serverId: v1.ServerId(servers[0].Id()),
-				portId:   v1.PortId(port.PortId),
+				serverId: servers[0].Id(),
+				portId:   port.PortId,
 				params:   v1.ReadServerTrafficByPortParams{},
 			},
 			wantErr: false,
@@ -475,7 +475,7 @@ func TestServerOp_PowerControl(t *testing.T) {
 		{
 			name: "minimum",
 			args: args{
-				serverId:  v1.ServerId(servers[0].Id()),
+				serverId:  servers[0].Id(),
 				operation: v1.ServerPowerOperationsReset,
 			},
 			wantErr: false,
@@ -505,7 +505,7 @@ func TestServerOp_ReadPowerStatus(t *testing.T) {
 	}{
 		{
 			name:     "minimum",
-			serverId: v1.ServerId(servers[0].Id()),
+			serverId: servers[0].Id(),
 			want:     servers[0].PowerStatus,
 			wantErr:  false,
 		},
@@ -542,7 +542,7 @@ func TestServerOp_ReadRAIDStatus(t *testing.T) {
 		{
 			name: "minimum",
 			args: args{
-				serverId: v1.ServerId(servers[0].Id()),
+				serverId: servers[0].Id(),
 				refresh:  false,
 			},
 			want:    servers[0].RaidStatus,
@@ -583,8 +583,8 @@ func TestServerOp_ConfigureBonding(t *testing.T) {
 		{
 			name: "minimum",
 			args: args{
-				serverId:      v1.ServerId(servers[0].Id()),
-				portChannelId: v1.PortChannelId(portChannel.PortChannelId),
+				serverId:      servers[0].Id(),
+				portChannelId: portChannel.PortChannelId,
 				params: v1.ConfigureBondingParameter{
 					BondingType:   v1.BondingTypeLacp,
 					PortNicknames: pointer.StringSlice([]string{"port01"}),

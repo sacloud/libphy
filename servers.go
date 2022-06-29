@@ -102,7 +102,7 @@ func (op *ServerOp) OSInstall(ctx context.Context, serverId v1.ServerId, params 
 	headers := &v1.OSInstallParams{
 		XRequestedWith: v1.OSInstallParamsXRequestedWith(v1.XMLHttpRequest),
 	}
-	_, err = apiClient.OSInstall(ctx, serverId, headers, v1.OSInstallJSONRequestBody(params))
+	_, err = apiClient.OSInstall(ctx, serverId, headers, params)
 	return err
 }
 
@@ -130,7 +130,7 @@ func (op *ServerOp) ConfigureBonding(ctx context.Context, serverId v1.ServerId, 
 	headers := &v1.ServerConfigureBondingParams{
 		XRequestedWith: v1.ServerConfigureBondingParamsXRequestedWith(v1.XMLHttpRequest),
 	}
-	response, err := apiClient.ServerConfigureBondingWithResponse(ctx, serverId, portChannelId, headers, v1.ServerConfigureBondingJSONRequestBody(params))
+	response, err := apiClient.ServerConfigureBondingWithResponse(ctx, serverId, portChannelId, headers, params)
 	if err != nil {
 		return nil, err
 	}
@@ -166,7 +166,7 @@ func (op *ServerOp) UpdatePort(ctx context.Context, serverId v1.ServerId, portId
 	headers := &v1.UpdateServerPortParams{
 		XRequestedWith: v1.UpdateServerPortParamsXRequestedWith(v1.XMLHttpRequest),
 	}
-	response, err := apiClient.UpdateServerPortWithResponse(ctx, serverId, portId, headers, v1.UpdateServerPortJSONRequestBody(params))
+	response, err := apiClient.UpdateServerPortWithResponse(ctx, serverId, portId, headers, params)
 	if err != nil {
 		return nil, err
 	}
@@ -206,7 +206,7 @@ func (op *ServerOp) AssignNetwork(ctx context.Context, serverId v1.ServerId, por
 	headers := &v1.ServerAssignNetworkParams{
 		XRequestedWith: v1.ServerAssignNetworkParamsXRequestedWith(v1.XMLHttpRequest),
 	}
-	response, err := apiClient.ServerAssignNetworkWithResponse(ctx, serverId, portId, headers, v1.ServerAssignNetworkJSONRequestBody(params))
+	response, err := apiClient.ServerAssignNetworkWithResponse(ctx, serverId, portId, headers, params)
 	if err != nil {
 		return nil, err
 	}

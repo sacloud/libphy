@@ -63,7 +63,7 @@ func (engine *Engine) dedicatedSubnets() []v1.DedicatedSubnet {
 
 func (engine *Engine) getDedicatedSubnetById(dedicatedSubnetId v1.DedicatedSubnetId) *v1.DedicatedSubnet {
 	for _, d := range engine.DedicatedSubnets {
-		if d.DedicatedSubnetId == string(dedicatedSubnetId) {
+		if d.DedicatedSubnetId == dedicatedSubnetId {
 			return d
 		}
 	}

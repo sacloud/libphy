@@ -78,7 +78,7 @@ func TestDedicatedSubnetOp_Read(t *testing.T) {
 		{
 			name: "minimum",
 			args: args{
-				dedicatedSubnetId: v1.DedicatedSubnetId(ds.DedicatedSubnetId),
+				dedicatedSubnetId: ds.DedicatedSubnetId,
 				refresh:           false,
 			},
 			want:    ds,
