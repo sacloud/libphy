@@ -194,6 +194,9 @@ func TestService_UnknownError(t *testing.T) {
 	httpServer := httptest.NewServer(stubServer.Handler())
 	client := testClient(t)
 	client.APIRootURL = httpServer.URL
+	client.Options.CheckRetryFunc = func(ctx context.Context, resp *http.Response, err error) (bool, error) {
+		return false, nil // 常にリトライしない
+	}
 
 	serviceOp := NewServiceOp(client)
 
