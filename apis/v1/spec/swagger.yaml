@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 1.0.0
+  version: 1.1.0
   title: さくらの専用サーバ PHY APIドキュメント
   termsOfService: 'https://www.sakura.ad.jp/agreement/'
   license:
@@ -404,7 +404,7 @@ paths:
         - $ref: '#/components/parameters/header_requested_with'
         - $ref: '#/components/parameters/server_id'
       requestBody:
-        description: OS再インストール情報
+        description: OSインストール情報
         required: true
         content:
           application/json:
@@ -1088,6 +1088,8 @@ components:
         - os_image_id
         - password
         - manual_partition
+        - ssh_public_keys
+        - allow_password_login
       properties:
         password:
           $ref: '#/components/schemas/password_input'
@@ -1100,7 +1102,29 @@ components:
           description: |-
             リモートコンソールを利用し手動パーティション指定を行う
             (OSが対応している場合のみ)
+        ssh_public_keys:
+          type: array
+          default: [ ]
+          nullable: false
+          maxItems: 20
+          example:
+            - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICH8nlozujNPhuaMeMSyUf+wm+YmKWqN7wZk2YDaalSf
+          description: |-
+            専用サーバーに登録するSSH公開鍵のリスト
 
+            SSH公開鍵認証に対応したOSイメージでのみ有効なパラメータです
+            `allow_password_login`が偽の場合は1つ以上の要素が必要です
+          items:
+            type: string
+            description: 'OpenSSH互換形式の公開鍵(RSA, DSA, ECDSA, Ed25519)'
+            example: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICH8nlozujNPhuaMeMSyUf+wm+YmKWqN7wZk2YDaalSf
+        allow_password_login:
+          type: boolean
+          default: true
+          description: |-
+            パスワードでのSSHログインの許可
+
+            SSH公開鍵認証に対応したOSイメージでのみ有効なパラメータです
     update_service_parameter:
       properties:
         nickname:
@@ -1968,12 +1992,16 @@ components:
           type: string
           description: OSインストール時に作成される管理ユーザー名
           example: root
+        public_key_authentication:
+          type: boolean
+          description: イメージがSSH公開鍵認証に対応しているかどうか
       required:
         - os_image_id
         - name
         - require_password
         - manual_partition
         - superuser_name
+        - public_key_authentication
     traffic_graph:
       type: object
       properties:

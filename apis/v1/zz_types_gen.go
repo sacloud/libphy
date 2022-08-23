@@ -585,6 +585,9 @@ type OsImage struct {
 	// インストール実行時に指定するOSイメージ名
 	OsImageId string `json:"os_image_id"`
 
+	// イメージがSSH公開鍵認証に対応しているかどうか
+	PublicKeyAuthentication bool `json:"public_key_authentication"`
+
 	// インストール時にパスワード指定が必要か
 	// (パスワード指定が必要な場合 `true`)
 	RequirePassword bool `json:"require_password"`
@@ -595,6 +598,11 @@ type OsImage struct {
 
 // OsInstallParameter defines model for os_install_parameter.
 type OsInstallParameter struct {
+	// パスワードでのSSHログインの許可
+	//
+	// SSH公開鍵認証に対応したOSイメージでのみ有効なパラメータです
+	AllowPasswordLogin bool `json:"allow_password_login"`
+
 	// リモートコンソールを利用し手動パーティション指定を行う
 	// (OSが対応している場合のみ)
 	ManualPartition bool `json:"manual_partition"`
@@ -605,6 +613,12 @@ type OsInstallParameter struct {
 	// 英数字と記号の組み合わせ
 	// 1文字以上のアルファベットと1文字以上の数字が必須
 	Password PasswordInput `json:"password"`
+
+	// 専用サーバーに登録するSSH公開鍵のリスト
+	//
+	// SSH公開鍵認証に対応したOSイメージでのみ有効なパラメータです
+	// `allow_password_login`が偽の場合は1つ以上の要素が必要です
+	SshPublicKeys []string `json:"ssh_public_keys"`
 }
 
 // PaginateMeta defines model for paginate_meta.

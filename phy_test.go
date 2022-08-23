@@ -185,11 +185,12 @@ var testServer = &server.Server{
 				},
 				OSImages: []*v1.OsImage{
 					{
-						ManualPartition: true,
-						Name:            "Usacloud Linux",
-						OsImageId:       "usacloud",
-						RequirePassword: true,
-						SuperuserName:   "root",
+						ManualPartition:         true,
+						Name:                    "Usacloud Linux",
+						OsImageId:               "usacloud",
+						RequirePassword:         true,
+						SuperuserName:           "root",
+						PublicKeyAuthentication: true,
 					},
 				},
 				PowerStatus: &v1.ServerPowerStatus{

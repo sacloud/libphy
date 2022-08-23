@@ -120,11 +120,12 @@ func TestDataStore_Servers(t *testing.T) {
 				},
 				OSImages: []*v1.OsImage{
 					{
-						ManualPartition: true,
-						Name:            "Usacloud Linux",
-						OsImageId:       "usacloud",
-						RequirePassword: true,
-						SuperuserName:   "root",
+						ManualPartition:         true,
+						Name:                    "Usacloud Linux",
+						OsImageId:               "usacloud",
+						RequirePassword:         true,
+						SuperuserName:           "root",
+						PublicKeyAuthentication: true,
 					},
 				},
 				PowerStatus: &v1.ServerPowerStatus{
@@ -239,11 +240,12 @@ func TestDataStore_Servers(t *testing.T) {
 				},
 				OSImages: []*v1.OsImage{
 					{
-						ManualPartition: true,
-						Name:            "Usacloud Linux2",
-						OsImageId:       "usacloud2",
-						RequirePassword: true,
-						SuperuserName:   "root",
+						ManualPartition:         true,
+						Name:                    "Usacloud Linux2",
+						OsImageId:               "usacloud2",
+						RequirePassword:         true,
+						SuperuserName:           "root",
+						PublicKeyAuthentication: true,
 					},
 				},
 				PowerStatus: &v1.ServerPowerStatus{
