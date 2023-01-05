@@ -1,5 +1,5 @@
 #
-# Copyright 2021-2022 The phy-api-go authors
+# Copyright 2021-2023 The phy-api-go authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 #
 #====================
 AUTHOR         ?= The sacloud/phy-api-go authors
-COPYRIGHT_YEAR ?= 2021-2022
+COPYRIGHT_YEAR ?= 2021-2023
 
 BIN            ?= dist/phy-api-go-fake-server
 GO_ENTRY_FILE  ?= cmd/phy-api-go-fake-server/*.go

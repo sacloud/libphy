@@ -120,6 +120,6 @@ $ phy-api-go-fake-server --data=fake.json
 
 ## License
 
-`phy-api-go` Copyright 2021-2022 The phy-api-go authors.
+`phy-api-go` Copyright 2021-2023 The phy-api-go authors.
 
 This project is published under [Apache 2.0 License](LICENSE).
