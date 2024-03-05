@@ -6,7 +6,7 @@ require (
 	github.com/deepmap/oapi-codegen v1.16.2
 	github.com/getlantern/deepcopy v0.0.0-20160317154340-7f45deb8130a
 	github.com/gin-gonic/gin v1.9.1
-	github.com/sacloud/api-client-go v0.2.9
+	github.com/sacloud/api-client-go v0.2.10
 	github.com/spf13/cobra v1.8.0
 	github.com/stretchr/testify v1.9.0
 )
@@ -39,7 +39,7 @@ require (
 	github.com/google/uuid v1.3.1 // indirect
 	github.com/gorilla/css v1.0.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
-	github.com/hashicorp/go-retryablehttp v0.7.4 // indirect
+	github.com/hashicorp/go-retryablehttp v0.7.5 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/iris-contrib/schema v0.0.6 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
